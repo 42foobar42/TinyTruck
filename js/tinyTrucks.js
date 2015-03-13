@@ -20,6 +20,7 @@ var tinyTrucks = (function (win) {
             MSG_TABLE_NOT_FOUND = "Table not found!",
             MSG_TBODY_NOT_FOUND = "Table has not body!";
     var trucks;
+    var truckId = 0;
     var money, partStorage = [], truckStorage = [];
     var MapClick = false, startPoint = {x:0,y:0}, lastPoint = {x:0,y:0};
     function showMenu(element) {
@@ -218,6 +219,7 @@ var tinyTrucks = (function (win) {
             } else {
                 // TODO
                 // read From Storage
+                // The truckId has to be corrected if the data is read
             }
             //Map.init(CONST_ID_OF_MAPS);
             setValuesOnScreen();
@@ -293,7 +295,14 @@ var tinyTrucks = (function (win) {
                 }
                 // TODO 
                 // Correct name  and create an id
-                var obj = {name: "Flatbed", origin: item};
+                var NameCounter = 1;
+                for(var i = 0; i < truckStorage.length; i++){
+                    if (truckStorage[i].origin.name === item.name){
+                        NameCounter++;
+                    }
+                }
+                var obj = {name: item.name + " " + NameCounter, origin: item, id:truckId};
+                truckId++;
                 truckStorage.push(obj);
                 console.log(item);
                 money -= item.costs;
