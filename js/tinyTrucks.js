@@ -1,14 +1,17 @@
 var tinyTrucks = (function (win) {
     var menuDiv;
     var CONST_MONEY_START = 20000;
-    var CONST_CLASSNAME_OF_MENUBUTTONS = "menuButton", CONST_CLASSNAME_OF_VIEWS = "view", CONST_CLASSNAME_OF_CLOSEBUTTONS = "closeMenu";
+    var CONST_CLASSNAME_OF_MENUBUTTONS = "menuButton", CONST_CLASSNAME_OF_VIEWS = "view", CONST_CLASSNAME_OF_CLOSEBUTTONS = "closeMenu", 
+        CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS = "closeSubview";
     var CONST_ID_OF_MONEYINPUT = "account",
             CONST_ID_OF_SELLPARTS = "SellPartList",
             CONST_ID_OF_BUILDARTS = "BuildPartList",
             CONST_ID_OF_TRUCKLIST = "TruckList",
             CONST_ID_OF_MAPS = "playground",
             CONST_ID_OF_ZOOMIN = "zoomin",
-            CONST_ID_OF_ZOOMOUT = "zoomout";
+            CONST_ID_OF_ZOOMOUT = "zoomout",
+            CONST_ID_OF_MAP = "Map",
+            CONST_ID_OF_CITY = "City";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -26,7 +29,7 @@ var tinyTrucks = (function (win) {
             views[i].style.display = "none";
         }
         document.getElementById(id).style.display = "inherit";
-        if (id === "Map") {
+        if (id === CONST_ID_OF_MAP) {
             Map.init(CONST_ID_OF_MAPS);               
             document.getElementById(CONST_ID_OF_MAPS).onmousedown = function (event) {                                
                 var city = Map.isCityClicked(event.clientX, event.clientY);
@@ -37,9 +40,10 @@ var tinyTrucks = (function (win) {
                     startPoint['y'] = event.clientY;
                     MapClick = true;      
                 } else {
-                    console.log(city);
                     if (putTruckOnMap !== false) {
                         putTruckOnDepot(putTruckOnMap, city);
+                    } else {
+                        openCityScreen(city);
                     }
                 }
             };
@@ -59,6 +63,15 @@ var tinyTrucks = (function (win) {
             // on leave event
         }
         Layout.makeScrollableTableSize(id);
+    }
+    function openCityScreen(city){        
+        tinyTrucks.show(CONST_ID_OF_CITY);
+        var CityView = document.getElementById(CONST_ID_OF_CITY);
+        CityView.getElementsByClassName(CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS)[0].onclick = function () {
+            tinyTrucks.show(CONST_ID_OF_MAP);
+        };
+        //TODO show City info and make button use
+        CityView.getElementsByTagName("h1")[0].innerHTML = city.name;
     }
     function putTruckOnDepot(id, city) {        
         for (var i = 0; i  < depots.length; i++){
@@ -343,7 +356,7 @@ var tinyTrucks = (function (win) {
         },
         useTruck: function (id) {
             putTruckOnMap = id;
-            this.show("Map");
+            this.show(CONST_ID_OF_MAP);
             var citys = [];
             for(var i = 0; i < depots.length; i++){
                 citys.push(depots[i].name);

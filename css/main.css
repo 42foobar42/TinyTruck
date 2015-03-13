@@ -36,7 +36,7 @@ div#score{
     background-color: #8B4513;
 }
 
-div.closeMenu{
+div.closeMenu, div.closeSubview{
     width:4%;
     height:4%;
     background-color: red;

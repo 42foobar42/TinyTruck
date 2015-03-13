@@ -1,5 +1,5 @@
 window.onload = function () {
-    Layout.init("menu", "closeMenu", "view", "scrolltablewrapper");
+    Layout.init("menu", "closeMenu", "view", "scrolltablewrapper", "closeSubview");
     window.onresize = function () {
         Layout.relayout();                
     };

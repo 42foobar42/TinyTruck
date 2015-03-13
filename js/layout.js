@@ -1,5 +1,5 @@
 var Layout = (function (win) {
-    var menuDiv, closeButtons, views, scrollTablesClassNames;
+    var menuDiv, closeButtons, views, scrollTablesClassNames, subViewsCloseButton;
     var CONST_PERCENT_OF_MENU_BUTTONS_SIZE = 0.9, CONST_PERCENT_OF_CLOSE_BUTTONS_SIZE = 0.1;
     var CONST_MIN_SIZE_CLOSEBUTTON = 20;
     function makeIconMenuSize() {
@@ -36,6 +36,9 @@ var Layout = (function (win) {
         for (var i = 0; i < closeButtons.length; i++) {
             closeButtons[i].setAttribute("style", "width:" + size + "px;height:" + size + "px;left:" + (offSetWidth - size - (size / 2)) + "px;top:" + (size / 2) + "px");
         }
+        for (var i = 0; i < subViewsCloseButton.length; i++) {
+            subViewsCloseButton[i].setAttribute("style", "width:" + size + "px;height:" + size + "px;left:" + (offSetWidth - size - (size / 2)) + "px;top:" + (size / 2) + "px");
+        }
     }/*
      function makeScrollableTableSize() {
      for (var i = 0; i < scrollTables.length; i++) {
@@ -53,11 +56,12 @@ var Layout = (function (win) {
         }
     }
     return{
-        init: function (menu, closeBut, viewName, scrollTabs) {
+        init: function (menu, closeBut, viewName, scrollTabs, subViewCloseBut) {
             menuDiv = document.getElementById(menu);
             closeButtons = document.getElementsByClassName(closeBut);
             views = document.getElementsByClassName(viewName);
             scrollTablesClassNames = scrollTabs;
+            subViewsCloseButton = document.getElementsByClassName(subViewCloseBut);
             makeSizes();
             return Layout;
         },
