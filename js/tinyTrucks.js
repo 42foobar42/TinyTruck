@@ -295,6 +295,9 @@ var tinyTrucks = (function (win) {
                 // Correct name  and create an id
                 var obj = {name: "Flatbed", origin: item};
                 truckStorage.push(obj);
+                console.log(item);
+                money -= item.costs;
+                setValuesOnScreen();
                 fillBuildTable();
                 fillTable(CONST_ID_OF_SELLPARTS, getPartStorageAsArray());
                 fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray());
