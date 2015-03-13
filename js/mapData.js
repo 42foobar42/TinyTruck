@@ -1,8 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 var MapData = (function (win) {
     var Eurasia = [2626, 954, 2603, 938, 2594, 824, 2612, 796, 2668, 793,
     2704,  808, 2742, 786, 2743, 748, 2702, 714, 2712 ,673, 2764, 662, //Spitze bei Belgien
@@ -74,12 +69,12 @@ var MapData = (function (win) {
     2753,  930, 2746,  934, 2740,  943, 2732,  948, 2712,  954, 2673,  960, 2622,  960
     ];
     var CitysOfEurope = [
-        { name:"Munich", coordiantes:{x:2983, y:679}}, 
-        { name:"testcity", coordiantes:{x:2500, y:1200}},
-        { name:"testcity2", coordiantes:{x:2500, y:1}},
-        { name:"testcity3", coordiantes:{x:2500, y:3066}},
-        { name:"testcity4", coordiantes:{x:6000, y:1200}},
-        { name:"testcity5", coordiantes:{x:0, y:1200}}
+        { name:"Munich", coordiantes:{x:2991, y:706}}, 
+        { name:"Frankfurt", coordiantes:{x:2938, y:658}},
+        { name:"Berlin", coordiantes:{x:3030, y:600}},
+        { name:"Rom", coordiantes:{x:3012, y:815}},
+        { name:"Paris", coordiantes:{x:2820, y:690}},
+        { name:"Luxembourg", coordiantes:{x:2890, y:674}}
     ];    
     return {
         getEurasia: function(){

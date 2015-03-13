@@ -1,9 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 var Layout = (function (win) {
     var menuDiv, closeButtons, views, scrollTablesClassNames;
     var CONST_PERCENT_OF_MENU_BUTTONS_SIZE = 0.9, CONST_PERCENT_OF_CLOSE_BUTTONS_SIZE = 0.1;

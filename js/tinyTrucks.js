@@ -1,9 +1,3 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 var tinyTrucks = (function (win) {
     var menuDiv;
     var CONST_MONEY_START = 20000;
@@ -21,7 +15,9 @@ var tinyTrucks = (function (win) {
             MSG_TBODY_NOT_FOUND = "Table has not body!";
     var trucks;
     var truckId = 0;
-    var money, partStorage = [], truckStorage = [];
+    // TODO default depot maybe selectable at gamestart
+    var money, partStorage = [], truckStorage = [], depots = [{name: "Frankfurt", stock: [], trucks: []}];
+    var putTruckOnMap = false;
     var MapClick = false, startPoint = {x:0,y:0}, lastPoint = {x:0,y:0};
     function showMenu(element) {
         var id = element.id.replace(CONST_CLASSNAME_OF_MENUBUTTONS, "");
@@ -32,15 +28,7 @@ var tinyTrucks = (function (win) {
         document.getElementById(id).style.display = "inherit";
         if (id === "Map") {
             Map.init(CONST_ID_OF_MAPS);               
-            document.getElementById(CONST_ID_OF_MAPS).onmousedown = function (event) {
-                //console.log(event);
-                var currentElement = document.getElementById("playground");
-                var totalOffsetX = currentElement.offsetLeft - currentElement.scrollLeft;
-                var totalOffsetY = currentElement.offsetTop - currentElement.scrollTop;
-                //console.log(event);
-                //console.log(event.pageX - totalOffsetX);
-                //console.log(event.pageY - totalOffsetY);
-                
+            document.getElementById(CONST_ID_OF_MAPS).onmousedown = function (event) {                                
                 var city = Map.isCityClicked(event.clientX, event.clientY);
                 // TODO 
                 // check out of bounce
@@ -50,6 +38,9 @@ var tinyTrucks = (function (win) {
                     MapClick = true;      
                 } else {
                     console.log(city);
+                    if (putTruckOnMap !== false) {
+                        putTruckOnDepot(putTruckOnMap, city);
+                    }
                 }
             };
             document.getElementById(CONST_ID_OF_MAPS).onmousemove = function (event) {
@@ -57,16 +48,38 @@ var tinyTrucks = (function (win) {
                     var x  = event.clientX - startPoint.x + lastPoint.x;
                     var y  = event.clientY - startPoint.y + lastPoint.y;
                     Map.scroll(x, y);
+                    //console.log(depots);
                 }
             };
             document.getElementById(CONST_ID_OF_MAPS).onmouseup = function (event) {
                 MapClick = false;
                 lastPoint = Map.getScrollPos();
-            };
+            };            
             // TODO
             // on leave event
         }
         Layout.makeScrollableTableSize(id);
+    }
+    function putTruckOnDepot(id, city) {        
+        for (var i = 0; i  < depots.length; i++){
+            if(depots[i].name === city.name){
+                depots[i].trucks.push(putTruckFromStorage(id));
+                putTruckOnMap = false;
+                Map.setCityChoice([]);
+                // TODO show city view
+                return;
+            }
+        }
+        // TODO make nice
+        alert("You have no depot in this city!");
+    }
+    function putTruckFromStorage(id){
+        for(var i = 0; i < truckStorage.length; i++){
+            if (truckStorage[i].id === id){
+                putTruckOnMap = false;
+                return truckStorage[i];
+            }
+        }
     }
     function menuControls() {
         var buttons = menuDiv.getElementsByClassName(CONST_CLASSNAME_OF_MENUBUTTONS);
@@ -81,6 +94,10 @@ var tinyTrucks = (function (win) {
                 if (closeButton) {
                     closeButton.onclick = function () {
                         showMenu(menuDiv);
+                        if(putTruckOnMap !== false){
+                            putTruckOnMap = false;
+                            Map.setCityChoice([]);
+                        }
                         Layout.relayout();
                     };
                 } else {
@@ -167,7 +184,7 @@ var tinyTrucks = (function (win) {
         var data = [];
         for (var i = 0; i < truckStorage.length; i++) {
             var infoBut = '<input class="infoButton" type="button" value="info" onclick="tinyTrucks.showTruckInfo(' + truckStorage[i].origin.id + ',\'' + truckStorage[i].origin.type + '\')"/>';
-            var useBut = '<input class="useButton" type="button" value="use" onclick="tinyTrucks.useTruck(\'We do need an id here!\')"/>';
+            var useBut = '<input class="useButton" type="button" value="use" onclick="tinyTrucks.useTruck( ' + truckStorage[i].id + ')"/>';
             data.push([truckStorage[i].name, truckStorage[i].origin.type + " " + infoBut, truckStorage[i].origin.name + " " + useBut]);
         }
         return data;
@@ -212,10 +229,20 @@ var tinyTrucks = (function (win) {
         init: function (i_menuDiv) {
             menuDiv = document.getElementById(i_menuDiv);
             menuControls();
+            
+            
             //TODO
             // check if something is in storage
             if (1) {
                 initGame();
+                
+                /***** test data ****/
+                truckStorage.push({name:"testdruck", id:0, origin: "getItem(0, 'truck')"});
+                fillBuildTable();
+                fillTable(CONST_ID_OF_SELLPARTS, getPartStorageAsArray());
+                fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray());
+                /***** test data ****/
+                
             } else {
                 // TODO
                 // read From Storage
@@ -293,8 +320,6 @@ var tinyTrucks = (function (win) {
                 for (var i = 0; i < item.parts.length; i++) {
                     removeFromPartStorage(item.id, item.type, item.parts[i].type);
                 }
-                // TODO 
-                // Correct name  and create an id
                 var NameCounter = 1;
                 for(var i = 0; i < truckStorage.length; i++){
                     if (truckStorage[i].origin.name === item.name){
@@ -316,8 +341,14 @@ var tinyTrucks = (function (win) {
             }
             console.log(truckStorage);
         },
-        useTruck: function (msg) {
-            console.log(msg);
+        useTruck: function (id) {
+            putTruckOnMap = id;
+            this.show("Map");
+            var citys = [];
+            for(var i = 0; i < depots.length; i++){
+                citys.push(depots[i].name);
+            }
+            Map.setCityChoice(citys);                        
         },
         getPartStorage: function () {
             return partStorage;
