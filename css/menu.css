@@ -1,0 +1,39 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 07.11.2014, 20:19:55
+    Author     : alexander
+*/
+div#menu{
+    padding: 5% 10%;
+}
+
+div.menuButtonWrap {
+    background-color: #228B22;
+    width: 25%;
+    height: 50%;
+    //margin-right: 6%;   
+    float: left;
+}
+
+div.menuButtonWrap:nth-child(4), div.menuButtonWrap:nth-child(8){
+    margin-right: 0%;
+}
+
+div.menuButtonWrap:nth-child(4), div.menuButtonWrap:nth-child(3), div.menuButtonWrap:nth-child(2), div.menuButtonWrap:nth-child(1){
+    //margin-bottom: 10%;
+}
+
+div.menuButton{    
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff;
+    position: relative;
+    top: 50%;    
+    left: 50%;
+    margin-left: -50px;
+    margin-top: -50px;
+}

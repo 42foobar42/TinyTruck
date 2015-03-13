@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TinyTrucks</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="css/menu.css">
+        <link rel="stylesheet" type="text/css" href="css/buy.css">
+        <link rel="stylesheet" type="text/css" href="css/sell.css">
+        <link rel="stylesheet" type="text/css" href="css/build.css">
+        <link rel="stylesheet" type="text/css" href="css/truck.css">
+        <link rel="stylesheet" type="text/css" href="css/map.css">
+        <script src="js/layout.js"></script>
+        <script src="js/tinyTrucks.js"></script>
+        <script src="js/truckParts.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/main.js"></script>
+    </head>
+    <body>        
+        <div class="view" id="menu">
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonMap"> Map </div> </div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonTrucks"> Trucks in storage</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonBuy"> Kaufen</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonSell"> Verkaufen</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonStats"> Stats</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonParts"> Trucks/Teile im Lager</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonShops">Shops</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonBuild">build</div></div>
+        </div>
+        <div class="view" id="Map">
+            <canvas id="playground" width="300" height="100"></canvas>
+            <div class="closeMenu"></div>
+            <div id="zoomin" class="zoom">+</div>
+            <div id="zoomout" class="zoom">-</div>
+        </div>
+        <div class="view" id="Trucks">
+            <div class="closeMenu"></div>    
+            <div id="TruckList">
+                <div class="scrolltablewrapper table">
+                    <div class="tableHead">                        
+                        <div>Name</div>
+                        <div>Type</div>
+                        <div>Model</div> 
+                    </div>
+                    <div class="tbody">
+                        <table id="tableTruckList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+            </div>            
+        </div>
+        <div class="view" id="Buy">
+            <div class="closeMenu"></div>
+            <div id="BuyPartList">
+                <div class="scrolltablewrapper table">
+                    <div class="tableHead">
+                        <div>#</div>
+                        <div>Name</div>
+                        <div>Type</div>
+                        <div>Price</div>
+                    </div>
+                    <div class="tbody">
+                        <table id="tableBuyPartList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div class="view" id="Sell">
+            <div class="closeMenu"></div>
+            <div id="SellPartList">
+                <div class="scrolltablewrapper table">
+                    <div class="tableHead">
+                        <div>#</div>
+                        <div>Name</div>
+                        <div>Type</div>
+                        <div>Value</div>
+                    </div>
+                    <div class="tbody">
+                        <table id="tableSellPartList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div class="view" id="Stats">
+            <div class="closeMenu"></div>
+        </div>
+        <div class="view" id="Parts">
+            <div class="closeMenu"></div>
+        </div>
+        <div class="view" id="Shops">
+            <div class="closeMenu"></div>
+        </div>
+        <div class="view" id="Build">
+            <div class="closeMenu"></div>
+            <div id="BuildPartList">
+                 <div class="scrolltablewrapper table">
+                    <div class="tableHead">                        
+                        <div>Parts</div>
+                        <div>Name</div>
+                        <div>Costs</div>
+                    </div>
+                    <div class="tbody">
+                        <table id="tableBuildPartList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div id="score">
+            <span>Money: </span><input readonly="" type="input" id="account" value="0"/>
+        </div>
+    </body>
+</html>
