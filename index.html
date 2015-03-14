@@ -34,7 +34,24 @@
         </div>
         <div class="view" id="Map">
             <canvas id="playground" width="300" height="100"></canvas>
-            <div id="GoodsList"></div>
+            <div id="GoodsList">
+                <div class="MapGoodsList">
+                    <div class="scrolltablewrapper table">
+                    <div class="tableHead">                        
+                        <div>Name</div>
+                        <div>Type</div>
+                        <div>Amount</div>
+                        <div>Value</div>
+                    </div>
+                    <div class="tbody">
+                        <table id="tableGoodsListList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+                </div>
+            </div>
             <div class="closeMenu"></div>
             <div id="zoomin" class="zoom">+</div>
             <div id="zoomout" class="zoom">-</div>            
@@ -124,7 +141,27 @@
         </div>
         <div class="view" id="City">
             <div class="closeSubview"></div>
-            <h1>CityName</h1>
+            <div class="head">
+                <h1>CityName</h1>
+            </div>
+            <div class="content">
+                <div class="CityGoodsList">
+                    <div class="scrolltablewrapper table">
+                    <div class="tableHead">                        
+                        <div>Name</div>
+                        <div>Type</div>
+                        <div>Amount</div>
+                        <div>Value</div>
+                    </div>
+                    <div class="tbody">
+                        <table id="tableCityGoodsList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+                </div>
+            </div>
             <div class="bottomMenu">
                 <input id="CityInfo" type="button" value="Info">
                 <input id="CityDepot" type="button" value="Depot">

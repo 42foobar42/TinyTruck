@@ -12,7 +12,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_ZOOMOUT = "zoomout",
             CONST_ID_OF_MAP = "Map",
             CONST_ID_OF_CITY = "City",
-            CONST_ID_OF_GOODSMAP = "GoodsList";
+            CONST_ID_OF_GOODSMAP = "GoodsList",
+            CONST_ID_OF_CITYGOODS = "CityGoods";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -74,6 +75,25 @@ var tinyTrucks = (function (win) {
         };
         //TODO show City info and make button use
         CityView.getElementsByTagName("h1")[0].innerHTML = city.name;
+        document.getElementById(CONST_ID_OF_CITYGOODS).onclick = function (event){
+            
+            fillTable('table' + CONST_ID_OF_CITYGOODS + 'List', getGoodsDataForTable(city));
+            CityView.getElementsByClassName(CONST_ID_OF_CITYGOODS + 'List')[0].style.display = 'inherit';
+        };
+                       
+        console.log(city);
+    }
+    function getGoodsDataForTable(city){
+        var data = [];
+        for(var i = 0; i  < city.goods.length; i++){
+            var good = city.goods[i];
+            var info = [];
+            for(var key in good){
+                info.push(good[key]);
+            }
+            data.push(info);
+        }
+        return data;
     }
     function putTruckOnDepot(id, city) {        
         for (var i = 0; i  < depots.length; i++){
@@ -91,6 +111,7 @@ var tinyTrucks = (function (win) {
                 console.log(map);
                 Map.reDraw(MapW);
                 var goodslist = document.getElementById(CONST_ID_OF_GOODSMAP);
+                fillTable('table' + CONST_ID_OF_GOODSMAP + 'List', getGoodsDataForTable(city));
                 //goodslist.style.display = "inline-block";
                 goodslist.style.display = "inherit";
                 goodslist.style.float = "right";
@@ -298,12 +319,14 @@ var tinyTrucks = (function (win) {
             showMenu(document.getElementById(id));
             return tinyTrucks;
         },
+        // is this needed 
         makeData: function (type, id, data) {
             if (type === 1) {
                 fillTable(id, data);
             }
             return tinyTrucks;
         },
+        // is this needed?
         addTruckParts: function (data) {
             trucks = data;
             return tinyTrucks;
@@ -333,6 +356,20 @@ var tinyTrucks = (function (win) {
             }
             setValuesOnScreen();
             fillBuildTable();
+        },
+        addNewGoodsToCitys: function(){
+            var citys = MapData.getAllCitys();
+            for(var i = 0; i < citys.length; i++){
+                //TODO Amount of goods should depned on population or something
+                var goods = [];
+                for(var j = 0; j < Goods.length; j++){
+                    var good = Goods[j];
+                    // TODO randomize amount
+                    good.amount = 10;
+                    goods.push(good);
+                }
+                MapData.setAttributeOfCity(citys[i].name, {goods:goods});
+            }
         },
         sellPart: function (id, value, button) {
             // TODO 

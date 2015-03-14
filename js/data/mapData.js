@@ -70,7 +70,7 @@ var MapData = (function (win) {
     ];
     var CitysOfEurope = [
         { name:"Munich", coordiantes:{x:2991, y:706}}, 
-        { name:"Frankfurt", coordiantes:{x:2938, y:658}},
+        { name:"Frankfurt", coordiantes:{x:2938, y:658}, population:700000, layovers:'', goods:[]},
         { name:"Berlin", coordiantes:{x:3030, y:600}},
         { name:"Rom", coordiantes:{x:3012, y:815}},
         { name:"Paris", coordiantes:{x:2820, y:690}},
@@ -82,6 +82,21 @@ var MapData = (function (win) {
         },
         getCitysOfEurope: function(){
             return CitysOfEurope;
+        },
+        getAllCitys: function (){
+            // TODO change if citys of other conitents are added
+            return CitysOfEurope;
+        },
+        setAttributeOfCity: function (name, attributes){
+            var citys = MapData.getAllCitys();
+            for(var i=0; i < citys.length; i++){
+                if(citys[i].name === name){
+                    for(var key in attributes){
+                        citys[i][key] = attributes[key];
+                    }
+                    return;
+                }
+            }
         }
     };
 }(window));

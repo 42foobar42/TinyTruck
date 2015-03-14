@@ -5,7 +5,7 @@ window.onload = function () {
     };
     tinyTrucks.init("menu");
     tinyTrucks.addTruckParts(Trucks);
-    tinyTrucks.show("Trucks");
+    tinyTrucks.show("Map");
     //Map.init("playground");
     /*
     var g={canvas:'', ctx:''};
@@ -29,4 +29,6 @@ ctx.fillRect(0,0,c.width,c.height);
     
     var data = tinyTrucks.getRandomParts(50);    
     tinyTrucks.makeData(1, "tableBuyPartList",data);
+    
+    tinyTrucks.addNewGoodsToCitys();
 };
