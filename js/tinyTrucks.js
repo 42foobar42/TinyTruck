@@ -11,7 +11,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_ZOOMIN = "zoomin",
             CONST_ID_OF_ZOOMOUT = "zoomout",
             CONST_ID_OF_MAP = "Map",
-            CONST_ID_OF_CITY = "City";
+            CONST_ID_OF_CITY = "City",
+            CONST_ID_OF_GOODSMAP = "GoodsList";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -77,9 +78,23 @@ var tinyTrucks = (function (win) {
         for (var i = 0; i  < depots.length; i++){
             if(depots[i].name === city.name){
                 depots[i].trucks.push(putTruckFromStorage(id));
-                putTruckOnMap = false;
+                putTruckOnMap = false;                
+                // TODO tuck show goods and go on journey
                 Map.setCityChoice([]);
-                // TODO show city view
+                tinyTrucks.show(CONST_ID_OF_MAP);
+                var map = document.getElementById(CONST_ID_OF_MAPS);
+                var MapOrW = map.width;
+                var MapW = map.width *= 2/3;   
+                console.log(map);
+                Map.reDraw(MapW);
+                var goodslist = document.getElementById(CONST_ID_OF_GOODSMAP);
+                //goodslist.style.display = "inline-block";
+                goodslist.style.display = "inherit";
+                goodslist.style.float = "right";
+                console.log(MapW + (MapOrW - MapW ));
+                goodslist.style.width = (MapOrW - MapW - 1) + 'px';
+                goodslist.style.height = map.clientHeight + 'px';
+                console.log(goodslist);
                 return;
             }
         }

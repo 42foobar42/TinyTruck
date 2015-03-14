@@ -45,7 +45,9 @@ var Map = (function (win) {
         }
     }
     function draw(){ 
-        g.canvas.width = win.innerWidth;
+        //g.canvas.width = win.innerWidth;
+        //g.canvas.width =  g.canvas.parentElement.clientWidth;
+        g.canvas.width =g.canvas.width;
         g.ctx.fillStyle = "#1C6BA0";            
         g.ctx.fillRect(0, 0,CONST_MAP_WIDTH, CONST_MAP_HEIGHT);
         drawContinents();
@@ -55,8 +57,11 @@ var Map = (function (win) {
         init: function (id) {
             g.canvas = window.document.getElementById(id);
             g.ctx = g.canvas.getContext("2d");
-            g.canvas.width = g.canvas.clienWidth;
-            g.canvas.height = g.canvas.clientHeight;                    
+            console.log(g.canvas.parentElement.clientHeight);
+            //g.canvas.width = g.canvas.width;
+            g.canvas.width =  g.canvas.parentElement.clientWidth;
+            g.canvas.height = g.canvas.parentElement.clientHeight;
+            //console.log(g.canvas);
             Eurasia = MapData.getEurasia();
             CitysOfEurope = MapData.getCitysOfEurope();
             draw();            
@@ -107,6 +112,13 @@ var Map = (function (win) {
         setCityChoice: function(citys){ 
             highlightedCitys = citys;
             draw();
+        },
+        reDraw: function(width){
+            g.canvas.width = width;
+            //g.canvas.height = g.canvas.height; 
+            console.log(g.canvas);
+            draw();            
+            return Map;
         }
     };
 }(window));
