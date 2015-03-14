@@ -28,7 +28,7 @@
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonBuy"> Kaufen</div></div>
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonSell"> Verkaufen</div></div>
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonStats"> Stats</div></div>
-            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonParts"> Trucks/Teile im Lager</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonUsedTrucks"> Trucks im Depot oder auf der Fahrt</div></div>
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonShops">Shops</div></div>
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonBuild">build</div></div>
         </div>
@@ -115,8 +115,24 @@
         <div class="view" id="Stats">
             <div class="closeMenu"></div>
         </div>
-        <div class="view" id="Parts">
+        <div class="view" id="UsedTrucks">
             <div class="closeMenu"></div>
+            <div id="UsedTrucksList">
+                 <div class="scrolltablewrapper table">
+                    <div class="tableHead">                        
+                        <div>Name</div>
+                        <div>Type</div>
+                        <div>Location</div>
+                        <div>Status</div>
+                    </div>
+                    <div class="tbody">
+                        <table id="tableUsedTrucksList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+            </div>
         </div>
         <div class="view" id="Shops">
             <div class="closeMenu"></div>

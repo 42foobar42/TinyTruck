@@ -13,7 +13,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_MAP = "Map",
             CONST_ID_OF_CITY = "City",
             CONST_ID_OF_GOODSMAP = "GoodsList",
-            CONST_ID_OF_CITYGOODS = "CityGoods";
+            CONST_ID_OF_CITYGOODS = "CityGoods",
+            CONST_ID_OF_USEDTRUCKS = "UsedTrucks";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -22,7 +23,8 @@ var tinyTrucks = (function (win) {
     var trucks;
     var truckId = 0;
     // TODO default depot maybe selectable at gamestart
-    var money, partStorage = [], truckStorage = [], depots = [{name: "Frankfurt", stock: [], trucks: []}];
+    var money, partStorage = [], truckStorage = [], trucksInUseStorage = [];
+    var depots = [{name: "Frankfurt", stock: [], trucks: []}];
     var putTruckOnMap = false;
     var MapClick = false, startPoint = {x:0,y:0}, lastPoint = {x:0,y:0};
     function showMenu(element) {
@@ -99,7 +101,14 @@ var tinyTrucks = (function (win) {
         for (var i = 0; i  < depots.length; i++){
             if(depots[i].name === city.name){
                 console.log(truckStorage);
-                depots[i].trucks.push(putTruckFromStorage(id)); 
+                var truck = putTruckFromStorage(id)[0];
+                truck.location = city.name;
+                truck.status = 'depot';
+                console.log(truck);
+                trucksInUseStorage.push(truck);
+                
+                fillTable(CONST_ID_OF_USEDTRUCKS, getUsedTruckListAsArray());
+                depots[i].trucks.push(id); 
                 fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray());
                 putTruckOnMap = false;                
                 // TODO tuck show goods and go on journey
@@ -243,6 +252,14 @@ var tinyTrucks = (function (win) {
             }
         }
        
+    }
+    function getUsedTruckListAsArray(){
+        var data = [];
+        console.log(trucksInUseStorage);
+        for (var i = 0; i < trucksInUseStorage.length; i++) {
+            data.push([trucksInUseStorage[i].name, trucksInUseStorage[i].origin.type, trucksInUseStorage[i].location, trucksInUseStorage[i].status]);
+        }
+        return data;
     }
     function getTruckListAsArray() {
         var data = [];
