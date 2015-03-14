@@ -77,7 +77,9 @@ var tinyTrucks = (function (win) {
     function putTruckOnDepot(id, city) {        
         for (var i = 0; i  < depots.length; i++){
             if(depots[i].name === city.name){
-                depots[i].trucks.push(putTruckFromStorage(id));
+                console.log(truckStorage);
+                depots[i].trucks.push(putTruckFromStorage(id)); 
+                fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray());
                 putTruckOnMap = false;                
                 // TODO tuck show goods and go on journey
                 Map.setCityChoice([]);
@@ -104,8 +106,8 @@ var tinyTrucks = (function (win) {
     function putTruckFromStorage(id){
         for(var i = 0; i < truckStorage.length; i++){
             if (truckStorage[i].id === id){
-                putTruckOnMap = false;
-                return truckStorage[i];
+                putTruckOnMap = false;                
+                return truckStorage.splice(i,1);
             }
         }
     }
