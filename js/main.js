@@ -27,6 +27,6 @@ ctx.fillStyle = "#FF0000";
 ctx.fillRect(0,0,c.width,c.height);
     */
     
-    var data = tinyTrucks.getRandomParts("",50);    
+    var data = tinyTrucks.getRandomParts(50);    
     tinyTrucks.makeData(1, "tableBuyPartList",data);
 };

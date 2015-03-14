@@ -17,6 +17,7 @@ var tinyTrucks = (function (win) {
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
             MSG_TBODY_NOT_FOUND = "Table has not body!";
+    var CONST_RESALE_VALUE = 0.8;
     var trucks;
     var truckId = 0;
     // TODO default depot maybe selectable at gamestart
@@ -174,18 +175,17 @@ var tinyTrucks = (function (win) {
             console.log(MSG_TABLE_NOT_FOUND + " - " + id);
         }
     }
-    function getPartsAsArray(partNo, itemNo) {
-        var item = trucks[partNo];
-        var but = '<input class="buyButton" value="buy" type="button" onclick="tinyTrucks.buyPart(\'' + item.type
-                + '\', ' + item.id + ', \'' + item.parts[itemNo].type + '\',' + item.parts[itemNo].costs + ', this);"/>';
-        return [partNo + "_" + itemNo, item.name + but, item.parts[itemNo].type, item.parts[itemNo].costs];
+    function getPartsAsArray(partNo) {   
+        var item = Parts[partNo];
+        var but = '<input class="buyButton" value="buy" type="button" onclick="tinyTrucks.buyPart(' + item.id + ', ' + item.costs + ', this);"/>';
+        return [partNo, item.name + but, item.type, item.costs];
     }
     function getPartStorageAsArray() {
-        var ary = [];
+        var ary = [];        
         for (var i = 0; i < partStorage.length; i++) {
-            var but = '<input class="sellButton" value="sell" type="button" onclick="tinyTrucks.sellPart(' + partStorage[i].parentId
-                    + ', \'' + partStorage[i].parentType + "', '" + partStorage[i].type + "', " + partStorage[i].value + ', this);"/>';
-            ary.push([partStorage[i].parentId, partStorage[i].parentType, partStorage[i].type + but, partStorage[i].value]);
+            var but = '<input class="sellButton" value="sell" type="button" onclick="tinyTrucks.sellPart(' + partStorage[i].id
+                    + ', ' + partStorage[i].value + ', this);"/>';
+            ary.push([partStorage[i].id, partStorage[i].name, partStorage[i].type + but, partStorage[i].value]);
         }
         return ary;
     }
@@ -195,20 +195,33 @@ var tinyTrucks = (function (win) {
     function setValuesOnScreen() {
         document.getElementById(CONST_ID_OF_MONEYINPUT).value = money;
     }
-    function removeFromPartStorage(parentId, parentType, type) {
-        for (var i = 0; i < partStorage.length; i++) {
-            if (partStorage[i].parentId === parentId && partStorage[i].parentType === parentType && partStorage[i].type === type) {
-                partStorage.splice(i, 1);
-                return;
+    function removeFromPartStorage(ids) {
+        for(var j = 0; j < ids.length; j++){
+            var id = ids[j];
+            for (var i = 0; i < partStorage.length; i++) {
+                if (partStorage[i].id === id ) {
+                    partStorage.splice(i, 1);
+                    break;
+                }
             }
         }
+        
     }
     function getItem(id, type) {
-        for (var i = 0; i < trucks.length; i++) {
-            if (trucks[i].id === id && trucks[i].type === type) {
-                return trucks[i];
+        if(type === 'truck') {
+            for (var i = 0; i < Trucks.length; i++) {
+                if (Trucks[i].id === id) {
+                    return Trucks[i];
+                }
+            }
+        } else if (type === 'part') {
+            for (var i = 0; i < Parts.length; i++) {
+                if (Parts[i].id === id) {
+                    return Parts[i];
+                }
             }
         }
+       
     }
     function getTruckListAsArray() {
         var data = [];
@@ -219,39 +232,38 @@ var tinyTrucks = (function (win) {
         }
         return data;
     }
-    function fillBuildTable() {
-        var PartsPerItem = {};
-        for (var i = 0; i < partStorage.length; i++) {
-            var id = partStorage[i].parentId + "_" + partStorage[i].parentType;
-            if (!PartsPerItem[id]) {
-                PartsPerItem[id] = {};
-                PartsPerItem[id].parts = [partStorage[i]];
-                PartsPerItem[id][partStorage[i].type] = 1;
-            } else {
-                if (!PartsPerItem[id][partStorage[i].type]) {
-                    PartsPerItem[id][partStorage[i].type] = 1;
-                } else {
-                    PartsPerItem[id][partStorage[i].type]++;
-                }
-                PartsPerItem[id].parts.push(partStorage[i]);
+    function getPartsById(id){
+        var data = [];
+        for(var i = 0; i < partStorage.length; i++){
+            if(partStorage[i].id === id){
+                data.push(partStorage[i]);
             }
         }
-        var buildArray = [];
-        for (i in PartsPerItem) {
-            var parts = i.split("_");
-            var item = getItem(Number(parts[0]), parts[1]);
-            var infoBut = '<input class="infoButton" type="button" value="info" onclick="tinyTrucks.showTruckInfo(' + parts[0] + ',\'' + parts[1] + '\')"/>';
-            var buildBut = "";
-            var buildCheck = true;
-            for (var j = 0; j < item.parts.length; j++) {
-                if (!PartsPerItem[i][item.parts[j].type]) {
-                    buildCheck = false;
+        return data;
+    }
+    function fillBuildTable() {
+        var PartsPerItem = [];
+        for(var i = 0; i < Trucks.length; i++){
+            var hasAllParts = true;
+            var counter = 0;
+            for(var j = 0; j < Trucks[i].parts.length; j ++){
+                var partCounter = getPartsById(Trucks[i].parts[j]).length;
+                if(partCounter === 0){
+                    hasAllParts = false;                   
+                } else {
+                    counter += partCounter;
                 }
             }
-            if (buildCheck) {
-                buildBut = '<input class="buildButton" type="button" value="build" onclick="tinyTrucks.buildTruck(' + parts[0] + ',\'' + parts[1] + '\')"/>';
+            if(hasAllParts){
+                PartsPerItem.push({counter:counter, item:Trucks[i]});
             }
-            buildArray.push([PartsPerItem[i].parts.length, item.name + infoBut, item.costs + buildBut]);
+        }
+
+        var buildArray = [];
+        for(var i = 0; i < PartsPerItem.length; i++){
+            var infoBut = '<input class="infoButton" type="button" value="info" onclick="tinyTrucks.showTruckInfo(' + PartsPerItem[i].item.id + ')"/>';
+            var buildBut = '<input class="buildButton" type="button" value="build" onclick="tinyTrucks.buildTruck(' + PartsPerItem[i].item.id + ')"/>';
+            buildArray.push([PartsPerItem[i].counter, PartsPerItem[i].item.name + infoBut, PartsPerItem[i].item.costs + buildBut]);
         }
         fillTable(CONST_ID_OF_BUILDARTS, buildArray);
     }
@@ -267,7 +279,7 @@ var tinyTrucks = (function (win) {
                 initGame();
                 
                 /***** test data ****/
-                truckStorage.push({name:"testdruck", id:0, origin: "getItem(0, 'truck')"});
+                //truckStorage.push({name:"testdruck", id:0, origin: "getItem(0, 'truck')"});
                 fillBuildTable();
                 fillTable(CONST_ID_OF_SELLPARTS, getPartStorageAsArray());
                 fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray());
@@ -296,20 +308,15 @@ var tinyTrucks = (function (win) {
             trucks = data;
             return tinyTrucks;
         },
-        getRandomParts: function (type, amount) {
-            var itemCount = trucks.length * 3;
-            // TODO
-            // check type
+        getRandomParts: function (amount) {
             var data = [];
             for (var i = 0; i < amount; i++) {
-                var random = Math.floor((Math.random() * itemCount));
-                var partNo = Math.floor(random / 3);
-                var itemNo = random % 3;
-                data.push(getPartsAsArray(partNo, itemNo));
+                var random = Math.floor((Math.random() * Parts.length));                                
+                data.push(getPartsAsArray(random));
             }
             return data;
         },
-        buyPart: function (itemType, itemId, partType, costs, button) {
+        buyPart: function (itemId, costs, button) {
             // TODO
             //  better alert box
             if (costs > money) {
@@ -317,7 +324,8 @@ var tinyTrucks = (function (win) {
             } else {
                 var row = button.parentNode.parentNode;
                 row.parentNode.removeChild(row);
-                var part = {parentType: itemType, parentId: itemId, type: partType, value: parseInt(costs * 0.8)};
+                var part = getItem(itemId, 'part');                
+                part.value = parseInt(part.costs * CONST_RESALE_VALUE);
                 partStorage.push(part);
                 money -= costs;
                 var storedParts = getPartStorageAsArray();
@@ -326,12 +334,12 @@ var tinyTrucks = (function (win) {
             setValuesOnScreen();
             fillBuildTable();
         },
-        sellPart: function (parentId, parentType, type, value, button) {
+        sellPart: function (id, value, button) {
             // TODO 
             // Better question field
             var yes = confirm("really?");
             if (yes === true) {
-                removeFromPartStorage(parentId, parentType, type);
+                removeFromPartStorage([id]);
                 var row = button.parentNode.parentNode;
                 row.parentNode.removeChild(row);
                 money += value;
@@ -343,13 +351,11 @@ var tinyTrucks = (function (win) {
             // TODO
             console.log("showTruck Info(id/type): " + id + " " + type);
         },
-        buildTruck: function (id, type) {
+        buildTruck: function (id) {
             // TODO
-            var item = getItem(id, type);
+            var item = getItem(id, 'truck');
             if (item.costs < money) {
-                for (var i = 0; i < item.parts.length; i++) {
-                    removeFromPartStorage(item.id, item.type, item.parts[i].type);
-                }
+                removeFromPartStorage(item.parts);                
                 var NameCounter = 1;
                 for(var i = 0; i < truckStorage.length; i++){
                     if (truckStorage[i].origin.name === item.name){
@@ -358,8 +364,7 @@ var tinyTrucks = (function (win) {
                 }
                 var obj = {name: item.name + " " + NameCounter, origin: item, id:truckId};
                 truckId++;
-                truckStorage.push(obj);
-                console.log(item);
+                truckStorage.push(obj);                
                 money -= item.costs;
                 setValuesOnScreen();
                 fillBuildTable();
@@ -369,7 +374,6 @@ var tinyTrucks = (function (win) {
                 // TODO nice box
                 alert("No money");
             }
-            console.log(truckStorage);
         },
         useTruck: function (id) {
             putTruckOnMap = id;
