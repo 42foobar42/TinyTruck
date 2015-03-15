@@ -25,7 +25,7 @@ var tinyTrucks = (function (win) {
     // TODO default depot maybe selectable at gamestart
     var money, partStorage = [], truckStorage = [], trucksInUseStorage = [];
     var depots = [{name: "Frankfurt", stock: [], trucks: []}];
-    var putTruckOnMap = false;
+    var putTruckOnMap = false, switchGoodChoice = false;
     var MapClick = false, startPoint = {x:0,y:0}, lastPoint = {x:0,y:0};
     function showMenu(element) {
         var id = element.id.replace(CONST_CLASSNAME_OF_MENUBUTTONS, "");
@@ -45,9 +45,13 @@ var tinyTrucks = (function (win) {
                     startPoint['y'] = event.clientY;
                     MapClick = true;      
                 } else {
+                    //console.log(document.getElementsByClassName(CONST_ID_OF_CITYGOODS + 'List')[0].style);
                     if (putTruckOnMap !== false) {
                         putTruckOnDepot(putTruckOnMap, city);
-                    } else {
+                    } else if(switchGoodChoice !== false){
+                        // TODO check destination is possible
+                        console.log("sned it");
+                    }else {
                         openCityScreen(city);
                     }
                 }
@@ -80,9 +84,7 @@ var tinyTrucks = (function (win) {
         document.getElementById(CONST_ID_OF_CITYGOODS).onclick = function (event){            
             fillTable('table' + CONST_ID_OF_CITYGOODS + 'List', getGoodsDataForTable(city));
             CityView.getElementsByClassName(CONST_ID_OF_CITYGOODS + 'List')[0].style.display = 'inherit';
-        };
-                       
-        console.log(city);
+        };                               
     }
     function getGoodsDataForTable(city){
         var data = [];
@@ -116,14 +118,16 @@ var tinyTrucks = (function (win) {
         // TODO make nice
         alert("You have no depot in this city!");
     }    
-    function openTruckGoodChoice(city, truckid){        
+    function openTruckGoodChoice(city, truckid){    
+        // TODO use the right truck 
+        switchGoodChoice = true;
         tinyTrucks.show(CONST_ID_OF_MAP);
         var map = document.getElementById(CONST_ID_OF_MAPS);
         var MapOrW = map.width;
         var MapW = map.width *= 2/3;                
         Map.reDraw(MapW);
         var goodslist = document.getElementById(CONST_ID_OF_GOODSMAP);
-        fillTable('table' + CONST_ID_OF_GOODSMAP + 'List', getGoodsDataForTable(city));
+        fillTable('table' + CONST_ID_OF_GOODSMAP + 'List', getGoodsDataForTable(city), 'row', 'tinyTrucks.useGoodsListClick(this, ' + truckid + ')');
                 //goodslist.style.display = "inline-block";
         goodslist.style.display = "inherit";
         goodslist.style.float = "right";                
@@ -141,6 +145,7 @@ var tinyTrucks = (function (win) {
     function removeTruck(id){
         for(var i = 0; i < truckStorage.length; i++){
             if (truckStorage[i].id === id){
+                // Is this needed?
                 putTruckOnMap = false;                
                 return truckStorage.splice(i,1);
             }
@@ -161,6 +166,10 @@ var tinyTrucks = (function (win) {
                         showMenu(menuDiv);
                         if(putTruckOnMap !== false){
                             putTruckOnMap = false;
+                            Map.setCityChoice([]);
+                        }
+                        if(switchGoodChoice !== false){
+                            switchGoodChoice= false;
                             Map.setCityChoice([]);
                         }
                         Layout.relayout();
@@ -354,11 +363,6 @@ var tinyTrucks = (function (win) {
             }
             return tinyTrucks;
         },
-        // is this needed?
-        addTruckParts: function (data) {
-            trucks = data;
-            return tinyTrucks;
-        },
         getRandomParts: function (amount) {
             var data = [];
             for (var i = 0; i < amount; i++) {
@@ -456,6 +460,15 @@ var tinyTrucks = (function (win) {
             console.log(MapData.getCityByName(el.childNodes[3].innerHTML));
             // TODO switch between status
             openTruckGoodChoice(MapData.getCityByName(el.childNodes[3].innerHTML), el.childNodes[0].innerHTML);            
+        },
+        useGoodsListClick: function(row, truckid){
+            // TODO check if truck has enough space in is able to carry the type of carry.
+            if(row.className.indexOf("selectedRow") > -1){
+                row.className = row.className.replace("selectedRow", "");
+            } else {
+                row.className += "selectedRow";
+            }
+            console.log(row);
         }
     };
 }(window));

@@ -37,3 +37,11 @@ div#GoodsList{
     display: none;
     background-color: #228B22;
 }
+
+// TODO Maybe useful for all tables
+div#GoodsList table#tableGoodsListList{
+    border-collapse:collapse;
+}
+div#GoodsList table#tableGoodsListList tr.selectedRow{
+    background-color: #ffff00;
+}

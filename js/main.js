@@ -4,7 +4,10 @@ window.onload = function () {
         Layout.relayout();                
     };
     tinyTrucks.init("menu");
-    tinyTrucks.addTruckParts(Trucks);
+    tinyTrucks.buildTruck(0);
+    tinyTrucks.buildTruck(0);
+    tinyTrucks.buildTruck(0);
+    tinyTrucks.buildTruck(0);
     tinyTrucks.show("Map");
     //Map.init("playground");
     /*
