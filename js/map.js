@@ -135,15 +135,13 @@ var Map = (function (win) {
             }
             return false;
         },
-        setCityChoice: function(citys){ 
-            console.log(citys);
+        setCityChoice: function(citys){             
             highlightedCitys = citys;
             draw();
         },
         reDraw: function(width){
             g.canvas.width = width;
-            //g.canvas.height = g.canvas.height; 
-            console.log(g.canvas);
+            //g.canvas.height = g.canvas.height;             
             draw();            
             return Map;
         }

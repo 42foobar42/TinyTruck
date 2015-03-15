@@ -14,7 +14,9 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_CITY = "City",
             CONST_ID_OF_GOODSMAP = "GoodsList",
             CONST_ID_OF_CITYGOODS = "CityGoods",
-            CONST_ID_OF_USEDTRUCKS = "UsedTrucks";
+            CONST_ID_OF_USEDTRUCKS = "UsedTrucks",
+            CONST_ID_OF_REMOVEDESTINATION = "removeLastDestination",
+            CONST_ID_OF_SENDTRUCK = "sendTruck";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -37,27 +39,18 @@ var tinyTrucks = (function (win) {
         if (id === CONST_ID_OF_MAP) {
             Map.init(CONST_ID_OF_MAPS);               
             document.getElementById(CONST_ID_OF_MAPS).onmousedown = function (event) {                                
-                var city = Map.isCityClicked(event.clientX, event.clientY);
-                // TODO 
-                // check out of bounce
+                var city = Map.isCityClicked(event.clientX, event.clientY);                
                 if(city === false) {
                     startPoint['x'] = event.clientX;
                     startPoint['y'] = event.clientY;
                     MapClick = true;      
-                } else {
-                    //console.log(document.getElementsByClassName(CONST_ID_OF_CITYGOODS + 'List')[0].style);
+                } else {                    
                     if (putTruckOnMap !== false) {
                         putTruckOnDepot(putTruckOnMap, city);
-                    } else if(switchGoodChoice !== false){
-                        // TODO check destination is possible
-                        //console.log("sned it");
+                    } else if(switchGoodChoice !== false){                                                
                         if(isCityReachable(tour[tour.length-1], city)){
                             tour.push(city);
-                            var highlCitys = [];
-                            for(var i = 0; i < tour.length; i++){
-                                highlCitys.push({name:tour[i].name,color:'#00ff00'});
-                            }
-                            Map.setCityChoice(highlCitys);
+                            highlightTour();
                         }
                         console.log(tour);
                     }else {
@@ -66,6 +59,7 @@ var tinyTrucks = (function (win) {
                 }
             };
             document.getElementById(CONST_ID_OF_MAPS).onmousemove = function (event) {
+                // TODO check out of bounce
                 if (MapClick === true){
                     var x  = event.clientX - startPoint.x + lastPoint.x;
                     var y  = event.clientY - startPoint.y + lastPoint.y;
@@ -114,44 +108,41 @@ var tinyTrucks = (function (win) {
             data.push(info);
         }
         return data;
-    }
-    // TODO change name
-    function putTruckOnDepot(id, city) {        
+    }    
+    function putTruckOnDepot(id, city) {
         for (var i = 0; i  < depots.length; i++){
             if(depots[i].name === city.name){
                 var truck = getTruckById(id);
                 truck.location = city.name;
                 truck.status = 'depot';
                 fillTable(CONST_ID_OF_USEDTRUCKS, getTruckListAsArray(['depot', 'running']), 'row', 'tinyTrucks.usedTruckListClick(this)');
-                depots[i].trucks.push(id); 
+                depots[i].trucks.push(id);
                 fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray(['storage']));
-                putTruckOnMap = false;                
-                // TODO tuck show goods and go on journey
-                openTruckGoodChoice(city, id);                
+                putTruckOnMap = false;
+                openTruckGoodChoice(city, id);
                 return;
             }
         }
         // TODO make nice
         alert("You have no depot in this city!");
     }    
-    function openTruckGoodChoice(city, truckid){    
+    function openTruckGoodChoice(city, truckid){
         // TODO use the right truck 
         tour = [];
         tour.push(city);
         console.log(city);
-        Map.setCityChoice([{name:city.name, color:'#ff0000'}]);        
-        console.log("open goods");
+        Map.setCityChoice([{name:city.name, color:'#ff0000'}]);       
         switchGoodChoice = true;
         tinyTrucks.show(CONST_ID_OF_MAP);
         var map = document.getElementById(CONST_ID_OF_MAPS);
         var MapOrW = map.width;
-        var MapW = map.width *= 2/3;                
+        var MapW = map.width *= 2/3;
         Map.reDraw(MapW);
         var goodslist = document.getElementById(CONST_ID_OF_GOODSMAP);
         fillTable('table' + CONST_ID_OF_GOODSMAP + 'List', getGoodsDataForTable(city), 'row', 'tinyTrucks.useGoodsListClick(this, ' + truckid + ')');
                 //goodslist.style.display = "inline-block";
         goodslist.style.display = "inherit";
-        goodslist.style.float = "right";          
+        goodslist.style.float = "right";
         //TODO Maybe calculate in a better way
         goodslist.style.width = (MapOrW - MapW - 2) + 'px';
         goodslist.style.height = map.clientHeight + 'px';
@@ -168,7 +159,7 @@ var tinyTrucks = (function (win) {
         for(var i = 0; i < truckStorage.length; i++){
             if (truckStorage[i].id === id){
                 // Is this needed?
-                putTruckOnMap = false;                
+                putTruckOnMap = false;
                 return truckStorage.splice(i,1);
             }
         }
@@ -203,9 +194,9 @@ var tinyTrucks = (function (win) {
                 console.log(MSG_VIEW_NOT_FOUND + " - " + id);
             }
         }
-        var but = document.getElementById(CONST_ID_OF_ZOOMIN);        
+        var but = document.getElementById(CONST_ID_OF_ZOOMIN);
         if (but) {
-            but.onclick = function () {                
+            but.onclick = function () {
                 Map.zoomin();
             };
         }
@@ -215,6 +206,31 @@ var tinyTrucks = (function (win) {
                 Map.zoomout();
             };
         }
+        but = document.getElementById(CONST_ID_OF_REMOVEDESTINATION);
+        if (but) {
+            but.onclick = function () {
+                removeLastDestination();
+            };
+        }
+        but = document.getElementById(CONST_ID_OF_SENDTRUCK);
+        if (but) {
+            but.onclick = function () {
+                Map.zoomout();
+            };
+        }
+    }
+    function removeLastDestination(){        
+        if(tour.length > 1){
+            tour.pop();
+            highlightTour();
+        }
+    }
+    function highlightTour(){
+        var highlCitys = [];
+        for(var i = 0; i < tour.length; i++){
+            highlCitys.push({name:tour[i].name,color:'#00ff00'});
+        }
+        Map.setCityChoice(highlCitys);
     }
     function fillTable(id, data, onItemClick, func) {
         var table = document.getElementById(id);
@@ -254,7 +270,7 @@ var tinyTrucks = (function (win) {
         return [partNo, item.name + but, item.type, item.costs];
     }
     function getPartStorageAsArray() {
-        var ary = [];        
+        var ary = [];
         for (var i = 0; i < partStorage.length; i++) {
             var but = '<input class="sellButton" value="sell" type="button" onclick="tinyTrucks.sellPart(' + partStorage[i].id
                     + ', ' + partStorage[i].value + ', this);"/>';
