@@ -76,6 +76,9 @@ var MapData = (function (win) {
         { name:"Paris", coordiantes:{x:2820, y:690}},
         { name:"Luxembourg", coordiantes:{x:2890, y:674}}
     ];    
+    var StreetsOfEurope = [
+        { connection:['Frankfurt','Berlin'], length:551, parts:[{x:2958,y:634}, {x:3011,y:631}] }
+    ];
     return {
         getEurasia: function(){
             return Eurasia;
@@ -86,6 +89,10 @@ var MapData = (function (win) {
         getAllCitys: function (){
             // TODO change if citys of other conitents are added
             return CitysOfEurope;
+        },
+        getAllStreets: function(){
+            // TODO change to get all Streets
+            return StreetsOfEurope;
         },
         setAttributeOfCity: function (name, attributes){
             var citys = MapData.getAllCitys();
@@ -99,13 +106,16 @@ var MapData = (function (win) {
             }
         },
         getCityByName: function(name){
+            //console.log(name);
             var citys = MapData.getAllCitys();
             for(var i=0; i < citys.length; i++){
+                //console.log(citys[i].name);
+                //console.log(citys[i].name === name);
                 if(citys[i].name === name){                        
                     return citys[i];
                 }
             }
-            
+            return false;
         }
     };
 }(window));
