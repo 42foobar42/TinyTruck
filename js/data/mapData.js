@@ -97,6 +97,15 @@ var MapData = (function (win) {
                     return;
                 }
             }
+        },
+        getCityByName: function(name){
+            var citys = MapData.getAllCitys();
+            for(var i=0; i < citys.length; i++){
+                if(citys[i].name === name){                        
+                    return citys[i];
+                }
+            }
+            
         }
     };
 }(window));

@@ -103,20 +103,20 @@ var tinyTrucks = (function (win) {
                 var truck = getTruckById(id);
                 truck.location = city.name;
                 truck.status = 'depot';
-                fillTable(CONST_ID_OF_USEDTRUCKS, getTruckListAsArray(['depot', 'running']));
+                fillTable(CONST_ID_OF_USEDTRUCKS, getTruckListAsArray(['depot', 'running']), 'row', 'tinyTrucks.usedTruckListClick(this)');
                 depots[i].trucks.push(id); 
                 fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray(['storage']));
                 putTruckOnMap = false;                
                 // TODO tuck show goods and go on journey
-                openTruckGoodChoice(city, id);                               
+                openTruckGoodChoice(city, id);  
+                Map.setCityChoice([]);
                 return;
             }
         }
         // TODO make nice
         alert("You have no depot in this city!");
-    }
-    function openTruckGoodChoice(city, truckid){
-        Map.setCityChoice([]);
+    }    
+    function openTruckGoodChoice(city, truckid){        
         tinyTrucks.show(CONST_ID_OF_MAP);
         var map = document.getElementById(CONST_ID_OF_MAPS);
         var MapOrW = map.width;
@@ -185,7 +185,7 @@ var tinyTrucks = (function (win) {
             };
         }
     }
-    function fillTable(id, data) {
+    function fillTable(id, data, onItemClick, func) {
         var table = document.getElementById(id);
         if (table) {
             var tbody = table.getElementsByTagName("tbody")[0];
@@ -199,6 +199,14 @@ var tinyTrucks = (function (win) {
                         var newCell = document.createElement("td");
                         newCell.innerHTML = data[i][j];
                         newRow.appendChild(newCell);
+                    }
+                    if(onItemClick === 'row'){
+                        /*newRow.onclick = (function (){
+                            return function(){
+                                func;
+                            }
+                        });*/
+                        newRow.setAttribute("onclick",func);
                     }
                     tbody.appendChild(newRow);
                 }
@@ -261,13 +269,13 @@ var tinyTrucks = (function (win) {
         var data = [];
         for (var i = 0; i < truckStorage.length; i++) {            
             if(filter.indexOf(truckStorage[i].status) >= 0){
-                //TODO better check for status
+                //TODO better check for filter
                 if(filter.length === 1){
                     var infoBut = '<input class="infoButton" type="button" value="info" onclick="tinyTrucks.showTruckInfo(' + truckStorage[i].origin.id + ',\'' + truckStorage[i].origin.type + '\')"/>';
                     var useBut = '<input class="useButton" type="button" value="use" onclick="tinyTrucks.useTruck( ' + truckStorage[i].id + ')"/>';
                     data.push([truckStorage[i].name, truckStorage[i].origin.type + " " + infoBut, truckStorage[i].origin.name + " " + useBut]);
                 } else {
-                     data.push([truckStorage[i].name, truckStorage[i].origin.type, truckStorage[i].location, truckStorage[i].status]);
+                     data.push([truckStorage[i].id, truckStorage[i].name, truckStorage[i].origin.type, truckStorage[i].location, truckStorage[i].status]);
                 }
             }
         }
@@ -443,6 +451,11 @@ var tinyTrucks = (function (win) {
         },
         getPartStorage: function () {
             return partStorage;
+        },
+        usedTruckListClick: function (el){
+            console.log(MapData.getCityByName(el.childNodes[3].innerHTML));
+            // TODO switch between status
+            openTruckGoodChoice(MapData.getCityByName(el.childNodes[3].innerHTML), el.childNodes[0].innerHTML);            
         }
     };
 }(window));
