@@ -37,7 +37,14 @@ var tinyTrucks = (function (win) {
         }
         document.getElementById(id).style.display = "inherit";
         if (id === CONST_ID_OF_MAP) {
-            Map.init(CONST_ID_OF_MAPS);               
+            Map.init(CONST_ID_OF_MAPS);
+            if(switchGoodChoice !== false){
+                document.getElementById(CONST_ID_OF_REMOVEDESTINATION).style.display = "inherit";
+                document.getElementById(CONST_ID_OF_SENDTRUCK).style.display = "inherit";
+            } else {
+                document.getElementById(CONST_ID_OF_REMOVEDESTINATION).style.display = "none";
+                document.getElementById(CONST_ID_OF_SENDTRUCK).style.display = "none";
+            }
             document.getElementById(CONST_ID_OF_MAPS).onmousedown = function (event) {                                
                 var city = Map.isCityClicked(event.clientX, event.clientY);                
                 if(city === false) {
