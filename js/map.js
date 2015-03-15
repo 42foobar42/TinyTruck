@@ -26,24 +26,31 @@ var Map = (function (win) {
         // radius must depened on zoom
         // city names also depend on zoom
         var radius = CityRadius ;//* ZoomFactor;
-        var standardColor = '#000000';
-        var highlightedColor = '#000000';
+        var standardColor = '#000000';        
         if (highlightedCitys && highlightedCitys.length !== 0) {
             standardColor = '#C0C0C0';
         }
+        g.ctx.fillStyle = standardColor;
         for (var i = 0; i < CitysOfEurope.length; i++){
             g.ctx.beginPath();
-            g.ctx.arc((CitysOfEurope[i].coordiantes.x + MapPos.x) * ZoomFactor, (CitysOfEurope[i].coordiantes.y + MapPos.y) * ZoomFactor, radius, 0, 2 * Math.PI);
-            //console.log(highlightCitys.indexOf(CitysOfEurope[i].name));
-            if(highlightedCitys && highlightedCitys.indexOf(CitysOfEurope[i].name) >= 0){
-                
-                g.ctx.fillStyle = highlightedColor;
-            } else {
-                g.ctx.fillStyle = standardColor;
-            }
-            
+            g.ctx.arc((CitysOfEurope[i].coordiantes.x + MapPos.x) * ZoomFactor, (CitysOfEurope[i].coordiantes.y + MapPos.y) * ZoomFactor, radius, 0, 2 * Math.PI);            
+            if(highlightedCitys ){
+                var color = getColorOfCity(CitysOfEurope[i].name);
+                if(color !== false){
+                    g.ctx.fillStyle = color;
+                }
+            }             
             g.ctx.fill();
+            g.ctx.fillStyle = standardColor;
         }
+    }
+    function getColorOfCity(name){
+        for(var i = 0; i < highlightedCitys.length; i++){
+            if(highlightedCitys[i].name === name){
+                return highlightedCitys[i].color;
+            }
+        }
+        return false;
     }
     function drawStreets(){
         g.ctx.strokeStyle = '#808080';
@@ -129,6 +136,7 @@ var Map = (function (win) {
             return false;
         },
         setCityChoice: function(citys){ 
+            console.log(citys);
             highlightedCitys = citys;
             draw();
         },

@@ -20,10 +20,10 @@ var tinyTrucks = (function (win) {
             MSG_TABLE_NOT_FOUND = "Table not found!",
             MSG_TBODY_NOT_FOUND = "Table has not body!";
     var CONST_RESALE_VALUE = 0.8;
-    var trucks;
+    var tour;
     var truckId = 0;
     // TODO default depot maybe selectable at gamestart
-    var money, partStorage = [], truckStorage = [], trucksInUseStorage = [];
+    var money, partStorage = [], truckStorage = [];
     var depots = [{name: "Frankfurt", stock: [], trucks: []}];
     var putTruckOnMap = false, switchGoodChoice = false;
     var MapClick = false, startPoint = {x:0,y:0}, lastPoint = {x:0,y:0};
@@ -50,7 +50,16 @@ var tinyTrucks = (function (win) {
                         putTruckOnDepot(putTruckOnMap, city);
                     } else if(switchGoodChoice !== false){
                         // TODO check destination is possible
-                        console.log("sned it");
+                        //console.log("sned it");
+                        if(isCityReachable(tour[tour.length-1], city)){
+                            tour.push(city);
+                            var highlCitys = [];
+                            for(var i = 0; i < tour.length; i++){
+                                highlCitys.push({name:tour[i].name,color:'#00ff00'});
+                            }
+                            Map.setCityChoice(highlCitys);
+                        }
+                        console.log(tour);
                     }else {
                         openCityScreen(city);
                     }
@@ -72,6 +81,14 @@ var tinyTrucks = (function (win) {
             // on leave event
         }
         Layout.makeScrollableTableSize(id);
+    }
+    function isCityReachable(source, destination){
+        var conCitys = MapData.getAllConnectedCitys(source);
+        if(conCitys.indexOf(destination.name) >= 0){
+            return true;
+        } else {
+            return false;
+        }
     }
     function openCityScreen(city){        
         tinyTrucks.show(CONST_ID_OF_CITY);
@@ -110,8 +127,7 @@ var tinyTrucks = (function (win) {
                 fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray(['storage']));
                 putTruckOnMap = false;                
                 // TODO tuck show goods and go on journey
-                openTruckGoodChoice(city, id);  
-                Map.setCityChoice([]);
+                openTruckGoodChoice(city, id);                
                 return;
             }
         }
@@ -120,6 +136,11 @@ var tinyTrucks = (function (win) {
     }    
     function openTruckGoodChoice(city, truckid){    
         // TODO use the right truck 
+        tour = [];
+        tour.push(city);
+        console.log(city);
+        Map.setCityChoice([{name:city.name, color:'#ff0000'}]);        
+        console.log("open goods");
         switchGoodChoice = true;
         tinyTrucks.show(CONST_ID_OF_MAP);
         var map = document.getElementById(CONST_ID_OF_MAPS);
@@ -130,8 +151,9 @@ var tinyTrucks = (function (win) {
         fillTable('table' + CONST_ID_OF_GOODSMAP + 'List', getGoodsDataForTable(city), 'row', 'tinyTrucks.useGoodsListClick(this, ' + truckid + ')');
                 //goodslist.style.display = "inline-block";
         goodslist.style.display = "inherit";
-        goodslist.style.float = "right";                
-        goodslist.style.width = (MapOrW - MapW - 1) + 'px';
+        goodslist.style.float = "right";          
+        //TODO Maybe calculate in a better way
+        goodslist.style.width = (MapOrW - MapW - 2) + 'px';
         goodslist.style.height = map.clientHeight + 'px';
     }
     function getTruckById(id){
@@ -393,6 +415,7 @@ var tinyTrucks = (function (win) {
             var citys = MapData.getAllCitys();
             for(var i = 0; i < citys.length; i++){
                 //TODO Amount of goods should depned on population or something
+                // TODO a destination must be determined
                 var goods = [];
                 for(var j = 0; j < Goods.length; j++){
                     var good = Goods[j];
@@ -449,7 +472,7 @@ var tinyTrucks = (function (win) {
             this.show(CONST_ID_OF_MAP);
             var citys = [];
             for(var i = 0; i < depots.length; i++){
-                citys.push(depots[i].name);
+                citys.push({name:depots[i].name,color: '#0000ff'});
             }
             Map.setCityChoice(citys);                        
         },
