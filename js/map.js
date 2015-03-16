@@ -4,22 +4,26 @@ var Map = (function (win) {
     var CONST_MAX_ZOOM = 10, CONST_MIN_ZOOM = 1;
     var CityRadius = 15;
     var Eurasia;
+    var Continents = [];
     var CitysOfEurope;
     var Streets;
     var ZoomFactor = CONST_MIN_ZOOM;
     var MapPos = { x:0, y:0};
     var highlightedCitys = [];
     function drawContinents() {
-        var poly = Eurasia;
-        g.ctx.fillStyle = '#007B0C';
+        //var i = 1;
         g.ctx.scale(g.canvas.width/CONST_MAP_WIDTH,g.canvas.height/CONST_MAP_HEIGHT);
-        g.ctx.beginPath();       
-        g.ctx.moveTo((poly[0] + MapPos.x)*ZoomFactor, (poly[1] + MapPos.y)*ZoomFactor);        
-        for (var item = 2; item < poly.length - 1; item += 2) {
-            g.ctx.lineTo((poly[item] + MapPos.x)*ZoomFactor, (poly[item + 1] + MapPos.y)*ZoomFactor);
+        for(var i = 0; i < Continents.length; i++){
+            var poly = Continents[i];
+            g.ctx.fillStyle = '#007B0C';            
+            g.ctx.beginPath();       
+            g.ctx.moveTo((poly[0] + MapPos.x)*ZoomFactor, (poly[1] + MapPos.y)*ZoomFactor);        
+            for (var item = 2; item < poly.length - 1; item += 2) {
+                g.ctx.lineTo((poly[item] + MapPos.x)*ZoomFactor, (poly[item + 1] + MapPos.y)*ZoomFactor);
+            }
+            g.ctx.closePath();        
+            g.ctx.fill();                
         }
-        g.ctx.closePath();        
-        g.ctx.fill();                
     }
     function drawCitys(){
         // TODO
@@ -88,6 +92,7 @@ var Map = (function (win) {
             g.canvas.height = g.canvas.parentElement.clientHeight;
             //console.log(g.canvas);
             Eurasia = MapData.getEurasia();
+            Continents = MapData.getAllContinents();
             CitysOfEurope = MapData.getCitysOfEurope();
             Streets = MapData.getAllStreets();
             draw();            
