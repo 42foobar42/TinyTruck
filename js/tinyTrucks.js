@@ -237,6 +237,19 @@ var tinyTrucks = (function (win) {
             // TODO maybe change get time: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
             truck.start = new Date().getTime();
             truck.goods = getSelectedGoodFromCity(tour[0].name);
+            var street = MapData.getStreetBetweenCitys(tour[0].name, tour[1].name);
+            var time = street.length/truck.origin.data.speed;
+            var min = Math.floor(time);
+            console.log((time % min));
+            var sec = Math.floor((time % min)*60);
+            truck.time = min + ":" + sec;
+            //TODO !!!!!!!!!!! delete next line
+            min = 0;
+            truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
+            console.log(street.length);
+            console.log(truck);
+            console.log(time);
+            console.log(min + ":" + sec);
             tour = {};
 
             fillTable(CONST_ID_OF_USEDTRUCKS, getTruckListAsArray(['depot', 'en route']), 'row', 'tinyTrucks.usedTruckListClick(this)');
@@ -407,6 +420,21 @@ var tinyTrucks = (function (win) {
         }
         fillTable(CONST_ID_OF_BUILDARTS, buildArray);
     }
+    function truckArrived(truck){
+        // TODO Here some statistics has to be saved
+        truck.tour.shift();
+        if(truck.tour.length > 1){
+            // TODO check if goods are at right place and than go on
+            
+        } else {
+            truck.status = 'depot';
+            truck.location = truck.tour[0].name;
+            truck.tour = [];
+            truck.start = '';
+            truck.stop = '';
+            // TODO check goods
+        }
+    }
     return {
         init: function (i_menuDiv) {
             menuDiv = document.getElementById(i_menuDiv);
@@ -542,7 +570,7 @@ var tinyTrucks = (function (win) {
         },
         usedTruckListClick: function (el){
             var status = el.childNodes[4].innerHTML;
-            console.log(el.childNodes[0].innerHTML);
+            //console.log(el.childNodes[0].innerHTML);
             // TODO switch between status
             if(status === 'depot') {
                 openTruckGoodChoice(MapData.getCityByName(el.childNodes[3].innerHTML), el.childNodes[0].innerHTML);
@@ -556,9 +584,30 @@ var tinyTrucks = (function (win) {
             if(row.className.indexOf("selectedRow") > -1){
                 row.className = row.className.replace("selectedRow", "");
             } else {
-                row.className += "selectedRow";
+                // good is selected
+                var truck = getTruckById(truckid);
+                var cells = row.getElementsByTagName('td');
+                var goodType = cells[1].innerHTML;
+//                console.log(truck);
+  //              console.log(goodType);
+                // truck.origin.data.type
+                
+                // TODO check if truck has trailers
+                if(goodType === truck.origin.data.type){
+                    row.className += "selectedRow";
+                }
             }
-            console.log(row);
+            //console.log(row);
+        },
+        checkDrivingTrucks: function(){
+            for(var i = 0; i < truckStorage.length; i++){
+                if(truckStorage[i].status === 'en route'){
+                    if(truckStorage[i].stop < new Date().getTime()){
+                        console.log("I am at the goal!");
+                        truckArrived(truckStorage[i]);
+                    }
+                }
+            }
         }
     };
 }(window));

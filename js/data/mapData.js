@@ -204,6 +204,15 @@ var MapData = (function (win) {
                 }
             }
             return false;
+        },
+        getStreetBetweenCitys: function(city1, city2){
+            var streets = MapData.getAllStreets();
+            for(var i=0; i< streets.length; i++){
+                if(streets[i].connection.indexOf(city1) >= 0 && streets[i].connection.indexOf(city2) >= 0 ){
+                    return streets[i];
+                }
+            }            
+            return false;
         }
     };
 }(window));

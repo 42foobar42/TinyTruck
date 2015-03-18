@@ -34,4 +34,22 @@ ctx.fillRect(0,0,c.width,c.height);
     tinyTrucks.makeData(1, "tableBuyPartList",data);
     
     tinyTrucks.addNewGoodsToCitys();
+    /*
+    var Game;
+    Game.fps = 50;
+
+    Game.run = function() {
+        //Game.update();
+        //Game.draw();
+        tinyTrucks.checkDrivingTrucks();
+    };
+
+    // Start the game loop
+    Game._intervalId = setInterval(Game.run, 1000 / Game.fps);
+    */
+    var GameLoop = function (){
+        tinyTrucks.checkDrivingTrucks();
+    };
+    
+    setInterval(GameLoop, 500);
 };
