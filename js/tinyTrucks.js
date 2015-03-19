@@ -244,7 +244,7 @@ var tinyTrucks = (function (win) {
             var sec = Math.floor((time % min)*60);
             truck.time = min + ":" + sec;
             //TODO !!!!!!!!!!! delete next line
-            min = 0;
+            min = 1;
             truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
             console.log(street.length);
             console.log(truck);
@@ -379,7 +379,7 @@ var tinyTrucks = (function (win) {
                     var useBut = '<input class="useButton" type="button" value="use" onclick="tinyTrucks.useTruck(' + truckStorage[i].id + ')"/>';
                     data.push([truckStorage[i].name, truckStorage[i].origin.type + " " + infoBut, truckStorage[i].origin.name + " " + useBut]);
                 } else {
-                     data.push([truckStorage[i].id, truckStorage[i].name, truckStorage[i].origin.type, truckStorage[i].location, truckStorage[i].status]);
+                     data.push([truckStorage[i].id, truckStorage[i].name, truckStorage[i].origin.type, truckStorage[i].location, truckStorage[i].status, '']);
                 }
             }
         }
@@ -432,7 +432,37 @@ var tinyTrucks = (function (win) {
             truck.tour = [];
             truck.start = '';
             truck.stop = '';
+            var filter = [[0, truck.id]];            
+            var values = [[3, truck.location],[4, truck.status], [5, ' ']];
+            changeCell(CONST_ID_OF_USEDTRUCKS, filter, values);
             // TODO check goods
+        }
+    }
+    /**
+     * 
+     * @param {type} domId Id of the table
+     * @param {type} filters As array of arrays first element: cell number, second element: value to compare
+     * @param {type} values Array of arrays first element: cell number, seceond element: value to set
+     * @returns {undefined}
+     */
+    function changeCell(domId, filters, values){
+        var table = document.getElementById(domId);
+        var rows = table.getElementsByTagName('tr');
+        for( var i = 0; i < rows.length; i++){
+            var cell = rows[i].getElementsByTagName('td');
+            var checkFilter = true;
+            for(var j = 0; j < filters.length; j++){
+                var filter = filters[j];
+                if(cell[filter[0]].innerHTML !== String(filter[1])){
+                    checkFilter = false;
+                }
+            }
+            if(checkFilter === true){
+                for(var k = 0; k < values.length; k++){
+                    var valSet = values[k];
+                    cell[valSet[0]].innerHTML = valSet[1];
+                }
+            }
         }
     }
     return {
@@ -605,7 +635,23 @@ var tinyTrucks = (function (win) {
                     if(truckStorage[i].stop < new Date().getTime()){
                         console.log("I am at the goal!");
                         truckArrived(truckStorage[i]);
-                    }
+                    } else {
+                        var time = new Date(truckStorage[i].stop - new Date().getTime());
+                        var filter = [[0, truckStorage[i].id]];
+                        //console.log(time.getMinutes() + " : " + time.getSeconds());
+                        var displayTime = time.getMinutes();
+                        if (displayTime > 0){
+                            displayTime += " min";
+                            var values = [[5, displayTime]];
+                            changeCell(CONST_ID_OF_USEDTRUCKS, filter, values);
+                        } else {
+                            if(time.getSeconds() % 10 === 0){
+                                displayTime = time.getSeconds() + " sec";
+                                var values = [[5, displayTime]];
+                                changeCell(CONST_ID_OF_USEDTRUCKS, filter, values);
+                            }
+                        }
+                    }                                       
                 }
             }
         }
