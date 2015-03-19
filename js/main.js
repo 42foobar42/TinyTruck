@@ -8,7 +8,10 @@ window.onload = function () {
     tinyTrucks.buildTruck(0);
     tinyTrucks.buildTruck(0);
     tinyTrucks.buildTruck(0);
+    tinyTrucks.buildTruck(1);
+    tinyTrucks.buildTruck(1);
     tinyTrucks.show("Map");
+    
     //Map.init("playground");
     /*
     var g={canvas:'', ctx:''};

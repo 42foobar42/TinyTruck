@@ -234,22 +234,8 @@ var tinyTrucks = (function (win) {
             truck.status = 'en route';
             truck.tour = tour;
             truck.location = tour[0].name + ' to ' + tour[1].name;
-            // TODO maybe change get time: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
-            truck.start = new Date().getTime();
-            truck.goods = getSelectedGoodFromCity(tour[0].name);
-            var street = MapData.getStreetBetweenCitys(tour[0].name, tour[1].name);
-            var time = street.length/truck.origin.data.speed;
-            var min = Math.floor(time);
-            console.log((time % min));
-            var sec = Math.floor((time % min)*60);
-            truck.time = min + ":" + sec;
-            //TODO !!!!!!!!!!! delete next line
-            min = 1;
-            truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
-            console.log(street.length);
-            console.log(truck);
-            console.log(time);
-            console.log(min + ":" + sec);
+            calculateNextStop(truck);
+            truck.goods = getSelectedGoodFromCity(tour[0].name);            
             tour = {};
 
             fillTable(CONST_ID_OF_USEDTRUCKS, getTruckListAsArray(['depot', 'en route']), 'row', 'tinyTrucks.usedTruckListClick(this)');
@@ -262,6 +248,23 @@ var tinyTrucks = (function (win) {
             // TODO make nice
             alert("No destination is choosen");
         }
+    }
+    function calculateNextStop(truck){
+        // TODO maybe change get time: http://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
+        truck.start = new Date().getTime();
+        var street = MapData.getStreetBetweenCitys(truck.tour[0].name, truck.tour[1].name);
+        var time = street.length/truck.origin.data.speed;
+        var min = Math.floor(time);
+        //console.log((time % min));
+        var sec = Math.floor((time % min)*60);
+        truck.time = min + ":" + sec;
+        //TODO !!!!!!!!!!! delete next line
+        min = 1;
+        truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
+        console.log(street.length);
+        console.log(truck);
+        console.log(time);
+        console.log(min + ":" + sec);
     }
     function getSelectedGoodFromCity(cityName){
         var goodsList = document.getElementById('table' + CONST_ID_OF_GOODSMAP + "List");
@@ -423,20 +426,27 @@ var tinyTrucks = (function (win) {
     function truckArrived(truck){
         // TODO Here some statistics has to be saved
         truck.tour.shift();
+        var filter, values;
         if(truck.tour.length > 1){
             // TODO check if goods are at right place and than go on
-            
+            truck.location = truck.tour[0].name + " to " + truck.tour[1].name;
+            calculateNextStop(truck);
+            filter = [[0, truck.id]];
+            // TODO maybe clac new time
+            values = [[3, truck.location], [5, ' ']];
         } else {
             truck.status = 'depot';
             truck.location = truck.tour[0].name;
             truck.tour = [];
             truck.start = '';
             truck.stop = '';
-            var filter = [[0, truck.id]];            
-            var values = [[3, truck.location],[4, truck.status], [5, ' ']];
-            changeCell(CONST_ID_OF_USEDTRUCKS, filter, values);
+            
+            filter = [[0, truck.id]];
+            values = [[3, truck.location],[4, truck.status], [5, ' ']];
+            
             // TODO check goods
         }
+        changeCell(CONST_ID_OF_USEDTRUCKS, filter, values);
     }
     /**
      * 
@@ -586,14 +596,20 @@ var tinyTrucks = (function (win) {
                 alert("No money");
             }
         },
-        useTruck: function (id) {            
-            putTruckOnMap = id;            
-            this.show(CONST_ID_OF_MAP);
-            var citys = [];
-            for(var i = 0; i < depots.length; i++){
-                citys.push({name:depots[i].name,color: '#0000ff'});
+        useTruck: function (id) {
+            putTruckOnMap = id;
+            var vehicle = getTruckById(id);
+            if(vehicle.origin.type === "truck"){
+                this.show(CONST_ID_OF_MAP);
+                var citys = [];
+                for(var i = 0; i < depots.length; i++){
+                    citys.push({name:depots[i].name,color: '#0000ff'});
+                }
+                Map.setCityChoice(citys);
+            } else {
+                // TODO: How to use trailers
+                alert("Implement using trailer");
             }
-            Map.setCityChoice(citys);                        
         },
         getPartStorage: function () {
             return partStorage;
