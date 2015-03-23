@@ -166,9 +166,7 @@ var tinyTrucks = (function (win) {
     function removeTruck(id){
         for(var i = 0; i < truckStorage.length; i++){
             if (truckStorage[i].id === id){
-                // Is this needed?
-                putTruckOnMap = false;
-                return truckStorage.splice(i,1);
+                return truckStorage.splice(i,1)[0];
             }
         }
     }
@@ -306,16 +304,18 @@ var tinyTrucks = (function (win) {
                     tbody.removeChild(tbody.firstChild);
                 }
                 for (var i = 0; i < data.length; i++) {
-                    var newRow = document.createElement("tr");
-                    for (var j = 0; j < data[i].length; j++) {
-                        var newCell = document.createElement("td");
-                        newCell.innerHTML = data[i][j];
-                        newRow.appendChild(newCell);
+                    if(data[i]){
+                        var newRow = document.createElement("tr");
+                        for (var j = 0; j < data[i].length; j++) {
+                            var newCell = document.createElement("td");
+                            newCell.innerHTML = data[i][j];
+                            newRow.appendChild(newCell);
+                        }
+                        if(onItemClick === 'row'){
+                            newRow.setAttribute("onclick",func);
+                        }
+                        tbody.appendChild(newRow);
                     }
-                    if(onItemClick === 'row'){
-                        newRow.setAttribute("onclick",func);
-                    }
-                    tbody.appendChild(newRow);
                 }
             } else {
                 console.log(MSG_TBODY_NOT_FOUND + " - " + id);
@@ -475,6 +475,14 @@ var tinyTrucks = (function (win) {
             }
         }
     }
+    function overWriteBackButton(ViewID, func){
+        var view = document.getElementById(ViewID);
+        var button = view.getElementsByClassName('closeMenu')[0];
+        button.onclick = function (){
+            func();
+            menuControls();
+        }
+    }
     return {
         init: function (i_menuDiv) {
             menuDiv = document.getElementById(i_menuDiv);
@@ -606,9 +614,24 @@ var tinyTrucks = (function (win) {
                     citys.push({name:depots[i].name,color: '#0000ff'});
                 }
                 Map.setCityChoice(citys);
-            } else {
-                // TODO: How to use trailers
-                alert("Implement using trailer");
+            } else {                
+                var vehicles = getTruckListAsArray(['depot', 'storage']);
+                var trucks = [];                
+                for(var i = 0; i < vehicles.length; i++){
+                    if(vehicles[i][2] === 'truck'){                        
+                        trucks.push(vehicles[i]);                        
+                    }
+                }                
+                if(trucks.length > 0){
+                    // TODO change headers
+                    fillTable(CONST_ID_OF_TRUCKLIST, trucks, 'row', 'tinyTrucks.addTrailerClick(this, ' + id + ')');
+                    var func = function (){
+                        fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray(['storage']));
+                    };
+                    overWriteBackButton('Trucks', func);
+                } else {
+                    alert("No Trucks on depot or storage.");
+                }                
             }
         },
         getPartStorage: function () {
@@ -623,6 +646,14 @@ var tinyTrucks = (function (win) {
             } else if(status === 'en route'){
                 alert("What to do?");
             }
+        },
+        addTrailerClick: function(el, trailerID){
+            var truck = getTruckById(parseInt(el.getElementsByTagName('td')[0].innerHTML));
+            if(!truck.trailers){
+                truck.trailers = [];
+            }
+            truck.trailers.push(removeTruck(trailerID));
+            fillTable(CONST_ID_OF_TRUCKLIST, getTruckListAsArray(['storage']));
         },
         useGoodsListClick: function(row, truckid){
             // TODO check if truck has enough space in is able to carry the type of carry.

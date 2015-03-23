@@ -4,9 +4,9 @@ window.onload = function () {
         Layout.relayout();                
     };
     tinyTrucks.init("menu");
-    tinyTrucks.buildTruck(0);
-    tinyTrucks.buildTruck(0);
-    tinyTrucks.buildTruck(0);
+    //tinyTrucks.buildTruck(0);
+    //tinyTrucks.buildTruck(0);
+    //tinyTrucks.buildTruck(0);
     tinyTrucks.buildTruck(0);
     tinyTrucks.buildTruck(1);
     tinyTrucks.buildTruck(1);
