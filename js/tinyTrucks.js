@@ -16,7 +16,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_CITYGOODS = "CityGoods",
             CONST_ID_OF_USEDTRUCKS = "UsedTrucks",
             CONST_ID_OF_REMOVEDESTINATION = "removeLastDestination",
-            CONST_ID_OF_SENDTRUCK = "sendTruck";
+            CONST_ID_OF_SENDTRUCK = "sendTruck",
+            CONST_ID_OF_GOODSTRUCK = "GoodsTruckOverview";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -41,9 +42,12 @@ var tinyTrucks = (function (win) {
             if(switchGoodChoice !== false){
                 document.getElementById(CONST_ID_OF_REMOVEDESTINATION).style.display = "inherit";
                 document.getElementById(CONST_ID_OF_SENDTRUCK).style.display = "inherit";
+                document.getElementById(CONST_ID_OF_GOODSTRUCK).style.display = "inherit";
             } else {
                 document.getElementById(CONST_ID_OF_REMOVEDESTINATION).style.display = "none";
                 document.getElementById(CONST_ID_OF_SENDTRUCK).style.display = "none";
+                document.getElementById(CONST_ID_OF_GOODSTRUCK).style.display = "none";
+                document.getElementById(CONST_ID_OF_GOODSTRUCK).innerHTML = "";
             }
             document.getElementById(CONST_ID_OF_MAPS).onmousedown = function (event) {                                
                 var city = Map.isCityClicked(event.clientX, event.clientY);                
@@ -135,6 +139,7 @@ var tinyTrucks = (function (win) {
     }    
     function openTruckGoodChoice(city, truckid){
         // TODO use the right truck 
+        console.log(truckid);
         tour = [];
         tour.push(city);
         Map.setCityChoice([{name:city.name, color:'#ff0000'}]);       
@@ -154,6 +159,22 @@ var tinyTrucks = (function (win) {
         goodslist.style.height = map.clientHeight + 'px';
         
         document.getElementById(CONST_ID_OF_SENDTRUCK).setAttribute("data-truckid",truckid);
+        updateTruckStatus(truckid);
+    }
+    function updateTruckStatus(truckid){
+        var html = '';
+        var truck = getTruckById(truckid);
+        console.log(truck);
+        var max = truck.origin.data.capacity;
+        //var goodsList = document.getElementById('table' + CONST_ID_OF_GOODSMAP + "List");
+        //var rows = goodsList.getElementsByTagName('tr');
+        html += '<div> /' + max + '</div>';
+        if(truck.trailers){
+            for(var i = 0; i < truck.trailers.length; i++){
+                html += '<div> /' + truck.trailers[i].origin.data.capacity + '</div>';
+            }
+        }
+        document.getElementById(CONST_ID_OF_GOODSTRUCK).innerHTML = html;
     }
     function getTruckById(id){
         for(var i = 0; i < truckStorage.length; i++){
@@ -481,7 +502,19 @@ var tinyTrucks = (function (win) {
         button.onclick = function (){
             func();
             menuControls();
+        };
+    }
+    function getSelectedRows(id, className){
+        var rowIndex = [];
+        var table = document.getElementById(id);
+        var rows = table.getElementsByTagName('tr');
+        for(var i = 0; i < rows.length; i++){
+            var clsName = rows[i].className;
+            if(clsName.indexOf(className) >= 0){
+                rowIndex.push(i);
+            }
         }
+        return rowIndex;
     }
     return {
         init: function (i_menuDiv) {
@@ -665,17 +698,29 @@ var tinyTrucks = (function (win) {
                 var truck = getTruckById(truckid);
                 var cells = row.getElementsByTagName('td');
                 var goodType = cells[1].innerHTML;
+                var selectedRows = getSelectedRows('table' + CONST_ID_OF_GOODSMAP + 'List', 'selectedRow');
+                var allRows = document.getElementById('table' + CONST_ID_OF_GOODSMAP + 'List', 'selectedRow').getElementsByTagName('tr');
+                //console.log(selectedRows);
+                var selCap = 0;
+                // This has to be done for every type of cargo
+                for(var i = 0; i < selectedRows.length; i++){
+                    var row = allRows[selectedRows[i]];
+                    var cells = row.getElementsByTagName('td');
+                    selCap += parseInt(cells[3].innerHTML);
+                }
+                //console.log(selCap);
+                var size = parseInt(cells[3].innerHTML);
 //                console.log(truck);
   //              console.log(goodType);
                 // truck.origin.data.type
                 
                 // TODO check if truck has trailers
-                if(goodType === truck.origin.data.type){
+                if(goodType === truck.origin.data.type && (selCap + size <= truck.origin.data.capacity)){
                     row.className += "selectedRow";
                 }
             }
             //console.log(row);
-        },
+        },        
         checkDrivingTrucks: function(){
             for(var i = 0; i < truckStorage.length; i++){
                 if(truckStorage[i].status === 'en route'){
