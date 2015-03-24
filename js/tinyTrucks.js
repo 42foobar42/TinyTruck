@@ -159,16 +159,38 @@ var tinyTrucks = (function (win) {
         goodslist.style.height = map.clientHeight + 'px';
         
         document.getElementById(CONST_ID_OF_SENDTRUCK).setAttribute("data-truckid",truckid);
-        updateTruckStatus(parseInt(truckid));
+        updateTruckStatus(truckid);
     }
     function updateTruckStatus(truckid){
         var html = '';
-        var truck = getTruckById(truckid);
-        console.log(truck);
+        var truck = getTruckById(parseInt(truckid));
+        console.log(truck);        
         var max = truck.origin.data.capacity;
-        //var goodsList = document.getElementById('table' + CONST_ID_OF_GOODSMAP + "List");
-        //var rows = goodsList.getElementsByTagName('tr');
-        html += '<div> /' + max + '</div>';
+        var goodsRows = document.getElementById('table' + CONST_ID_OF_GOODSMAP + "List").getElementsByTagName('tr');
+        var rows = getSelectedRows('table' + CONST_ID_OF_GOODSMAP + "List", 'selectedRow');
+        var goods = {};
+        console.log(rows);
+        for(var i = 0; i < rows.length; i++){
+            var cells = goodsRows[rows[i]].getElementsByTagName('td');
+            if(!goods[cells[1].innerHTML]){
+                goods[cells[1].innerHTML] = [];
+            }
+            goods[cells[1].innerHTML].push(parseInt(cells[3].innerHTML)); 
+        }
+        console.log(goods);
+        console.log(truck.origin.data.type);
+        // TODO add goods that already in truck
+        var GoodsForTruck = goods[truck.origin.data.type];
+        var currentCap = 0;
+        if(GoodsForTruck){
+            for(var i = 0; i < GoodsForTruck.length; i++){
+                if(currentCap + GoodsForTruck[i] <= truck.origin.data.capacity){
+                    currentCap += GoodsForTruck.splice(i,1)[0];
+                    i--;
+                }
+            }
+        }
+        html += '<div>' + currentCap +'/' + max + '</div>';
         if(truck.trailers){
             for(var i = 0; i < truck.trailers.length; i++){
                 html += '<div> /' + truck.trailers[i].origin.data.capacity + '</div>';
@@ -589,7 +611,7 @@ var tinyTrucks = (function (win) {
                 for(var j = 0; j < Goods.length; j++){
                     var good = Goods[j];
                     // TODO randomize amount
-                    good.amount = 10;
+                    good.amount = 4;
                     good.destination = citys[Math.floor((Math.random() * citys.length))].name;
                     goods.push(good);
                 }
@@ -702,23 +724,24 @@ var tinyTrucks = (function (win) {
                 var allRows = document.getElementById('table' + CONST_ID_OF_GOODSMAP + 'List', 'selectedRow').getElementsByTagName('tr');
                 //console.log(selectedRows);
                 var selCap = 0;
-                // This has to be done for every type of cargo
+                //TODO This has to be done for every type of cargo
                 for(var i = 0; i < selectedRows.length; i++){
-                    var row = allRows[selectedRows[i]];
-                    var cells = row.getElementsByTagName('td');
+                    var siRow = allRows[selectedRows[i]];
+                    var cells = siRow.getElementsByTagName('td');
                     selCap += parseInt(cells[3].innerHTML);
                 }
                 //console.log(selCap);
                 var size = parseInt(cells[3].innerHTML);
-//                console.log(truck);
-  //              console.log(goodType);
+                //console.log(size);
+                //console.log(truck.origin.data.capacity);
                 // truck.origin.data.type
                 
                 // TODO check if truck has trailers
                 if(goodType === truck.origin.data.type && (selCap + size <= truck.origin.data.capacity)){
                     row.className += "selectedRow";
-                }
+                }                
             }
+            updateTruckStatus(truckid);
             //console.log(row);
         },        
         checkDrivingTrucks: function(){
