@@ -159,7 +159,7 @@ var tinyTrucks = (function (win) {
         goodslist.style.height = map.clientHeight + 'px';
         
         document.getElementById(CONST_ID_OF_SENDTRUCK).setAttribute("data-truckid",truckid);
-        updateTruckStatus(truckid);
+        updateTruckStatus(parseInt(truckid));
     }
     function updateTruckStatus(truckid){
         var html = '';
