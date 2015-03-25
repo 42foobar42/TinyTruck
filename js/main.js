@@ -4,13 +4,15 @@ window.onload = function () {
         Layout.relayout();                
     };
     tinyTrucks.init("menu");
-    tinyTrucks.buildTruck(0);
-    tinyTrucks.buildTruck(0);
-    tinyTrucks.buildTruck(0);
-    tinyTrucks.buildTruck(0);
-    tinyTrucks.buildTruck(1);
-    tinyTrucks.buildTruck(1);
-    tinyTrucks.show("Map");
+    
+    tinyTrucks.truckModel.addTruckByOID(0);    
+    tinyTrucks.truckModel.addTruckByOID(0);
+    tinyTrucks.truckModel.addTruckByOID(0);
+    tinyTrucks.truckModel.addTruckByOID(0);
+    tinyTrucks.truckModel.addTruckByOID(0);
+    tinyTrucks.truckModel.addTruckByOID(1);
+    tinyTrucks.truckModel.addTruckByOID(1);
+    //tinyTrucks.show("Map");
     
     //Map.init("playground");
     /*
@@ -33,6 +35,7 @@ ctx.fillStyle = "#FF0000";
 ctx.fillRect(0,0,c.width,c.height);
     */
     
+    /*
     var data = tinyTrucks.getRandomParts(50);    
     tinyTrucks.makeData(1, "tableBuyPartList",data);
     
@@ -41,6 +44,7 @@ ctx.fillRect(0,0,c.width,c.height);
     
     // to be done in tiny trucks
     tinyTrucks.goodsModel.addNewGoodsToCitys();
+    */
     /*
     var Game;
     Game.fps = 50;
@@ -55,7 +59,7 @@ ctx.fillRect(0,0,c.width,c.height);
     Game._intervalId = setInterval(Game.run, 1000 / Game.fps);
     */
     var GameLoop = function (){
-        tinyTrucks.checkDrivingTrucks();
+        tinyTrucks.loopCheck();
     };
     
     setInterval(GameLoop, 500);
