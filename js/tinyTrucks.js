@@ -601,23 +601,7 @@ var tinyTrucks = (function (win) {
             }
             setValuesOnScreen();
             fillBuildTable();
-        },
-        addNewGoodsToCitys: function(){
-            var citys = MapData.getAllCitys();
-            for(var i = 0; i < citys.length; i++){
-                //TODO Amount of goods should depned on population or something
-                // TODO a destination must be determined
-                var goods = [];
-                for(var j = 0; j < Goods.length; j++){
-                    var good = Goods[j];
-                    // TODO randomize amount
-                    good.amount = 4;
-                    good.destination = citys[Math.floor((Math.random() * citys.length))].name;
-                    goods.push(good);
-                }
-                MapData.setAttributeOfCity(citys[i].name, {goods:goods});
-            }
-        },
+        },        
         sellPart: function (id, value, button) {
             // TODO 
             // Better question field

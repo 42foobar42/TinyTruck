@@ -36,7 +36,11 @@ ctx.fillRect(0,0,c.width,c.height);
     var data = tinyTrucks.getRandomParts(50);    
     tinyTrucks.makeData(1, "tableBuyPartList",data);
     
-    tinyTrucks.addNewGoodsToCitys();
+    // to be done in loop
+    tinyTrucks.goodsModel.generateGoodsList();
+    
+    // to be done in tiny trucks
+    tinyTrucks.goodsModel.addNewGoodsToCitys();
     /*
     var Game;
     Game.fps = 50;
@@ -56,3 +60,13 @@ ctx.fillRect(0,0,c.width,c.height);
     
     setInterval(GameLoop, 500);
 };
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
