@@ -1,5 +1,6 @@
 tinyTrucks.truckModel = (function (win) {
-    var truckStorage = [];    
+    var truckStorage = [];
+    var CONST_PRICE_PER_LITER_GAS = 3 / 100;
     function getTruckFromModelList(id) {        
         for (var i = 0; i < Trucks.length; i++) {
             if (Trucks[i].id === id) {
@@ -45,22 +46,27 @@ tinyTrucks.truckModel = (function (win) {
         //console.log((time % min));
         var sec = Math.floor((time % min)*60);        
         //TODO !!!!!!!!!!! delete next line
-        min = 1;
-        
+        min = 0;
+        sec = 10;
         truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
         truck.time = getDisplayTimeForTrucks(truck.stop);
     }
     function truckArrived(truck){
         // TODO check goods
-        // TODO Here some statistics has to be saved
-        truck.tour.shift();         
-        if(truck.tour.length > 1){
-            // TODO check if goods are at right place and than go on
+        // TODO Here some statistics has to be saved        
+        truck.tour.shift();
+        var goods = getGoodsFromTruck(truck);        
+        for(var i = 0; i < goods.length; i++){
+            if(goods[i].destination ===  truck.tour[0].name){
+                tinyTrucks.addMoney(goods[i].value);                
+                tinyTrucks.truckModel.removeGoodFromTruck(truck.uid,goods[i].uid);                
+                tinyTrucks.goodsModel.removeFromGoodList(goods[i].uid);
+            }
+        }
+        if(truck.tour.length > 1){                        
             truck.location = truck.tour[0].name + " to " + truck.tour[1].name;
-            calculateNextStop(truck.uid);            
-            // TODO maybe clac new time
-            
-        } else {
+            calculateNextStop(truck.uid);
+        } else {            
             truck.status = 'depot';
             truck.location = truck.tour[0].name;
             truck.tour = [];
@@ -79,12 +85,74 @@ tinyTrucks.truckModel = (function (win) {
         }
         return displayTime;
     }
+    function setHighlightCity(citys){
+        var data = [];
+        for(var i = 0; i < citys.length; i++){
+            data.push({name:citys[i].name, color:'#ff0000'});
+        }
+        Map.setCityChoice(data);
+    }
+    function checkCityConnection(source, destination){
+        var conCitys = MapData.getAllConnectedCitys(source);
+        if(conCitys.indexOf(destination.name) >= 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function getDistanceOfTour(truck){
+        var distance = 0;
+        for(var i = 1; i < truck.tour.length; i++){
+            var street = MapData.getStreetBetweenCitys(truck.tour[i-1].name,truck.tour[i].name);            
+            distance += street.length;
+        }
+        return distance;
+    }
+    function getRevenueOfTour(truck){        
+        var revenue = 0;
+        for(var i = 0; i < truck.cargo.length; i++){
+            var cargo = tinyTrucks.goodsModel.getGoodById(truck.cargo[i]);
+            for(var j = 1; j < truck.tour.length; j++){
+                if(cargo.destination === truck.tour[j].name){
+                    revenue += cargo.value;
+                }
+            }
+        }
+        if(truck.trailers){
+            for(var i = 0; i < truck.trailers.length; i++){
+                var trailer = truck.trailers[i];
+                for(var j = 0; j < trailer.cargo.length; j++){
+                    var cargo = tinyTrucks.goodsModel.getGoodById(trailer.cargo[j]);
+                    for(var j = 1; j < truck.tour.length; j++){
+                        if(cargo.destination === truck.tour[j].name){
+                            revenue += cargo.value;
+                        }
+                    }
+                }
+            }
+        }
+        return revenue;
+    }
+    function getGoodsFromTruck(truck){        
+        var goods = [];
+        for(var i = 0; i < truck.cargo.length; i++){
+            goods.push(tinyTrucks.goodsModel.getGoodById(truck.cargo[i]));
+        }
+        if(truck.trailers){
+            for(var i = 0; i < truck.trailers.length; i++){
+                var trailer = truck.trailers[i];
+                for(var j = 0; j < trailer.cargo.length; j++){
+                    goods.push(tinyTrucks.goodsModel.getGoodById(trailer.cargo[j]));
+                }
+            }
+        }
+        return goods;
+    }
     return {
         checkDrivingTrucks: function(){
             for(var i = 0; i < truckStorage.length; i++){
                 if(truckStorage[i].status === 'en route'){
-                    if(truckStorage[i].stop < new Date().getTime()){
-                        console.log("I am at the goal!");
+                    if(truckStorage[i].stop < new Date().getTime()){                        
                         truckArrived(truckStorage[i]);
                     } else {                                                
                         truckStorage[i].time = getDisplayTimeForTrucks(truckStorage[i].stop);
@@ -122,6 +190,7 @@ tinyTrucks.truckModel = (function (win) {
             obj.location = '';
             obj.cargo = [];
             obj.time = '';
+            obj.tour = [];
             if(obj.data.trailers > 0){
                 obj.trailers = [];
             }
@@ -241,14 +310,28 @@ tinyTrucks.truckModel = (function (win) {
             var html = '';
             var truck = this.getTruckByUID(truckId);
             var currentCargo = getAmountOfCargoOfVehicle(truck.uid);
-            html += '<div>' + currentCargo + '/' + truck.data.capacity + '</div>';
+            var gasPrice = 0;
+            var distance = getDistanceOfTour(truck);
+            var revenue = getRevenueOfTour(truck);            
+            //console.log(truck);
+            html += '<div class="truck">' + currentCargo + '/' + truck.data.capacity + '</div>';
+            gasPrice += truck.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
             if(truck.trailers){
                 for(var i = 0; i < truck.trailers.length; i++){                    
                     var trailer = truck.trailers[i];                    
                     currentCargo = getAmountOfCargoOfVehicle(trailer.uid);
-                    html += '<div>' + currentCargo + '/' + trailer.data.capacity + '</div>';
+                    html += '<div class="trailer">' + currentCargo + '/' + trailer.data.capacity + '</div>';
+                    gasPrice += trailer.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
                 }
-            }            
+            }    
+            var profit = Math.round(revenue - gasPrice);
+            html += '<div class="profit';
+            if(profit > 0){
+                html += ' plus';
+            } else {
+                html += ' minus';
+            }
+            html += '">' + profit + '</div>';
             return html;
         },
         getTruckInUseList: function(){
@@ -257,7 +340,6 @@ tinyTrucks.truckModel = (function (win) {
             for(var i = 0; i < trucks.length; i++){
                 data.push([trucks[i].uid, trucks[i].name, trucks[i].type, trucks[i].location, trucks[i].status, trucks[i].time]);
             }
-            console.log(trucks);
             return data;
         },
         isGoodInTruck: function(truckid, goodid){
@@ -275,9 +357,35 @@ tinyTrucks.truckModel = (function (win) {
             }
             return false;
         },
-        sendTruck: function(truckid, attr){
-            setAttributesForTruck(truckid, attr);
+        sendTruck: function(truckid){
+            var truck = this.getTruckByUID(truckid);
+            var tour = truck.tour;
+            setAttributesForTruck(truckid, {status:'en route', location:tour[0].name + ' to ' + tour[1].name});
             calculateNextStop(truckid);
+            var distance = getDistanceOfTour(truck);
+            var gasPrice = 0;
+            gasPrice += truck.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
+            if(truck.trailers){
+                for(var i = 0; i < truck.trailers.length; i++){                    
+                    var trailer = truck.trailers[i];                                                            
+                    gasPrice += trailer.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
+                }
+            }
+            return Math.round(gasPrice);
+        },
+        addTour: function(truckid, city){
+            var truck = this.getTruckByUID(truckid);
+            truck.tour.push(city);
+            setHighlightCity(truck.tour);
+        },
+        removeTour: function(truckid){
+            var truck = this.getTruckByUID(truckid);
+            truck.tour.pop();
+            setHighlightCity(truck.tour);
+        },
+        isCityReachable: function(truckid, city){            
+            var truck = this.getTruckByUID(truckid);
+            return checkCityConnection(truck.tour[truck.tour.length - 1], city);
         }
     };
 }(window));

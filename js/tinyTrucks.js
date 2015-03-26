@@ -62,14 +62,14 @@ var tinyTrucks = (function (win) {
                     startPoint['y'] = event.clientY;
                     MapClick = true;      
                 } else {                    
-                    if (putTruckOnMap !== false) {                        
+                    if (putTruckOnMap !== false) {
                         putTruckOnDepot(putTruckOnMap, city);
-                    } else if(switchGoodChoice !== false){                                                
-                        if(isCityReachable(tour[tour.length-1], city)){
-                            tour.push(city);
-                            highlightTour();
+                    } else if(switchGoodChoice !== false){
+                        var truckid = document.getElementById(CONST_ID_OF_SENDTRUCK).getAttribute("data-truckid");
+                        if(tinyTrucks.truckModel.isCityReachable(truckid, city)){
+                            tinyTrucks.truckModel.addTour(truckid, city);
+                            updateTruckStatus(truckid);
                         }
-                        console.log(tour);
                     }else {
                         openCityScreen(city);
                     }
@@ -92,15 +92,7 @@ var tinyTrucks = (function (win) {
             // on leave event
         }
         Layout.makeScrollableTableSize(id);
-    }
-    function isCityReachable(source, destination){
-        var conCitys = MapData.getAllConnectedCitys(source);
-        if(conCitys.indexOf(destination.name) >= 0){
-            return true;
-        } else {
-            return false;
-        }
-    }
+    }    
     function openCityScreen(city){        
         tinyTrucks.show(CONST_ID_OF_CITY);
         fillTable(CONST_TABLEID_CITYGOODS, tinyTrucks.goodsModel.getUnusedGoodsForCityList(city.name));
@@ -131,16 +123,13 @@ var tinyTrucks = (function (win) {
         console.log(truckid);
         
         switchGoodChoice = true;
-        tour = [];
-        tour.push(city);
-        Map.setCityChoice([{name:city.name, color:'#ff0000'}]);
+        tinyTrucks.truckModel.addTour(truckid, city);
         tinyTrucks.show(CONST_ID_OF_MAP);
         
         // TODO color in use rows
         fillTable(CONST_TABLEID_MAPGOODS, tinyTrucks.goodsModel.getGoodsForMapGoodsTable(city.name, truckid), 'row', 'tinyTrucks.useGoodsListClick(this,\'' + truckid + '\')');
         var rows = document.getElementById(CONST_TABLEID_MAPGOODS).getElementsByTagName('tr');        
         for(var i = 0; i < rows.length; i++){
-            //console.log(rows);
             var cell = rows[i].getElementsByTagName('td');
             if(tinyTrucks.truckModel.isGoodInTruck(truckid, cell[1].innerHTML)){                
                 rows[i].className += 'selectedRow';
@@ -227,33 +216,31 @@ var tinyTrucks = (function (win) {
             };
         }
     }
-    function sendTruck(){        
-        if(tour.length > 1){
-            var truckId = document.getElementById(CONST_ID_OF_SENDTRUCK).getAttribute("data-truckid");                    
-            console.log(truckId)
-            tinyTrucks.truckModel.sendTruck(truckId, {status:'en route', tour:tour, location:tour[0].name + ' to ' + tour[1].name});                        
-            tour = {};
-            Map.setCityChoice([]);
-            switchGoodChoice = false;
-            // TODO close view where to go?
-            tinyTrucks.show(CONST_ID_OF_MAP);
+    function sendTruck(){
+        var truckId = document.getElementById(CONST_ID_OF_SENDTRUCK).getAttribute("data-truckid");
+        if(tinyTrucks.truckModel.getTruckByUID(truckId).tour.length > 1){            
+            var cost = tinyTrucks.truckModel.sendTruck(truckId);
+            // TODO check if it make sense to do this check
+            if(money >= cost){
+                money -= cost;
+                Map.setCityChoice([]);
+                switchGoodChoice = false;
+                // TODO close view where to go?
+                tinyTrucks.show(CONST_ID_OF_MAP);
+                setValuesOnScreen();
+            } else {
+                // TODO make nice
+                alert("Not enouh money to send");
+            }
         } else {
             // TODO make nice
             alert("No destination is choosen");
         }
     }    
-    function removeLastDestination(){        
-        if(tour.length > 1){
-            tour.pop();
-            highlightTour();
-        }
-    }
-    function highlightTour(){
-        var highlCitys = [];
-        for(var i = 0; i < tour.length; i++){
-            highlCitys.push({name:tour[i].name,color:'#00ff00'});
-        }
-        Map.setCityChoice(highlCitys);
+    function removeLastDestination(){
+        var truckid = document.getElementById(CONST_ID_OF_SENDTRUCK).getAttribute("data-truckid");
+        tinyTrucks.truckModel.removeTour(truckid);
+        updateTruckStatus(truckid);
     }
     function fillTable(id, data, onItemClick, func) {
         var table = document.getElementById(id);        
@@ -387,6 +374,7 @@ var tinyTrucks = (function (win) {
         },
         addMoney: function(imoney){
             money += imoney;
+            setValuesOnScreen()
         },
         loopCheck: function (){
             tinyTrucks.truckModel.checkDrivingTrucks();

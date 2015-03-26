@@ -51,6 +51,8 @@ tinyTrucks.goodsModel = (function (win) {
                         } while(destination === good.source)
                         good.destination = destination;
                         good.status = '';
+                        // TODO value(money) of good must be calculated on groundvalue and distance
+                        good.value = good.groundvalue;
                         ListOfGoods.push(good);
                     }
                 }
@@ -82,8 +84,8 @@ tinyTrucks.goodsModel = (function (win) {
         },
         getUnusedGoodsForCityList: function(cityname){
             var data = [];
-            for(var i = 0; i < ListOfGoods.length; i++){                
-                if(ListOfGoods[i].source === cityname){                    
+            for(var i = 0; i < ListOfGoods.length; i++){
+                if(ListOfGoods[i].source === cityname){
                     var good = ListOfGoods[i];
                     var info = [];
                     for(var key in good){
@@ -93,6 +95,15 @@ tinyTrucks.goodsModel = (function (win) {
                 }
             }
             return data;
+        },
+        removeFromGoodList: function(goodId){
+            for(var i = 0; i < ListOfGoods.length; i++){
+                if(ListOfGoods[i].uid === goodId){
+                    ListOfGoods.splice(i,1);
+                    return true;
+                }
+            }
+            return false;
         }
     };
 }(window));
