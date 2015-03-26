@@ -4,12 +4,12 @@ window.onload = function () {
         Layout.relayout();                
     };
     tinyTrucks.init("menu");
-    
+    tinyTrucks.depotsModel.addDepots("Frankfurt");
     tinyTrucks.truckModel.addTruckByOID(0);    
     tinyTrucks.truckModel.addTruckByOID(0);
     tinyTrucks.truckModel.addTruckByOID(0);
-    tinyTrucks.truckModel.addTruckByOID(0);
-    tinyTrucks.truckModel.addTruckByOID(0);
+    tinyTrucks.truckModel.addTruckByOID(2);
+    tinyTrucks.truckModel.addTruckByOID(2);
     tinyTrucks.truckModel.addTruckByOID(1);
     tinyTrucks.truckModel.addTruckByOID(1);
     //tinyTrucks.show("Map");
