@@ -2,6 +2,10 @@ div#City h1 {
     color: #ffffff;
 }
 
-div.CityGoodsList {
+div.CityGoodsList, div.CityDepotList {
     display: none;
+}
+
+div.CityInfoList {
+    color: #ffffff; 
 }

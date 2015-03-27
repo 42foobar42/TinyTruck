@@ -42,10 +42,9 @@ tinyTrucks.truckModel = (function (win) {
         truck.start = new Date().getTime();
         var street = MapData.getStreetBetweenCitys(truck.tour[0].name, truck.tour[1].name);
         var time = street.length/truck.data.speed;
-        var min = Math.floor(time);
-        //console.log((time % min));
+        var min = Math.floor(time);        
         var sec = Math.floor((time % min)*60);        
-        //TODO !!!!!!!!!!! delete next line
+        //TODO !!!!!!!!!!! delete next 2 line
         min = 0;
         sec = 10;
         truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
@@ -386,6 +385,17 @@ tinyTrucks.truckModel = (function (win) {
         isCityReachable: function(truckid, city){            
             var truck = this.getTruckByUID(truckid);
             return checkCityConnection(truck.tour[truck.tour.length - 1], city);
+        },
+        getTrucksPerCity: function(cityname){
+            // TODO Which info is required
+            var data = [];
+            var trucks = this.getTrucksByFilter(['depot']);
+            for(var i = 0; i < trucks.length; i++){
+                if(trucks[i].location === cityname){
+                    data.push([trucks[i].uid, trucks[i].name, trucks[i].type, trucks[i].location, trucks[i].status]);
+                }
+            }
+            return data;
         }
     };
 }(window));

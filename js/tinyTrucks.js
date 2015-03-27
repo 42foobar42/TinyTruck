@@ -17,7 +17,9 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_USEDTRUCKS = "UsedTrucks",
             CONST_ID_OF_REMOVEDESTINATION = "removeLastDestination",
             CONST_ID_OF_SENDTRUCK = "sendTruck",
-            CONST_ID_OF_GOODSTRUCK = "GoodsTruckOverview";
+            CONST_ID_OF_GOODSTRUCK = "GoodsTruckOverview",
+            CONST_ID_OF_CITYDEPOT = "CityDepot",
+            CONST_ID_OF_CITYINFO = "CityInfo";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -28,7 +30,8 @@ var tinyTrucks = (function (win) {
         CONST_TABLEID_TRUCKSTORAGE = "tableTruckStorageList",
         CONST_TABLEID_MAPGOODS = "tableGoodsListList",
         CONST_TABLEID_USEDTRUCKS = "tableUsedTrucksList",
-        CONST_TABLEID_CITYGOODS = 'tableCityGoodsList';
+        CONST_TABLEID_CITYGOODS = 'tableCityGoodsList',
+        CONST_TABLEID_CITYDEPOT = "tableCityDepotList";
     var CONST_RESALE_VALUE = 0.8;
     var tour;    
     // TODO default depot maybe selectable at gamestart
@@ -92,19 +95,45 @@ var tinyTrucks = (function (win) {
             // on leave event
         }
         Layout.makeScrollableTableSize(id);
-    }    
+    }
+    function getCityInfo(city){
+        var html = "";        
+        for(var key in city){
+            html += '<div>' + key + '</div><div>' + city[key] + '</div>';
+        }
+        return html;
+    }
     function openCityScreen(city){        
         tinyTrucks.show(CONST_ID_OF_CITY);
         fillTable(CONST_TABLEID_CITYGOODS, tinyTrucks.goodsModel.getUnusedGoodsForCityList(city.name));
+        fillTable(CONST_TABLEID_CITYDEPOT, tinyTrucks.truckModel.getTrucksPerCity(city.name));         
         var CityView = document.getElementById(CONST_ID_OF_CITY);
         CityView.getElementsByClassName(CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS)[0].onclick = function () {
             tinyTrucks.show(CONST_ID_OF_MAP);
         };
         //TODO show City info and make button use
         CityView.getElementsByTagName("h1")[0].innerHTML = city.name;
-        document.getElementById(CONST_ID_OF_CITYGOODS).onclick = function (event){                        
-            CityView.getElementsByClassName(CONST_ID_OF_CITYGOODS + 'List')[0].style.display = 'inherit';
-        };                               
+        var goodsView = CityView.getElementsByClassName(CONST_ID_OF_CITYGOODS + 'List')[0];
+        var depotView = CityView.getElementsByClassName(CONST_ID_OF_CITYDEPOT + 'List')[0];
+        var infoView = CityView.getElementsByClassName(CONST_ID_OF_CITYINFO + 'List')[0];
+        infoView.innerHTML = getCityInfo(city);
+        var hideCityMenus = function(){
+            goodsView.style.display = 'none';
+            depotView.style.display = 'none';
+            infoView.style.display = 'none';
+        };
+        document.getElementById(CONST_ID_OF_CITYINFO).onclick = function (event){
+            hideCityMenus();
+            infoView.style.display = 'inherit';
+        };
+        document.getElementById(CONST_ID_OF_CITYGOODS).onclick = function (event){
+            hideCityMenus();
+            goodsView.style.display = 'inherit';
+        };
+        document.getElementById(CONST_ID_OF_CITYDEPOT).onclick = function (event){
+            hideCityMenus();
+            depotView.style.display = 'inherit';
+        };        
     }
     function putTruckOnDepot(id, city) {
         if(tinyTrucks.depotsModel.hasCityDepot(city.name)){
@@ -317,8 +346,13 @@ var tinyTrucks = (function (win) {
             return tinyTrucks;
         },                
         showTruckInfo: function (id, type) {
-            // TODO
             console.log("showTruck Info(id/type): " + id + " " + type);
+            // TODO
+            if(isNaN(id)){
+                console.log("uid: " + id);
+            } else {
+                console.log("no: " + id);
+            }            
         },       
         useTruck: function (id) {
             putTruckOnMap = id;
