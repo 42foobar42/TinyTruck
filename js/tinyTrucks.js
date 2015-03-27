@@ -19,7 +19,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_SENDTRUCK = "sendTruck",
             CONST_ID_OF_GOODSTRUCK = "GoodsTruckOverview",
             CONST_ID_OF_CITYDEPOT = "CityDepot",
-            CONST_ID_OF_CITYINFO = "CityInfo";
+            CONST_ID_OF_CITYINFO = "CityInfo",
+            CONST_ID_OF_TRUCKINFO = "TrukInfo";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -314,6 +315,14 @@ var tinyTrucks = (function (win) {
             menuControls();
         };
     }
+    function getIdOfOpenView(){
+        var views = document.getElementsByClassName('view');
+        for(var i = 0; i < views.length; i++){
+            if(views[i].style.display !== 'none'){
+                return views[i].id;
+            }
+        }
+    }
     return {
         init: function (i_menuDiv) {
             menuDiv = document.getElementById(i_menuDiv);
@@ -346,11 +355,20 @@ var tinyTrucks = (function (win) {
             return tinyTrucks;
         },                
         showTruckInfo: function (id, type) {
-            console.log("showTruck Info(id/type): " + id + " " + type);
+            //console.log("showTruck Info(id/type): " + id + " " + type);
+            //document.getElementById(CONST_ID_OF_TRUCKINFO).style.display = 'inherit';
+            var OpenView = getIdOfOpenView();
+            var TruckInfoView = document.getElementById(CONST_ID_OF_TRUCKINFO);            
+            TruckInfoView.getElementsByClassName(CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS)[0].onclick = function () {
+                tinyTrucks.show(OpenView);                
+            };
+            tinyTrucks.show(CONST_ID_OF_TRUCKINFO);
             // TODO
             if(isNaN(id)){
-                console.log("uid: " + id);
+                TruckInfoView.getElementsByClassName('content')[0].innerHTML = tinyTrucks.truckModel.getTruckInfoByUid(id);
+                console.log("uid: " + id);                
             } else {
+                TruckInfoView.getElementsByClassName('content')[0].innerHTML = tinyTrucks.truckModel.getTruckInfoById(id);
                 console.log("no: " + id);
             }            
         },       

@@ -396,6 +396,22 @@ tinyTrucks.truckModel = (function (win) {
                 }
             }
             return data;
+        },
+        getTruckInfoByUid: function(id){
+            var html = '';
+            var truck = getTruckOrTrailerByUID(id);
+            for(var key in truck){
+                html += '<div><span>' + key + ': </span><span>' + truck[key] + '</span></div>';
+            }
+            return html;
+        },
+        getTruckInfoById: function(id){
+            var html = '';
+            var truck = getTruckFromModelList(id);
+            for(var key in truck){
+                html += '<div><span>' + key + ': </span><span>' + truck[key] + '</span></div>';
+            }
+            return html;
         }
     };
 }(window));
