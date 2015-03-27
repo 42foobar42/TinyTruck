@@ -42,6 +42,10 @@ div#GoodsList{
 div#GoodsList table#tableGoodsListList{
     border-collapse:collapse;
 }
+
+div#MapGoodsList div.scrolltablewrapper{
+    height:100%;
+}
 div#GoodsList table#tableGoodsListList tr.selectedRow{
     background-color: #ffff00;
 }

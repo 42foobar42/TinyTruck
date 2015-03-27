@@ -31,7 +31,7 @@ tinyTrucks.goodsModel = (function (win) {
                 var citys = MapData.getAllCitys();
                 for(var i = 0; i < citys.length; i++){
                     var amountOfGoods = 10;
-                    //TODO Amount of goods should depned on population or something                          
+                    //TODO Amount of goods should depned on population or something
                     for(var j = 0; j < amountOfGoods; j++){
                         var good = {};
                         good.obsolete = false;
@@ -58,21 +58,23 @@ tinyTrucks.goodsModel = (function (win) {
                 }
             }                    
         },
-        getGoodsForMapGoodsTable: function(cityname, truckid){            
+        getGoodsForMapGoodsTable: function(cityname, truckid){
             var data = [];
-            for(var i = 0; i < ListOfGoods.length; i++){                
-                if(ListOfGoods[i].source === cityname && ListOfGoods[i].status === '' || (ListOfGoods[i].status !== '' && tinyTrucks.truckModel.isGoodInTruck(truckid, ListOfGoods[i].uid) )){
+            for(var i = 0; i < ListOfGoods.length; i++){
+                if(ListOfGoods[i].source === cityname && ListOfGoods[i].status === '' 
+                        || (ListOfGoods[i].status !== '' && tinyTrucks.truckModel.isGoodInTruck(truckid, ListOfGoods[i].uid) )
+                        || (tinyTrucks.depotsModel.isGodInDepot(cityname, ListOfGoods[i].uid))){
                     var info = [];
                     for(var key in ListOfGoods[i]){
                         info.push(ListOfGoods[i][key]);
-                    }                
+                    }
                     data.push(info);
                 }
-            }            
+            }
             return data;
         },
-        getGoodById: function(id){            
-            for(var i = 0; i < ListOfGoods.length; i++){                
+        getGoodById: function(id){
+            for(var i = 0; i < ListOfGoods.length; i++){
                 if(ListOfGoods[i].uid === id){
                     return ListOfGoods[i];
                 }
@@ -107,4 +109,3 @@ tinyTrucks.goodsModel = (function (win) {
         }
     };
 }(window));
-

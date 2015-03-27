@@ -309,7 +309,10 @@ var MapData = (function (win) {
     var StreetsOfEurope = [
         { connection:['Frankfurt','Berlin'], length:551, parts:[{x:2958,y:634}, {x:3011,y:631}] },
         { connection:['Frankfurt','Munich'], length:392, parts:[] },
-        { connection:['Munich','Berlin'], length:584, parts:[] }
+        { connection:['Munich','Berlin'], length:584, parts:[] },
+        { connection:['Frankfurt','Luxembourg'], length:231, parts:[] },
+        { connection:['Munich','Rom'], length:916, parts:[] },
+        { connection:['Paris','Luxembourg'], length:373, parts:[] }
     ];
     return {
         getEurasia: function(){

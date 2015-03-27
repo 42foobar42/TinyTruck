@@ -5,6 +5,7 @@ window.onload = function () {
     };
     tinyTrucks.init("menu");
     tinyTrucks.depotsModel.addDepots("Frankfurt");
+    tinyTrucks.depotsModel.addDepots("Berlin");
     tinyTrucks.truckModel.addTruckByOID(0);    
     tinyTrucks.truckModel.addTruckByOID(0);
     tinyTrucks.truckModel.addTruckByOID(0);

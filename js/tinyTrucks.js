@@ -33,7 +33,8 @@ var tinyTrucks = (function (win) {
         CONST_TABLEID_USEDTRUCKS = "tableUsedTrucksList",
         CONST_TABLEID_CITYGOODS = 'tableCityGoodsList',
         CONST_TABLEID_CITYDEPOT = "tableCityDepotList",
-        CONST_TABLEID_DEPOTS = "tableDepotsList";
+        CONST_TABLEID_DEPOTS = "tableDepotsList",
+        CONST_TABLEID_DEPOTGOODS = "tableCityDepotGoodsList";
     var CONST_RESALE_VALUE = 0.8;
     var tour;    
     // TODO default depot maybe selectable at gamestart
@@ -108,7 +109,8 @@ var tinyTrucks = (function (win) {
     function openCityScreen(city){        
         tinyTrucks.show(CONST_ID_OF_CITY);
         fillTable(CONST_TABLEID_CITYGOODS, tinyTrucks.goodsModel.getUnusedGoodsForCityList(city.name));
-        fillTable(CONST_TABLEID_CITYDEPOT, tinyTrucks.truckModel.getTrucksPerCity(city.name));         
+        fillTable(CONST_TABLEID_CITYDEPOT, tinyTrucks.truckModel.getTrucksPerCity(city.name));
+        fillTable(CONST_TABLEID_DEPOTGOODS, tinyTrucks.depotsModel.getGoodsForDepot(city.name));
         var CityView = document.getElementById(CONST_ID_OF_CITY);
         CityView.getElementsByClassName(CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS)[0].onclick = function () {
             tinyTrucks.show(CONST_ID_OF_MAP);
@@ -151,7 +153,6 @@ var tinyTrucks = (function (win) {
     }    
     function openTruckGoodChoice(city, truckid){
         // TODO cleanup code
-        console.log(truckid);
         
         switchGoodChoice = true;
         tinyTrucks.truckModel.addTour(truckid, city);
@@ -369,10 +370,10 @@ var tinyTrucks = (function (win) {
             // TODO
             if(isNaN(id)){
                 TruckInfoView.getElementsByClassName('content')[0].innerHTML = tinyTrucks.truckModel.getTruckInfoByUid(id);
-                console.log("uid: " + id);                
+                //console.log("uid: " + id);                
             } else {
                 TruckInfoView.getElementsByClassName('content')[0].innerHTML = tinyTrucks.truckModel.getTruckInfoById(id);
-                console.log("no: " + id);
+                //console.log("no: " + id);
             }            
         },       
         useTruck: function (id) {
@@ -400,6 +401,7 @@ var tinyTrucks = (function (win) {
         usedTruckListClick: function (el){
             var status = el.childNodes[4].innerHTML;                        
             if(status === 'depot') {
+                console.log(el.childNodes[3].innerHTML);
                 openTruckGoodChoice(MapData.getCityByName(el.childNodes[3].innerHTML), el.childNodes[0].innerHTML);
             } else if(status === 'en route'){
                 // TODO what to show
@@ -414,11 +416,33 @@ var tinyTrucks = (function (win) {
             // TODO Also maybe put it to the depot
             var goodid = row.getElementsByTagName('td')[1].innerHTML;
             if(row.className.indexOf("selectedRow") > -1){
-                row.className = row.className.replace("selectedRow", "");                
-                tinyTrucks.truckModel.removeGoodFromTruck(truckid, goodid);
+                var truck = tinyTrucks.truckModel.getTruckByUID(truckid);
+                var cityname = row.getElementsByTagName('td')[6].innerHTML;
+                // first check if cargo is from the same location
+                if(cityname === truck.location){
+                    row.className = row.className.replace("selectedRow", "");
+                    tinyTrucks.truckModel.removeGoodFromTruck(truckid, goodid);
+                } else {
+                    // check has city depot
+                    //console.log(truck.location);
+                    //console.log(tinyTrucks.depotsModel.hasCityDepot(truck.location));
+                    if(tinyTrucks.depotsModel.hasCityDepot(truck.location)) {
+                        // has city space
+                        //console.log(tinyTrucks.depotsModel.spaceOfDepot(truck.location) + " > "+parseInt(row.getElementsByTagName('td')[5].innerHTML));
+                        if(tinyTrucks.depotsModel.spaceOfDepot(tinyTrucks.truckModel.getTruckByUID(truckid).location) > parseInt(row.getElementsByTagName('td')[5].innerHTML)){
+                            //console.log("now it can be put to depot");
+                            tinyTrucks.depotsModel.putGoodToDepot(truck.location, goodid);
+                            row.className = row.className.replace("selectedRow", "");
+                            tinyTrucks.truckModel.removeGoodFromTruck(truckid, goodid);
+                        } 
+                    }
+                }
             } else {
                 var check = tinyTrucks.truckModel.addGoodToTruck(truckid, goodid);
                 if(check === true){
+                    var truck = tinyTrucks.truckModel.getTruckByUID(truckid);
+                    // remove from depot
+                    tinyTrucks.depotsModel.removeGoodFromDepot(truck.location, goodid);
                     row.className += "selectedRow";
                 }
             }
@@ -429,12 +453,17 @@ var tinyTrucks = (function (win) {
         },
         addMoney: function(imoney){
             money += imoney;
-            setValuesOnScreen()
+            setValuesOnScreen();
         },
         loopCheck: function (){
             tinyTrucks.truckModel.checkDrivingTrucks();
             tinyTrucks.partsModel.createPartList();
             tinyTrucks.goodsModel.generateGoodsList();
+            var view = getIdOfOpenView();
+            if(view === CONST_ID_OF_USEDTRUCKS){               
+                tinyTrucks.truckModel.updateTruckTimes(CONST_TABLEID_USEDTRUCKS);
+            }
+            // TODO check when old good shout be deleted
         },
         getResaleFactor: function(){
             return CONST_RESALE_VALUE;

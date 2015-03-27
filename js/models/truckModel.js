@@ -323,6 +323,8 @@ tinyTrucks.truckModel = (function (win) {
                     gasPrice += trailer.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
                 }
             }    
+            //console.log(revenue);
+            //console.log(gasPrice);
             var profit = Math.round(revenue - gasPrice);
             html += '<div class="profit';
             if(profit > 0){
@@ -412,6 +414,19 @@ tinyTrucks.truckModel = (function (win) {
                 html += '<div><span>' + key + ': </span><span>' + truck[key] + '</span></div>';
             }
             return html;
+        },
+        updateTruckTimes: function(domId){
+            //var trucks = this.getTrucksByFilter(['en rout']);
+            var rows = document.getElementById(domId).getElementsByTagName('tr');
+            for(var i = 0; i < rows.length; i++){
+                var cells = rows[i].getElementsByTagName('td');
+                //console.log(cells);
+                if(cells[4].innerHTML === "en route"){
+                    cells[5].innerHTML = getTruckOrTrailerByUID(cells[0].innerHTML).time;
+                    cells[4].innerHTML = getTruckOrTrailerByUID(cells[0].innerHTML).status;
+                    cells[3].innerHTML = getTruckOrTrailerByUID(cells[0].innerHTML).location;
+                }
+            }
         }
     };
 }(window));
