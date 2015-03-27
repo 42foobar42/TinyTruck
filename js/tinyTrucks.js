@@ -32,7 +32,8 @@ var tinyTrucks = (function (win) {
         CONST_TABLEID_MAPGOODS = "tableGoodsListList",
         CONST_TABLEID_USEDTRUCKS = "tableUsedTrucksList",
         CONST_TABLEID_CITYGOODS = 'tableCityGoodsList',
-        CONST_TABLEID_CITYDEPOT = "tableCityDepotList";
+        CONST_TABLEID_CITYDEPOT = "tableCityDepotList",
+        CONST_TABLEID_DEPOTS = "tableDepotsList";
     var CONST_RESALE_VALUE = 0.8;
     var tour;    
     // TODO default depot maybe selectable at gamestart
@@ -190,6 +191,7 @@ var tinyTrucks = (function (win) {
         fillTable(CONST_TABLEID_BUILDTRUCK, tinyTrucks.partsModel.getBuildableTrucksList(), null, null);
         fillTable(CONST_TABLEID_TRUCKSTORAGE, tinyTrucks.truckModel.getTruckStorageList(), null, null);
         fillTable(CONST_TABLEID_USEDTRUCKS, tinyTrucks.truckModel.getTruckInUseList(), 'row', 'tinyTrucks.usedTruckListClick(this)');
+        fillTable(CONST_TABLEID_DEPOTS, tinyTrucks.depotsModel.getDepotsList(), null,  null);
     }
     function menuControls() {
         var buttons = menuDiv.getElementsByClassName(CONST_CLASSNAME_OF_MENUBUTTONS);
@@ -249,8 +251,9 @@ var tinyTrucks = (function (win) {
     function sendTruck(){
         var truckId = document.getElementById(CONST_ID_OF_SENDTRUCK).getAttribute("data-truckid");
         if(tinyTrucks.truckModel.getTruckByUID(truckId).tour.length > 1){            
+            tinyTrucks.depotsModel.removeTruckFromDepot(truckId, tinyTrucks.truckModel.getTruckByUID(truckId).location);
             var cost = tinyTrucks.truckModel.sendTruck(truckId);
-            // TODO check if it make sense to do this check
+            // TODO check if it make sense to do this check and then stop sending the truck.....
             if(money >= cost){
                 money -= cost;
                 Map.setCityChoice([]);

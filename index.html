@@ -34,7 +34,7 @@
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonSell"> Verkaufen</div></div>
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonStats"> Stats</div></div>
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonUsedTrucks"> Trucks im Depot oder auf der Fahrt</div></div>
-            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonShops">Shops</div></div>
+            <div class="menuButtonWrap"><div class="menuButton" id="menuButtonDepots">Depots</div></div>
             <div class="menuButtonWrap"><div class="menuButton" id="menuButtonBuild">build</div></div>
         </div>
         <div class="view" id="Map">
@@ -145,8 +145,24 @@
                 </div>
             </div>
         </div>
-        <div class="view" id="Shops">
+        <div class="view" id="Depots">
             <div class="closeMenu"></div>
+            <div id="DepotsList">
+                 <div class="scrolltablewrapper table">
+                    <div class="tableHead">    
+                        <div>Location</div>
+                        <div>Level</div>
+                        <div>Cargo</div>
+                        <div>Trucks</div>
+                    </div>
+                    <div class="tbody">
+                        <table id="tableDepotsList">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div>
+            </div>
         </div>
         <div class="view" id="Build">
             <div class="closeMenu"></div>
