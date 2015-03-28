@@ -210,7 +210,8 @@
                     </div>
                 </div>
                 <div class="CityDepotList">
-                    <div class="scrolltablewrapper table">
+                    <div class="hasDepot">
+                        <div class="scrolltablewrapper table">
                         <div class="tableHead">                        
                             <div>Name</div>
                             <div>Type</div>
@@ -224,20 +225,24 @@
                             </table>
                         </div> 
                     </div>
-                    <div class="scrolltablewrapper table">
-                        <div class="tableHead">                        
-                            <div>id</div>
-                            <div>Type</div>
-                            <div>name</div>
-                            <div>amount</div>
-                            <div>destination</div>
+                        <div class="scrolltablewrapper table">
+                            <div class="tableHead">                        
+                                <div>id</div>
+                                <div>Type</div>
+                                <div>name</div>
+                                <div>amount</div>
+                                <div>destination</div>
+                            </div>
+                            <div class="tbody">
+                                <table id="tableCityDepotGoodsList">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div> 
                         </div>
-                        <div class="tbody">
-                            <table id="tableCityDepotGoodsList">
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div> 
+                    </div>
+                    <div class="hasNoDepot">
+                        <input id="BuyDepot" type="button" value="Buy Depot" />
                     </div>
                 </div>
                 <div class="CityInfoList">

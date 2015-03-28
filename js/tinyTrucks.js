@@ -1,8 +1,9 @@
 var tinyTrucks = (function (win) {
     var menuDiv;
-    var CONST_MONEY_START = 1000;
+    var CONST_MONEY_START = 10000;
+    var CONST_COST_OF_DEPOT = 5000;
     var CONST_CLASSNAME_OF_MENUBUTTONS = "menuButton", CONST_CLASSNAME_OF_VIEWS = "view", CONST_CLASSNAME_OF_CLOSEBUTTONS = "closeMenu", 
-        CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS = "closeSubview";
+        CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS = "closeSubview", CONST_CLASSNAME_OF_CITYHASDEPOT = "hasDepot", CONST_CLASSNAME_OF_CITYNODEPOT = "hasNoDepot";
     var CONST_ID_OF_MONEYINPUT = "account",
             CONST_ID_OF_SELLPARTS = "SellPartList",
             CONST_ID_OF_BUILDARTS = "BuildPartList",
@@ -21,7 +22,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_CITYDEPOT = "CityDepot",
             CONST_ID_OF_CITYINFO = "CityInfo",
             CONST_ID_OF_TRUCKINFO = "TrukInfo",
-            CONST_ID_OF_STATISTICS = "Stats";
+            CONST_ID_OF_STATISTICS = "Stats",
+            CONST_ID_OF_BUTTON_BUYDEPOT = "BuyDepot";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -35,7 +37,7 @@ var tinyTrucks = (function (win) {
         CONST_TABLEID_CITYGOODS = 'tableCityGoodsList',
         CONST_TABLEID_CITYDEPOT = "tableCityDepotList",
         CONST_TABLEID_DEPOTS = "tableDepotsList",
-        CONST_TABLEID_DEPOTGOODS = "tableCityDepotGoodsList";
+        CONST_TABLEID_DEPOTGOODS = "tableCityDepotGoodsList";    
     var CONST_RESALE_VALUE = 0.8;
     var tour;    
     // TODO default depot maybe selectable at gamestart
@@ -112,6 +114,14 @@ var tinyTrucks = (function (win) {
         fillTable(CONST_TABLEID_CITYGOODS, tinyTrucks.goodsModel.getUnusedGoodsForCityList(city.name));
         fillTable(CONST_TABLEID_CITYDEPOT, tinyTrucks.truckModel.getTrucksPerCity(city.name));
         fillTable(CONST_TABLEID_DEPOTGOODS, tinyTrucks.depotsModel.getGoodsForDepot(city.name));
+        document.getElementById(CONST_ID_OF_BUTTON_BUYDEPOT).setAttribute('onclick', "tinyTrucks.buyDepot('" + city.name + "');");
+        if(tinyTrucks.depotsModel.hasCityDepot(city.name)){
+            document.getElementsByClassName(CONST_CLASSNAME_OF_CITYHASDEPOT)[0].style.display = 'inherit';
+            document.getElementsByClassName(CONST_CLASSNAME_OF_CITYNODEPOT)[0].style.display = 'none';
+        } else {
+            document.getElementsByClassName(CONST_CLASSNAME_OF_CITYHASDEPOT)[0].style.display = 'none';
+            document.getElementsByClassName(CONST_CLASSNAME_OF_CITYNODEPOT)[0].style.display = 'inherit';
+        }
         var CityView = document.getElementById(CONST_ID_OF_CITY);
         CityView.getElementsByClassName(CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS)[0].onclick = function () {
             tinyTrucks.show(CONST_ID_OF_MAP);
@@ -403,11 +413,18 @@ var tinyTrucks = (function (win) {
         usedTruckListClick: function (el){
             var status = el.childNodes[4].innerHTML;                        
             if(status === 'depot') {
-                console.log(el.childNodes[3].innerHTML);
+                //console.log(el.childNodes[3].innerHTML);
                 openTruckGoodChoice(MapData.getCityByName(el.childNodes[3].innerHTML), el.childNodes[0].innerHTML);
             } else if(status === 'en route'){
-                // TODO what to show
-                alert("What to do?");
+                // TODO what to show                
+                var OpenView = getIdOfOpenView();
+                var TruckInfoView = document.getElementById(CONST_ID_OF_TRUCKINFO);
+                TruckInfoView.getElementsByClassName(CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS)[0].onclick = function () {
+                    tinyTrucks.show(OpenView);                
+                };
+                tinyTrucks.show(CONST_ID_OF_TRUCKINFO);
+                // TODO
+                TruckInfoView.getElementsByClassName('content')[0].innerHTML = tinyTrucks.truckModel.getTruckInfoByUid(el.childNodes[0].innerHTML);
             }
         },
         addTrailerClick: function(el, trailerID){            
@@ -509,6 +526,12 @@ var tinyTrucks = (function (win) {
             } else {
                 // TODO
                 alert("not enough money");
+            }
+        },
+        buyDepot: function(cityname){            
+            if(CONST_COST_OF_DEPOT < money){
+                tinyTrucks.depotsModel.addDepots(cityname);
+                openCityScreen(MapData.getCityByName(cityname));
             }
         }
     };

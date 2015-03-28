@@ -429,9 +429,10 @@ tinyTrucks.truckModel = (function (win) {
                 var cells = rows[i].getElementsByTagName('td');
                 //console.log(cells);
                 if(cells[4].innerHTML === "en route"){
-                    cells[5].innerHTML = getTruckOrTrailerByUID(cells[0].innerHTML).time;
-                    cells[4].innerHTML = getTruckOrTrailerByUID(cells[0].innerHTML).status;
-                    cells[3].innerHTML = getTruckOrTrailerByUID(cells[0].innerHTML).location;
+                    var truck = getTruckOrTrailerByUID(cells[0].innerHTML);
+                    cells[5].innerHTML = truck.time;
+                    cells[4].innerHTML = truck.status;
+                    cells[3].innerHTML = truck.location;
                 }
             }
         },

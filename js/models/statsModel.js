@@ -5,7 +5,7 @@ tinyTrucks.statsModel = (function (win) {
         for(var i = 0; i < TruckStats.length; i++){
             var stat = TruckStats[i];
             for(var key in stat){
-                console.log(stat);
+                //console.log(stat);
                 switch (key){
                     case 'length':
                         distance += stat[key];
