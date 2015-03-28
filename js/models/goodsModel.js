@@ -101,11 +101,18 @@ tinyTrucks.goodsModel = (function (win) {
         removeFromGoodList: function(goodId){
             for(var i = 0; i < ListOfGoods.length; i++){
                 if(ListOfGoods[i].uid === goodId){
-                    ListOfGoods.splice(i,1);
-                    return true;
+                    return ListOfGoods.splice(i,1)[0];
                 }
             }
             return false;
+        },
+        deleteObsoleteGoods: function(){
+            for(var i = 0; i < ListOfGoods.length; i++){
+                if(ListOfGoods[i].obsolete === true && ListOfGoods[i].status ===''){
+                    ListOfGoods.splice(i,1);
+                    i--;
+                }
+            }
         }
     };
 }(window));

@@ -8,11 +8,11 @@ window.onload = function () {
     tinyTrucks.depotsModel.addDepots("Berlin");
     tinyTrucks.truckModel.addTruckByOID(0);    
     tinyTrucks.truckModel.addTruckByOID(0);
-    tinyTrucks.truckModel.addTruckByOID(0);
+    /*tinyTrucks.truckModel.addTruckByOID(0);
     tinyTrucks.truckModel.addTruckByOID(2);
     tinyTrucks.truckModel.addTruckByOID(2);
     tinyTrucks.truckModel.addTruckByOID(1);
-    tinyTrucks.truckModel.addTruckByOID(1);
+    tinyTrucks.truckModel.addTruckByOID(1);*/
     //tinyTrucks.show("Map");
     
     //Map.init("playground");

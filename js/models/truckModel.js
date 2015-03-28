@@ -50,29 +50,37 @@ tinyTrucks.truckModel = (function (win) {
         truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
         truck.time = getDisplayTimeForTrucks(truck.stop);
     }
-    function truckArrived(truck){
-        // TODO check goods
-        // TODO Here some statistics has to be saved        
-        truck.tour.shift();
-        var goods = getGoodsFromTruck(truck);        
+    function truckArrived(truck){                
+        var stats = {};
+        var tour = truck.tour.shift();
+        var street = MapData.getStreetBetweenCitys(tour.name, truck.tour[0].name);
+        stats.length = street.length;
+        stats.money = 0;
+        stats.cargo = '';
+        stats.truck = truck;
+        stats.time = truck.stop-truck.start;
+        stats.timestamp = new Date().getTime();
+        var goods = getGoodsFromTruck(truck);
         for(var i = 0; i < goods.length; i++){
             if(goods[i].destination ===  truck.tour[0].name){
-                tinyTrucks.addMoney(goods[i].value);                
-                tinyTrucks.truckModel.removeGoodFromTruck(truck.uid,goods[i].uid);                
-                tinyTrucks.goodsModel.removeFromGoodList(goods[i].uid);
+                stats.money = goods[i].value;
+                tinyTrucks.addMoney(goods[i].value);
+                tinyTrucks.truckModel.removeGoodFromTruck(truck.uid,goods[i].uid);
+                stats.cargo = tinyTrucks.goodsModel.removeFromGoodList(goods[i].uid);
             }
         }
-        if(truck.tour.length > 1){                        
+        tinyTrucks.statsModel.addTruckStat(stats);
+        if(truck.tour.length > 1){
             truck.location = truck.tour[0].name + " to " + truck.tour[1].name;
             calculateNextStop(truck.uid);
-        } else {            
+        } else {
             truck.status = 'depot';
             truck.location = truck.tour[0].name;
             truck.tour = [];
             truck.start = '';
-            truck.stop = '';                        
-            truck.time = '';            
-        }        
+            truck.stop = '';
+            truck.time = '';
+        }
     }
     function getDisplayTimeForTrucks(iTime){
         var time = new Date(iTime - new Date().getTime());
@@ -102,12 +110,12 @@ tinyTrucks.truckModel = (function (win) {
     function getDistanceOfTour(truck){
         var distance = 0;
         for(var i = 1; i < truck.tour.length; i++){
-            var street = MapData.getStreetBetweenCitys(truck.tour[i-1].name,truck.tour[i].name);            
+            var street = MapData.getStreetBetweenCitys(truck.tour[i-1].name,truck.tour[i].name);
             distance += street.length;
         }
         return distance;
     }
-    function getRevenueOfTour(truck){        
+    function getRevenueOfTour(truck){
         var revenue = 0;
         for(var i = 0; i < truck.cargo.length; i++){
             var cargo = tinyTrucks.goodsModel.getGoodById(truck.cargo[i]);
@@ -132,7 +140,7 @@ tinyTrucks.truckModel = (function (win) {
         }
         return revenue;
     }
-    function getGoodsFromTruck(truck){        
+    function getGoodsFromTruck(truck){
         var goods = [];
         for(var i = 0; i < truck.cargo.length; i++){
             goods.push(tinyTrucks.goodsModel.getGoodById(truck.cargo[i]));
@@ -151,11 +159,11 @@ tinyTrucks.truckModel = (function (win) {
         checkDrivingTrucks: function(){
             for(var i = 0; i < truckStorage.length; i++){
                 if(truckStorage[i].status === 'en route'){
-                    if(truckStorage[i].stop < new Date().getTime()){                        
+                    if(truckStorage[i].stop < new Date().getTime()){
                         truckArrived(truckStorage[i]);
-                    } else {                                                
+                    } else {
                         truckStorage[i].time = getDisplayTimeForTrucks(truckStorage[i].stop);
-                    }                                       
+                    }
                 }
             }
         },
@@ -169,9 +177,9 @@ tinyTrucks.truckModel = (function (win) {
                 }
             }
             return data;
-        },        
+        },
         getOriginalTruckData: function(id){
-            return getTruckFromModelList(id);            
+            return getTruckFromModelList(id);
         },
         addTruckByOID: function(id){
             var oTruck = getTruckFromModelList(id);
@@ -249,7 +257,7 @@ tinyTrucks.truckModel = (function (win) {
         addTrailerToTruck: function(truckId, trailerId){
             var truck = this.getTruckByUID(truckId);
             var trailer = this.removeTruckByUID(trailerId);
-            truck.trailers.push(trailer);            
+            truck.trailers.push(trailer);
         },
         changeAttributes: function(id, attrs){
             var truck = this.getTruckByUID(id);
@@ -257,18 +265,17 @@ tinyTrucks.truckModel = (function (win) {
                 truck[key] = attrs[key];
             }            
         },
-        addGoodToTruck: function(truckid, goodId){            
-            var good = tinyTrucks.goodsModel.getGoodById(goodId);            
+        addGoodToTruck: function(truckid, goodId){
+            var good = tinyTrucks.goodsModel.getGoodById(goodId);
             if(good.status === ''){
-                var truck = this.getTruckByUID(truckid);            
-                if(truck.data.type === good.type){                
-                    var cargoAtTruck = getAmountOfCargoOfVehicle(truckid);                
+                var truck = this.getTruckByUID(truckid);
+                if(truck.data.type === good.type){
+                    var cargoAtTruck = getAmountOfCargoOfVehicle(truckid);
                     if(cargoAtTruck + good.amount <= truck.data.capacity){
                         tinyTrucks.goodsModel.setStatus(goodId,'inuse');
                         truck.cargo.push(goodId);
                         return true;
                     }
-
                 }
                 if(truck.trailers){
                     for(var i = 0; i < truck.trailers.length; i++){
@@ -288,9 +295,9 @@ tinyTrucks.truckModel = (function (win) {
         },
         removeGoodFromTruck: function(truckid, goodId){
             var truck = this.getTruckByUID(truckid);
-            var index = truck.cargo.indexOf(goodId);            
-            if(index >= 0){                
-                var cargoid = truck.cargo.splice(index, 1)[0];                
+            var index = truck.cargo.indexOf(goodId);
+            if(index >= 0){
+                var cargoid = truck.cargo.splice(index, 1)[0];
                 tinyTrucks.goodsModel.setStatus(cargoid,'');
             } else {
                 if(truck.trailers){
@@ -311,18 +318,18 @@ tinyTrucks.truckModel = (function (win) {
             var currentCargo = getAmountOfCargoOfVehicle(truck.uid);
             var gasPrice = 0;
             var distance = getDistanceOfTour(truck);
-            var revenue = getRevenueOfTour(truck);            
+            var revenue = getRevenueOfTour(truck);
             //console.log(truck);
             html += '<div class="truck">' + currentCargo + '/' + truck.data.capacity + '</div>';
             gasPrice += truck.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
             if(truck.trailers){
-                for(var i = 0; i < truck.trailers.length; i++){                    
-                    var trailer = truck.trailers[i];                    
+                for(var i = 0; i < truck.trailers.length; i++){
+                    var trailer = truck.trailers[i];
                     currentCargo = getAmountOfCargoOfVehicle(trailer.uid);
                     html += '<div class="trailer">' + currentCargo + '/' + trailer.data.capacity + '</div>';
                     gasPrice += trailer.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
                 }
-            }    
+            }
             //console.log(revenue);
             //console.log(gasPrice);
             var profit = Math.round(revenue - gasPrice);
@@ -337,7 +344,7 @@ tinyTrucks.truckModel = (function (win) {
         },
         getTruckInUseList: function(){
             var data = [];
-            var trucks = this.getTrucksByFilter(['en route','depot']);            
+            var trucks = this.getTrucksByFilter(['en route','depot']);
             for(var i = 0; i < trucks.length; i++){
                 data.push([trucks[i].uid, trucks[i].name, trucks[i].type, trucks[i].location, trucks[i].status, trucks[i].time]);
             }
@@ -367,8 +374,8 @@ tinyTrucks.truckModel = (function (win) {
             var gasPrice = 0;
             gasPrice += truck.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
             if(truck.trailers){
-                for(var i = 0; i < truck.trailers.length; i++){                    
-                    var trailer = truck.trailers[i];                                                            
+                for(var i = 0; i < truck.trailers.length; i++){
+                    var trailer = truck.trailers[i];
                     gasPrice += trailer.data.fuelconsumption * distance * CONST_PRICE_PER_LITER_GAS;
                 }
             }
@@ -384,7 +391,7 @@ tinyTrucks.truckModel = (function (win) {
             truck.tour.pop();
             setHighlightCity(truck.tour);
         },
-        isCityReachable: function(truckid, city){            
+        isCityReachable: function(truckid, city){
             var truck = this.getTruckByUID(truckid);
             return checkCityConnection(truck.tour[truck.tour.length - 1], city);
         },
@@ -427,6 +434,9 @@ tinyTrucks.truckModel = (function (win) {
                     cells[3].innerHTML = getTruckOrTrailerByUID(cells[0].innerHTML).location;
                 }
             }
+        },
+        getGasprice: function(){
+            return CONST_PRICE_PER_LITER_GAS;
         }
     };
 }(window));

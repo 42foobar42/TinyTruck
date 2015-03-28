@@ -1,6 +1,6 @@
 var tinyTrucks = (function (win) {
     var menuDiv;
-    var CONST_MONEY_START = 20000;
+    var CONST_MONEY_START = 1000;
     var CONST_CLASSNAME_OF_MENUBUTTONS = "menuButton", CONST_CLASSNAME_OF_VIEWS = "view", CONST_CLASSNAME_OF_CLOSEBUTTONS = "closeMenu", 
         CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS = "closeSubview";
     var CONST_ID_OF_MONEYINPUT = "account",
@@ -20,7 +20,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_GOODSTRUCK = "GoodsTruckOverview",
             CONST_ID_OF_CITYDEPOT = "CityDepot",
             CONST_ID_OF_CITYINFO = "CityInfo",
-            CONST_ID_OF_TRUCKINFO = "TrukInfo";
+            CONST_ID_OF_TRUCKINFO = "TrukInfo",
+            CONST_ID_OF_STATISTICS = "Stats";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -193,6 +194,7 @@ var tinyTrucks = (function (win) {
         fillTable(CONST_TABLEID_TRUCKSTORAGE, tinyTrucks.truckModel.getTruckStorageList(), null, null);
         fillTable(CONST_TABLEID_USEDTRUCKS, tinyTrucks.truckModel.getTruckInUseList(), 'row', 'tinyTrucks.usedTruckListClick(this)');
         fillTable(CONST_TABLEID_DEPOTS, tinyTrucks.depotsModel.getDepotsList(), null,  null);
+        document.getElementById(CONST_ID_OF_STATISTICS).getElementsByClassName('content')[0].innerHTML = tinyTrucks.statsModel.getStatsAsHTML();
     }
     function menuControls() {
         var buttons = menuDiv.getElementsByClassName(CONST_CLASSNAME_OF_MENUBUTTONS);
@@ -464,6 +466,9 @@ var tinyTrucks = (function (win) {
                 tinyTrucks.truckModel.updateTruckTimes(CONST_TABLEID_USEDTRUCKS);
             }
             // TODO check when old good shout be deleted
+            if(view !== CONST_ID_OF_GOODSMAP && view !== CONST_ID_OF_CITYGOODS){
+                tinyTrucks.goodsModel.deleteObsoleteGoods();
+            }            
         },
         getResaleFactor: function(){
             return CONST_RESALE_VALUE;
