@@ -69,18 +69,41 @@ var Layout = (function (win) {
             makeSizes();
             return Layout;
         },
-        makeScrollableTableSize: function (id) {
+        makeScrollableTableSize: function (id, NoOfTables) {
             // TODO: Maybe there is more than on table
-            var scrollTable = document.getElementById(id).getElementsByClassName(scrollTablesClassNames)[0];
-            var element = document.getElementById(id);
-            if (element) {
-                if (scrollTable) {                    
+            var scrollTables = document.getElementById(id).getElementsByClassName(scrollTablesClassNames);
+            //console.log(scrollTable);
+            //var element = document.getElementById(id);
+            for(var i = 0; i < scrollTables.length; i++){
+                var scrollTable = scrollTables[i];
+                //console.log(scrollTable);
+                if (scrollTable) {
+                    // TODO this does not work
                     var parent = scrollTable.parentNode;
+                    while (parent.clientHeight === 0){
+                        parent = parent.parentNode;
+                    }
                     var style = window.getComputedStyle(parent, null);
-                    var height = Number(style.getPropertyValue("height").replace("px", "")) - Number(style.getPropertyValue("padding-bottom").replace("px", "")) - Number(style.getPropertyValue("padding-top").replace("px", ""));
-                    scrollTable.getElementsByClassName("tbody")[0].setAttribute("style", "height:" + height + "px;");
+                    /*console.log(parent);
+                    console.log(parent.clientHeight);
+                    console.log(parent.offsetHeight);
+                    console.log(style.getPropertyValue("height"));*/
+                    var height = parent.offsetHeight;
+                    if(NoOfTables){
+                        height /= NoOfTables;
+                    }
+                    //var height = Number(style.getPropertyValue("height").replace("px", "")) - Number(style.getPropertyValue("padding-bottom").replace("px", "")) - Number(style.getPropertyValue("padding-top").replace("px", ""));
+                    //console.log(height);
+                    scrollTable.getElementsByClassName("tbody")[0].setAttribute("style", "height:" + height/2 + "px;");
                 }
             }
+        },
+        makeDepotTable: function (viewid, tableid){
+            var table = document.getElementById(tableid);
+            var content = document.getElementById(viewid).getElementsByClassName('content')[0];            
+            var header = content.getElementsByClassName('tableHead')[0];            
+            table.parentNode.parentNode.setAttribute("style", "height:" + content.clientHeight + "px;");
+            table.parentNode.setAttribute("style", "height:" + (content.clientHeight -19 )+ "px;");            
         }
     };
 }(window));

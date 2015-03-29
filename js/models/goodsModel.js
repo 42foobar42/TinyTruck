@@ -30,7 +30,7 @@ tinyTrucks.goodsModel = (function (win) {
                 }
                 var citys = MapData.getAllCitys();
                 for(var i = 0; i < citys.length; i++){
-                    var amountOfGoods = 10;
+                    var amountOfGoods = 100;
                     //TODO Amount of goods should depned on population or something
                     for(var j = 0; j < amountOfGoods; j++){
                         var good = {};

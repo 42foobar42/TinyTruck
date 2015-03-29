@@ -13,7 +13,7 @@ window.onload = function () {
     tinyTrucks.truckModel.addTruckByOID(2);
     tinyTrucks.truckModel.addTruckByOID(1);
     tinyTrucks.truckModel.addTruckByOID(1);*/
-    //tinyTrucks.show("Map");
+    tinyTrucks.show("Map");
     
     //Map.init("playground");
     /*

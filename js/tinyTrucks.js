@@ -100,6 +100,7 @@ var tinyTrucks = (function (win) {
             // TODO
             // on leave event
         }
+        console.log(id);
         Layout.makeScrollableTableSize(id);
     }
     function getCityInfo(city){
@@ -135,7 +136,7 @@ var tinyTrucks = (function (win) {
         var hideCityMenus = function(){
             goodsView.style.display = 'none';
             depotView.style.display = 'none';
-            infoView.style.display = 'none';
+            infoView.style.display = 'none';            
         };
         document.getElementById(CONST_ID_OF_CITYINFO).onclick = function (event){
             hideCityMenus();
@@ -143,10 +144,13 @@ var tinyTrucks = (function (win) {
         };
         document.getElementById(CONST_ID_OF_CITYGOODS).onclick = function (event){
             hideCityMenus();
+            Layout.makeDepotTable(CONST_ID_OF_CITY, CONST_TABLEID_CITYGOODS);
             goodsView.style.display = 'inherit';
         };
         document.getElementById(CONST_ID_OF_CITYDEPOT).onclick = function (event){
+            // TODO calculate layout in better way
             hideCityMenus();
+            Layout.makeScrollableTableSize(getIdOfOpenView(),2);
             depotView.style.display = 'inherit';
         };        
     }
