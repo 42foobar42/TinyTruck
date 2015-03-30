@@ -74,3 +74,25 @@ div#GoodsTruckOverview{
     left:4%;
     top:50%;
 }
+
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(1),
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(2),
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(5),
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(7)
+{
+    display: none;
+}
+
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(6),
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(10){
+    text-align: right;
+}
+
+div#Map div#GoodsList div.MapGoodsList div.tableHead{
+    display: none;
+}
+
+div#GoodsTruckOverview div{
+    display: inline;
+    margin-right: 5px;
+}

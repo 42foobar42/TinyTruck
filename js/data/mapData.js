@@ -348,14 +348,32 @@ var MapData = (function (win) {
         { name:"Berlin", coordiantes:{x:3030, y:600}},
         { name:"Rom", coordiantes:{x:3012, y:815}},
         { name:"Paris", coordiantes:{x:2820, y:690}},
+        { name:"Milan", coordiantes:{x:2954, y:763}},
+        { name:"Hamburg", coordiantes:{x:2934, y:554}},
+        { name:"Amsterdam", coordiantes:{x:2865, y:585}},
+        { name:"Marseille", coordiantes:{x:2874, y:797}},
+        { name:"Vienna", coordiantes:{x:3088, y:706}},
+        { name:"Budapest", coordiantes:{x:3138, y:719}},
+        { name:"Cracow", coordiantes:{x:3151, y:658}},
         { name:"Luxembourg", coordiantes:{x:2890, y:674}}
     ];    
     var StreetsOfEurope = [
         { connection:['Frankfurt','Berlin'], length:551, parts:[{x:2958,y:634}, {x:3011,y:631}] },
         { connection:['Frankfurt','Munich'], length:392, parts:[] },
+        { connection:['Frankfurt','Hamburg'], length:492, parts:[] },
+        { connection:['Amsterdam','Hamburg'], length:465, parts:[] },
+        { connection:['Amsterdam','Paris'], length:508, parts:[] },
+        { connection:['Marseille','Paris'], length:775, parts:[] },
+        { connection:['Marseille','Milan'], length:521, parts:[] },
         { connection:['Munich','Berlin'], length:584, parts:[] },
         { connection:['Frankfurt','Luxembourg'], length:231, parts:[] },
-        { connection:['Munich','Rom'], length:916, parts:[] },
+        { connection:['Milan','Rom'], length:571, parts:[] },
+        { connection:['Milan','Munich'], length:492, parts:[] },
+        { connection:['Vienna','Munich'], length:435, parts:[] },
+        { connection:['Vienna','Budapest'], length:243, parts:[] },
+        { connection:['Cracow','Budapest'], length:395, parts:[] },
+        { connection:['Cracow','Berlin'], length:597, parts:[] },
+        { connection:['Hamburg','Berlin'], length:288, parts:[] },
         { connection:['Paris','Luxembourg'], length:373, parts:[] }
     ];
     return {
@@ -423,6 +441,14 @@ var MapData = (function (win) {
                 }
             }            
             return false;
+        },
+        getDistanceBetweenCitys: function(cityname1, cityname2){
+            var city1 = this.getCityByName(cityname1);
+            var city2 = this.getCityByName(cityname2);
+            //console.log(city1);
+            //console.log(city2);
+            //console.log(Math.pow(city1.coordiantes.x - city2.coordiantes.x,2));
+            return Math.round(Math.sqrt((Math.pow(city1.coordiantes.x - city2.coordiantes.x,2) + Math.pow(city1.coordiantes.y + city2.coordiantes.y,2))));
         }
     };
 }(window));

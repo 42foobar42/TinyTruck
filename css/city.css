@@ -35,6 +35,7 @@ div#City div.CityDepotList div.hasNoDepot {
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(1),
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(2),
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(5),
-div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(7){
+div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(7),
+div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(9){
     display: none;
 }

@@ -104,6 +104,35 @@ var Layout = (function (win) {
             var header = content.getElementsByClassName('tableHead')[0];            
             table.parentNode.parentNode.setAttribute("style", "height:" + content.clientHeight + "px;");
             table.parentNode.setAttribute("style", "height:" + (content.clientHeight -19 )+ "px;");            
+        },
+        makeMapGoodChoice: function (viewId, backButtonClass, sendButtonId, removeButtonId, GoodsListId, statusId){
+            var view = document.getElementById(viewId);
+            var status = document.getElementById(statusId);
+            var backButton = view.getElementsByClassName(backButtonClass)[0];
+            var sendButton = document.getElementById(sendButtonId);
+            var removeButton = document.getElementById(removeButtonId);
+            var goodsList = document.getElementById(GoodsListId);
+            var spacer = backButton.style.top.replace("px",'');
+            var butHeight = backButton.style.height;
+            var butWidth = backButton.style.width;
+            var width = parseInt(backButton.style.left.replace("px",''))-parseInt(goodsList.style.width.replace("px",''));
+            backButton.style.left = width + "px";
+            sendButton.style.left = width + "px";
+            sendButton.style.top = (2*spacer + parseInt(backButton.style.height.replace("px",''))) + "px";
+            sendButton.style.width = butWidth;
+            sendButton.style.height = butHeight;
+            removeButton.style.width = butWidth;
+            removeButton.style.height = butHeight;
+            removeButton.style.top = (3*spacer + 2*parseInt(backButton.style.height.replace("px",''))) + "px";
+            removeButton.style.left = width + "px";
+            // TODO height for status must be specified
+            console.log(view.getElementsByTagName('canvas')[0].height);
+            console.log(status);
+            status.style.top = view.getElementsByTagName('canvas')[0].height - 20 + 'px';
+            status.style.width = view.getElementsByTagName('canvas')[0].width * 0.8 + 'px';
+            status.style.left = view.getElementsByTagName('canvas')[0].width * 0.1 + 'px';
+            goodsList.getElementsByClassName('tbody')[0].style.height = view.getElementsByTagName('canvas')[0].height + 'px';
         }
     };
 }(window));
+

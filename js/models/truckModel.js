@@ -45,8 +45,8 @@ tinyTrucks.truckModel = (function (win) {
         var min = Math.floor(time);        
         var sec = Math.floor((time % min)*60);        
         //TODO !!!!!!!!!!! delete next 2 line
-        min = 0;
-        sec = 10;
+        //min = 0;
+        //sec = 10;
         truck.stop = truck.start + (sec * 1000) + (min * 1000 * 60);
         truck.time = getDisplayTimeForTrucks(truck.stop);
     }

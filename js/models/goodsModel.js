@@ -1,6 +1,14 @@
 tinyTrucks.goodsModel = (function (win) {
     var ListOfGoods = [];
     var lastGoodCreation;
+    var SortFunction = function(a, b){
+                if(a[7] < b[7]){
+                    return -1;
+                }
+                if(a[7]> b[7]){
+                    return 1;
+                }
+                return 0;};
     var CONST_RENEW_GOODS_LIST = 1000 * 60 * 2.5; // 2.5 minutes
     function getAllGoodsByCity(cityname){
         var goodsList = [];
@@ -10,7 +18,7 @@ tinyTrucks.goodsModel = (function (win) {
             }
         }
         return goodsList;
-    }
+    }    
     return {
         addNewGoodsToCitys: function(){
             var citys = MapData.getAllCitys();
@@ -30,7 +38,7 @@ tinyTrucks.goodsModel = (function (win) {
                 }
                 var citys = MapData.getAllCitys();
                 for(var i = 0; i < citys.length; i++){
-                    var amountOfGoods = 100;
+                    var amountOfGoods = 30;
                     //TODO Amount of goods should depned on population or something
                     for(var j = 0; j < amountOfGoods; j++){
                         var good = {};
@@ -52,7 +60,10 @@ tinyTrucks.goodsModel = (function (win) {
                         good.destination = destination;
                         good.status = '';
                         // TODO value(money) of good must be calculated on groundvalue and distance
-                        good.value = good.groundvalue;
+                        //var street = MapData.getStreetBetweenCitys(destination, good.source);
+                        var distance = MapData.getDistanceBetweenCitys(destination, good.source);
+                        //console.log(distance);
+                        good.value = Math.round(good.groundvalue * good.amount * distance); //* street.length;
                         ListOfGoods.push(good);
                     }
                 }
@@ -71,6 +82,7 @@ tinyTrucks.goodsModel = (function (win) {
                     data.push(info);
                 }
             }
+            data.sort(SortFunction);
             return data;
         },
         getGoodById: function(id){
@@ -96,6 +108,7 @@ tinyTrucks.goodsModel = (function (win) {
                     data.push(info);
                 }
             }
+            data.sort(SortFunction);
             return data;
         },
         removeFromGoodList: function(goodId){
@@ -116,3 +129,14 @@ tinyTrucks.goodsModel = (function (win) {
         }
     };
 }(window));
+
+function compareDestinations(a, b){
+        console.log(b);
+        if(a[7] < b[7]){
+            return -1;
+        }
+        if(a[7]> b[7]){
+            return 1;
+        }
+        return 0;
+    }

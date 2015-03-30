@@ -1,6 +1,6 @@
 var tinyTrucks = (function (win) {
     var menuDiv;
-    var CONST_MONEY_START = 10000;
+    var CONST_MONEY_START = 1000;
     var CONST_COST_OF_DEPOT = 5000;
     var CONST_CLASSNAME_OF_MENUBUTTONS = "menuButton", CONST_CLASSNAME_OF_VIEWS = "view", CONST_CLASSNAME_OF_CLOSEBUTTONS = "closeMenu", 
         CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS = "closeSubview", CONST_CLASSNAME_OF_CITYHASDEPOT = "hasDepot", CONST_CLASSNAME_OF_CITYNODEPOT = "hasNoDepot";
@@ -100,7 +100,7 @@ var tinyTrucks = (function (win) {
             // TODO
             // on leave event
         }
-        console.log(id);
+        //console.log(id);
         Layout.makeScrollableTableSize(id);
     }
     function getCityInfo(city){
@@ -195,6 +195,7 @@ var tinyTrucks = (function (win) {
         goodslist.style.height = map.clientHeight + 'px';
         
         document.getElementById(CONST_ID_OF_SENDTRUCK).setAttribute("data-truckid",truckid);
+        Layout.makeMapGoodChoice(CONST_ID_OF_MAP, CONST_CLASSNAME_OF_CLOSEBUTTONS, CONST_ID_OF_SENDTRUCK, CONST_ID_OF_REMOVEDESTINATION, CONST_ID_OF_GOODSMAP, CONST_ID_OF_GOODSTRUCK);
         updateTruckStatus(truckid);
     }
     function updateTruckStatus(truckid){
@@ -289,7 +290,9 @@ var tinyTrucks = (function (win) {
     }    
     function removeLastDestination(){
         var truckid = document.getElementById(CONST_ID_OF_SENDTRUCK).getAttribute("data-truckid");
-        tinyTrucks.truckModel.removeTour(truckid);
+        if(tinyTrucks.truckModel.getTruckByUID(truckid).tour.length > 1){
+            tinyTrucks.truckModel.removeTour(truckid);
+        }
         updateTruckStatus(truckid);
     }
     function fillTable(id, data, onItemClick, func) {

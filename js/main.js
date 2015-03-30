@@ -5,7 +5,7 @@ window.onload = function () {
     };
     tinyTrucks.init("menu");
     tinyTrucks.depotsModel.addDepots("Frankfurt");
-    tinyTrucks.depotsModel.addDepots("Berlin");
+    //tinyTrucks.depotsModel.addDepots("Berlin");
     tinyTrucks.truckModel.addTruckByOID(0);    
     tinyTrucks.truckModel.addTruckByOID(0);
     /*tinyTrucks.truckModel.addTruckByOID(0);
@@ -13,7 +13,7 @@ window.onload = function () {
     tinyTrucks.truckModel.addTruckByOID(2);
     tinyTrucks.truckModel.addTruckByOID(1);
     tinyTrucks.truckModel.addTruckByOID(1);*/
-    tinyTrucks.show("Map");
+    tinyTrucks.show("Trucks");
     
     //Map.init("playground");
     /*
