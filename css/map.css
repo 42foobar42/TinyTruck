@@ -50,6 +50,10 @@ div#GoodsList table#tableGoodsListList tr.selectedRow{
     background-color: #ffff00;
 }
 
+div#GoodsList table#tableGoodsListList tr.depot{
+    background-color: #8B4513;
+}
+
 div#removeLastDestination{
     width:4%;
     height:4%;
@@ -68,7 +72,7 @@ div#sendTruck{
 
 div#GoodsTruckOverview{
     width:50%;
-    height:4%;
+    height:20px;
     background-color: orange;
     position: absolute;
     left:4%;
@@ -78,7 +82,8 @@ div#GoodsTruckOverview{
 div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(1),
 div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(2),
 div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(5),
-div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(7)
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(7),
+div#GoodsList div.MapGoodsList table#tableGoodsListList tr td:nth-child(9)
 {
     display: none;
 }

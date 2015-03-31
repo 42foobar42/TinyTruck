@@ -126,12 +126,49 @@ var Layout = (function (win) {
             removeButton.style.top = (3*spacer + 2*parseInt(backButton.style.height.replace("px",''))) + "px";
             removeButton.style.left = width + "px";
             // TODO height for status must be specified
-            console.log(view.getElementsByTagName('canvas')[0].height);
-            console.log(status);
             status.style.top = view.getElementsByTagName('canvas')[0].height - 20 + 'px';
             status.style.width = view.getElementsByTagName('canvas')[0].width * 0.8 + 'px';
             status.style.left = view.getElementsByTagName('canvas')[0].width * 0.1 + 'px';
             goodsList.getElementsByClassName('tbody')[0].style.height = view.getElementsByTagName('canvas')[0].height + 'px';
+        },
+        makeCityView: function(mainViewId , goodsId, hasDepotClass, clsButMenu, updateButId){
+            var mainView = document.getElementById(mainViewId);
+            var MainHead = parseInt(window.getComputedStyle(mainView.getElementsByClassName('head')[0]).height.replace('px',''));
+            var closeButWrapper = mainView.getElementsByClassName(clsButMenu)[0];
+            var hasDepotView = document.getElementsByClassName(hasDepotClass)[0];
+            var updateButtonHeight = parseInt(window.getComputedStyle(document.getElementById(updateButId)).height.replace('px',''));
+            //console.log(document.getElementById(updateButId));
+            var closeButHeight = parseInt(window.getComputedStyle(closeButWrapper.getElementsByTagName('input')[0]).height.replace('px',''));
+            var closeButWrapHeight = parseInt(window.getComputedStyle(closeButWrapper).height.replace('px',''));
+            //console.log(closeButHeight);
+            //console.log(mainView.getElementsByClassName('head')[0]);
+            //console.log(MainHead);
+            var style = window.getComputedStyle(mainView, null);
+            var winHeight = parseInt(style.height.replace("px",""));
+            var goodTable = document.getElementById(goodsId);
+            var lineHightTableHead = parseInt(window.getComputedStyle(goodTable.parentNode.parentNode.getElementsByClassName('tableHead')[0],null)['line-height'].replace('px',''));
+            //console.log(window.getComputedStyle(goodTable.parentNode.parentNode.getElementsByClassName('tableHead')[0],null)['line-height']);
+            goodTable.parentNode.style.height = (winHeight - lineHightTableHead - MainHead - closeButWrapHeight) + "px";
+            /*console.log(updateButtonHeight);
+            console.log(lineHightTableHead);
+            console.log(closeButWrapHeight);
+            console.log(winHeight);
+            console.log((winHeight - closeButWrapHeight - MainHead - (lineHightTableHead * 2)));*/
+            for(var i = 0; i < closeButWrapper.getElementsByTagName('input').length; i++){
+                closeButWrapper.getElementsByTagName('input')[i].style['margin-top'] = (closeButWrapHeight - closeButHeight)/2 + "px";
+            }
+            //console.log(hasDepotView);
+            var hasDepTables = hasDepotView.getElementsByClassName('tbody');
+            //console.log(hasDepTables.length);
+            for (var i = 0; i < hasDepTables.length; i++){
+                hasDepTables[i].style.height = ((winHeight - closeButWrapHeight - MainHead - (lineHightTableHead * 2) - updateButtonHeight) / hasDepTables.length) + "px";
+            }
+        },
+        correctBackButton: function(listId, viewId, clsBut){
+            var list = document.getElementById(listId);
+            var view = document.getElementById(viewId);
+            var but = view.getElementsByClassName(clsBut)[0];
+            but.style.left = (parseInt(list.style.width.replace('px','')) + parseInt(but.style.left.replace('px',''))) + "px";
         }
     };
 }(window));

@@ -53,20 +53,17 @@ tinyTrucks.depotsModel = (function (win) {
             return data;
         },
         spaceOfDepot: function(cityname){
-            console.log(cityname);
             var depot = getDepotByName(cityname);
             var space = 0;
             if(depot){
-                for(var i = 0; i < depot.stock.length; i++){
-                    console.log(tinyTrucks.goodsModel.getGoodById(depot.stock[i]));
+                for(var i = 0; i < depot.stock.length; i++){                    
                     space += tinyTrucks.goodsModel.getGoodById(depot.stock[i]).amount;
                 }
             }
-            console.log(depot);
-            console.log(space);
             return depot.maxStock - space;
         },
         putGoodToDepot: function(cityname, goodid){
+            tinyTrucks.goodsModel.setStatus(goodid, 'inuse');
             getDepotByName(cityname).stock.push(goodid);
         },
         removeGoodFromDepot: function(cityname, goodid){
@@ -74,6 +71,7 @@ tinyTrucks.depotsModel = (function (win) {
             if(depot){
                 for(var i = 0; i < depot.stock.length; i++){
                     if(depot.stock[i] === goodid){
+                        tinyTrucks.goodsModel.setStatus(goodid, '');
                         return depot.stock.splice(i,1);                    
                     }
                 }
@@ -86,12 +84,18 @@ tinyTrucks.depotsModel = (function (win) {
             if(depot){
                 for(var i = 0; i < depot.stock.length; i++){
                     var good = tinyTrucks.goodsModel.getGoodById(depot.stock[i]);
-                    data.push([good.uid, good.name, good.amount, good.value]);
+                    var info = [];
+                    for(var key in good){
+                        info.push(good[key]);
+                    }
+                    data.push(info);
+                    //data.push([good.uid, good.name, good.amount, good.value]);
                 }
             }
             return data;
         },
         isGodInDepot: function (cityname, goodid){
+            // TODO check what to do with goods
             var depot = getDepotByName(cityname);
             if(depot){
                 if(depot.stock.indexOf(goodid) >= 0){

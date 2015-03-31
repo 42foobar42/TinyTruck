@@ -3,7 +3,8 @@ var tinyTrucks = (function (win) {
     var CONST_MONEY_START = 1000;
     var CONST_COST_OF_DEPOT = 5000;
     var CONST_CLASSNAME_OF_MENUBUTTONS = "menuButton", CONST_CLASSNAME_OF_VIEWS = "view", CONST_CLASSNAME_OF_CLOSEBUTTONS = "closeMenu", 
-        CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS = "closeSubview", CONST_CLASSNAME_OF_CITYHASDEPOT = "hasDepot", CONST_CLASSNAME_OF_CITYNODEPOT = "hasNoDepot";
+        CONST_CLASSNAME_OF_SUBVIEWCLOSEBUTTONS = "closeSubview", CONST_CLASSNAME_OF_CITYHASDEPOT = "hasDepot", CONST_CLASSNAME_OF_CITYNODEPOT = "hasNoDepot",
+        CONST_CLASSNAME_OF_BOTTOMMENU = "bottomMenu";
     var CONST_ID_OF_MONEYINPUT = "account",
             CONST_ID_OF_SELLPARTS = "SellPartList",
             CONST_ID_OF_BUILDARTS = "BuildPartList",
@@ -23,7 +24,8 @@ var tinyTrucks = (function (win) {
             CONST_ID_OF_CITYINFO = "CityInfo",
             CONST_ID_OF_TRUCKINFO = "TrukInfo",
             CONST_ID_OF_STATISTICS = "Stats",
-            CONST_ID_OF_BUTTON_BUYDEPOT = "BuyDepot";
+            CONST_ID_OF_BUTTON_BUYDEPOT = "BuyDepot",
+            CONST_ID_OF_UPDATEDEPOTBUTTON = "updateDepot";
     var MSG_VIEW_NOT_FOUND = "A name of a view is maybe wrong!",
             MSG_CLOSE_BUTTON_MISSING = "No close Button found in the view!",
             MSG_TABLE_NOT_FOUND = "Table not found!",
@@ -110,12 +112,15 @@ var tinyTrucks = (function (win) {
         }
         return html;
     }
+    function updateCityTables(cityname){
+        fillTable(CONST_TABLEID_CITYGOODS, tinyTrucks.goodsModel.getUnusedGoodsForCityList(cityname), 'row', 'tinyTrucks.putGoodToDepot(this,\'' + cityname + '\')');
+        fillTable(CONST_TABLEID_CITYDEPOT, tinyTrucks.truckModel.getTrucksPerCity(cityname));
+        fillTable(CONST_TABLEID_DEPOTGOODS, tinyTrucks.depotsModel.getGoodsForDepot(cityname));
+    }
     function openCityScreen(city){        
         tinyTrucks.show(CONST_ID_OF_CITY);
-        fillTable(CONST_TABLEID_CITYGOODS, tinyTrucks.goodsModel.getUnusedGoodsForCityList(city.name));
-        fillTable(CONST_TABLEID_CITYDEPOT, tinyTrucks.truckModel.getTrucksPerCity(city.name));
-        fillTable(CONST_TABLEID_DEPOTGOODS, tinyTrucks.depotsModel.getGoodsForDepot(city.name));
-        document.getElementById(CONST_ID_OF_BUTTON_BUYDEPOT).setAttribute('onclick', "tinyTrucks.buyDepot('" + city.name + "');");
+        updateCityTables(city.name);
+        document.getElementById(CONST_ID_OF_BUTTON_BUYDEPOT).setAttribute('onclick', "tinyTrucks.buyDepot('" + city.name + "');");        
         if(tinyTrucks.depotsModel.hasCityDepot(city.name)){
             document.getElementsByClassName(CONST_CLASSNAME_OF_CITYHASDEPOT)[0].style.display = 'inherit';
             document.getElementsByClassName(CONST_CLASSNAME_OF_CITYNODEPOT)[0].style.display = 'none';
@@ -136,23 +141,27 @@ var tinyTrucks = (function (win) {
         var hideCityMenus = function(){
             goodsView.style.display = 'none';
             depotView.style.display = 'none';
-            infoView.style.display = 'none';            
+            infoView.style.display = 'none';
         };
+        Layout.makeCityView(CONST_ID_OF_CITY, CONST_TABLEID_CITYGOODS, CONST_CLASSNAME_OF_CITYHASDEPOT, CONST_CLASSNAME_OF_BOTTOMMENU, CONST_ID_OF_UPDATEDEPOTBUTTON);
         document.getElementById(CONST_ID_OF_CITYINFO).onclick = function (event){
             hideCityMenus();
             infoView.style.display = 'inherit';
+            Layout.makeCityView(CONST_ID_OF_CITY, CONST_TABLEID_CITYGOODS, CONST_CLASSNAME_OF_CITYHASDEPOT, CONST_CLASSNAME_OF_BOTTOMMENU, CONST_ID_OF_UPDATEDEPOTBUTTON);
         };
         document.getElementById(CONST_ID_OF_CITYGOODS).onclick = function (event){
             hideCityMenus();
-            Layout.makeDepotTable(CONST_ID_OF_CITY, CONST_TABLEID_CITYGOODS);
+            //Layout.makeDepotTable(CONST_ID_OF_CITY, CONST_TABLEID_CITYGOODS);
             goodsView.style.display = 'inherit';
+            Layout.makeCityView(CONST_ID_OF_CITY, CONST_TABLEID_CITYGOODS, CONST_CLASSNAME_OF_CITYHASDEPOT, CONST_CLASSNAME_OF_BOTTOMMENU, CONST_ID_OF_UPDATEDEPOTBUTTON);
         };
         document.getElementById(CONST_ID_OF_CITYDEPOT).onclick = function (event){
             // TODO calculate layout in better way
             hideCityMenus();
-            Layout.makeScrollableTableSize(getIdOfOpenView(),2);
+            //Layout.makeScrollableTableSize(getIdOfOpenView(),2);
             depotView.style.display = 'inherit';
-        };        
+            Layout.makeCityView(CONST_ID_OF_CITY, CONST_TABLEID_CITYGOODS, CONST_CLASSNAME_OF_CITYHASDEPOT, CONST_CLASSNAME_OF_BOTTOMMENU, CONST_ID_OF_UPDATEDEPOTBUTTON);
+        };
     }
     function putTruckOnDepot(id, city) {
         if(tinyTrucks.depotsModel.hasCityDepot(city.name)){
@@ -179,7 +188,7 @@ var tinyTrucks = (function (win) {
         for(var i = 0; i < rows.length; i++){
             var cell = rows[i].getElementsByTagName('td');
             if(tinyTrucks.truckModel.isGoodInTruck(truckid, cell[1].innerHTML)){                
-                rows[i].className += 'selectedRow';
+                rows[i].className = 'selectedRow';
             }
         }
         
@@ -268,15 +277,17 @@ var tinyTrucks = (function (win) {
     }
     function sendTruck(){
         var truckId = document.getElementById(CONST_ID_OF_SENDTRUCK).getAttribute("data-truckid");
-        if(tinyTrucks.truckModel.getTruckByUID(truckId).tour.length > 1){            
-            tinyTrucks.depotsModel.removeTruckFromDepot(truckId, tinyTrucks.truckModel.getTruckByUID(truckId).location);
+        if(tinyTrucks.truckModel.getTruckByUID(truckId).tour.length > 1){
+            // TODO check if goods are at depot and delte them
+            tinyTrucks.depotsModel.removeTruckFromDepot(truckId, tinyTrucks.truckModel.getTruckByUID(truckId).location);            
             var cost = tinyTrucks.truckModel.sendTruck(truckId);
             // TODO check if it make sense to do this check and then stop sending the truck.....
             if(money >= cost){
                 money -= cost;
                 Map.setCityChoice([]);
-                switchGoodChoice = false;
+                switchGoodChoice = false;                
                 // TODO close view where to go?
+                Layout.correctBackButton(CONST_ID_OF_GOODSMAP, getIdOfOpenView(), CONST_CLASSNAME_OF_CLOSEBUTTONS);
                 tinyTrucks.show(CONST_ID_OF_MAP);
                 setValuesOnScreen();
             } else {
@@ -310,6 +321,11 @@ var tinyTrucks = (function (win) {
                             var newCell = document.createElement("td");
                             newCell.innerHTML = data[i][j];
                             newRow.appendChild(newCell);
+                        }
+                        //console
+                        if(data[i].cls){
+                            //console.log(data[i].cls);
+                            newRow.className += data[i].cls;
                         }
                         if(onItemClick === 'row'){
                             newRow.setAttribute("onclick",func);
@@ -469,7 +485,7 @@ var tinyTrucks = (function (win) {
                     var truck = tinyTrucks.truckModel.getTruckByUID(truckid);
                     // remove from depot
                     tinyTrucks.depotsModel.removeGoodFromDepot(truck.location, goodid);
-                    row.className += "selectedRow";
+                    row.className = "selectedRow";
                 }
             }
             updateTruckStatus(truckid);
@@ -535,10 +551,23 @@ var tinyTrucks = (function (win) {
                 alert("not enough money");
             }
         },
-        buyDepot: function(cityname){            
+        buyDepot: function(cityname){
             if(CONST_COST_OF_DEPOT < money){
                 tinyTrucks.depotsModel.addDepots(cityname);
                 openCityScreen(MapData.getCityByName(cityname));
+            }
+        },
+        putGoodToDepot: function(row, cityname){
+            if(tinyTrucks.depotsModel.hasCityDepot(cityname)){
+                var cells = row.getElementsByTagName('td');
+                if(tinyTrucks.depotsModel.isGodInDepot(cityname,cells[1].innerHTML)){
+                    tinyTrucks.depotsModel.removeGoodFromDepot(cityname,cells[1].innerHTML);
+                } else {
+                    if(tinyTrucks.depotsModel.spaceOfDepot(cityname) >= parseInt(cells[5].innerHTML)){
+                        tinyTrucks.depotsModel.putGoodToDepot(cityname,cells[1].innerHTML);
+                    }
+                }
+                updateCityTables(cityname);
             }
         }
     };

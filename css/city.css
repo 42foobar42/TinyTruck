@@ -13,7 +13,8 @@ div#City div.content{
     height: 80%;
 }
 
-div#City div.bottomMenu{
+div#City div.bottomMenu, 
+div#City div.buttonWrapper{
     text-align: center;    
 }
 
@@ -36,6 +37,13 @@ div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(1)
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(2),
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(5),
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(7),
-div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(9){
+div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(9),
+div#City table#tableCityDepotGoodsList tr td:nth-child(1),
+div#City table#tableCityDepotGoodsList tr td:nth-child(2),
+div#City table#tableCityDepotGoodsList tr td:nth-child(5){
     display: none;
+}
+
+div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr.depot{
+    background-color: #228B22;
 }

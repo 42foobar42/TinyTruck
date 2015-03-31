@@ -20,8 +20,6 @@ tinyTrucks.statsModel = (function (win) {
                         //console.log(stat[key]);
                         //console.log(stat[key].length);
                         cargocounter += 1;
-                        console.log(stat);
-                        console.log(stat[key]);
                         if(stat[key].amount){
                             cargoamount += stat[key].amount;
                         }

@@ -79,6 +79,9 @@ tinyTrucks.goodsModel = (function (win) {
                     for(var key in ListOfGoods[i]){
                         info.push(ListOfGoods[i][key]);
                     }
+                    if(tinyTrucks.depotsModel.isGodInDepot(cityname, ListOfGoods[i].uid)){
+                        info.cls = 'depot';
+                    }
                     data.push(info);
                 }
             }
@@ -104,6 +107,9 @@ tinyTrucks.goodsModel = (function (win) {
                     var info = [];
                     for(var key in good){
                         info.push(good[key]);
+                    }
+                    if(tinyTrucks.depotsModel.isGodInDepot(cityname, good.uid)){
+                        info.cls = 'depot';
                     }
                     data.push(info);
                 }
