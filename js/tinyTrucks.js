@@ -106,10 +106,30 @@ var tinyTrucks = (function (win) {
         Layout.makeScrollableTableSize(id);
     }
     function getCityInfo(city){
-        var html = "";        
+        var html = '<div class="information">';
         for(var key in city){
-            html += '<div>' + key + '</div><div>' + city[key] + '</div>';
+            var attr = key[0].toUpperCase() + key.substring(1);
+            switch (key){
+                case 'needs':
+                case 'production':
+                    html += '<div class="infoRow"><div>' + attr + ':</div><div>';
+                    for(var i = 0; i < city[key].length; i++){
+                        html += tinyTrucks.goodsModel.getIndustryName(city[key][i]);
+                        if(i + 1 < city[key].length){
+                            html += ', ';
+                        }
+                    }
+                    html += '</div></div>';
+                    break;
+                case 'coordiantes':
+                case 'name':
+                    break;                
+                    break;
+                default :                    
+                    html += '<div class="infoRow"><div>' + attr + ':</div><div>' + city[key] + '</div></div>';
+            }            
         }
+        html += "</div>";
         return html;
     }
     function updateCityTables(cityname){
@@ -117,10 +137,10 @@ var tinyTrucks = (function (win) {
         fillTable(CONST_TABLEID_CITYDEPOT, tinyTrucks.truckModel.getTrucksPerCity(cityname));
         fillTable(CONST_TABLEID_DEPOTGOODS, tinyTrucks.depotsModel.getGoodsForDepot(cityname));
     }
-    function openCityScreen(city){        
+    function openCityScreen(city){
         tinyTrucks.show(CONST_ID_OF_CITY);
         updateCityTables(city.name);
-        document.getElementById(CONST_ID_OF_BUTTON_BUYDEPOT).setAttribute('onclick', "tinyTrucks.buyDepot('" + city.name + "');");        
+        document.getElementById(CONST_ID_OF_BUTTON_BUYDEPOT).setAttribute('onclick', "tinyTrucks.buyDepot('" + city.name + "');");
         if(tinyTrucks.depotsModel.hasCityDepot(city.name)){
             document.getElementsByClassName(CONST_CLASSNAME_OF_CITYHASDEPOT)[0].style.display = 'inherit';
             document.getElementsByClassName(CONST_CLASSNAME_OF_CITYNODEPOT)[0].style.display = 'none';

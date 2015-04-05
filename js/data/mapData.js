@@ -330,7 +330,7 @@ var MapData = (function (win) {
         4918, 1727, 4914, 1718, 4911, 1708, 4905, 1703, 4899, 1698, 4894, 1694, 4891, 1689, 4889, 1681,
         4887, 1675, 4882, 1669, 4876, 1662, 4867, 1653, 4861, 1645, 4855, 1633, 4848, 1623, 4843, 1617,
         4839, 1613, 4834
-    ]
+    ];
     var SEAsiaIsland2 = [
         5127, 1667, 5159, 1662, 5162, 1653, 5162, 1649, 5164, 1646, 5168, 1643, 5174, 1640, 5176, 1637,
         5178, 1632, 5183, 1606, 5185, 1604, 5192, 1599, 5202, 1596, 5209, 1594, 5217, 1592, 5230, 1590,
@@ -343,19 +343,19 @@ var MapData = (function (win) {
         5126, 1727
     ];
     var CitysOfEurope = [
-        { name:"Munich", coordiantes:{x:2991, y:706}}, 
-        { name:"Frankfurt", coordiantes:{x:2938, y:658}, population:700000, layovers:'', goods:[]},
-        { name:"Berlin", coordiantes:{x:3030, y:600}},
-        { name:"Rom", coordiantes:{x:3012, y:815}},
-        { name:"Paris", coordiantes:{x:2820, y:690}},
-        { name:"Milan", coordiantes:{x:2954, y:763}},
-        { name:"Hamburg", coordiantes:{x:2934, y:554}},
-        { name:"Amsterdam", coordiantes:{x:2865, y:585}},
-        { name:"Marseille", coordiantes:{x:2874, y:797}},
-        { name:"Vienna", coordiantes:{x:3088, y:706}},
-        { name:"Budapest", coordiantes:{x:3138, y:719}},
-        { name:"Cracow", coordiantes:{x:3151, y:658}},
-        { name:"Luxembourg", coordiantes:{x:2890, y:674}}
+        { name:"Munich", coordiantes:{x:2991, y:706}, population: 1400000, country:'Germany', production:['auto', 'agri'], needs:['lux', 'mech']}, 
+        { name:"Frankfurt", coordiantes:{x:2938, y:658}, population:700000, country:'Germany', production:['chem', 'auto', 'elec'], needs:['lux', 'food', 'prim']},
+        { name:"Berlin", coordiantes:{x:3030, y:600}, population: 3560000, country:'Germany', production:['avi', 'mech'], needs:['lux', 'auto', 'text']},
+        { name:"Hamburg", coordiantes:{x:2934, y:554}, population: 1750000, country:'Germany', production:['food', 'mech', 'text', 'avi'], needs:['agri', 'prim', 'wood','metal']},
+        { name:"Vienna", coordiantes:{x:3088, y:706}, population: 1800000, country:'Austria', production:['agri'], needs:[]},
+        { name:"Paris", coordiantes:{x:2820, y:690}, population: 2270000, country:'France', production:[], needs:[]},
+        { name:"Marseille", coordiantes:{x:2874, y:797}, population: 850000, country:'France', production:[], needs:[]},
+        { name:"Rome", coordiantes:{x:3012, y:815}, population: 2870000, country:'Italy', production:[], needs:[]},
+        { name:"Milan", coordiantes:{x:2954, y:763}, population: 1350000, country:'Italy', production:[], needs:[]},
+        { name:"Luxembourg", coordiantes:{x:2890, y:674}, population: 100000, country:'Luxembourg', production:[], needs:[]},
+        { name:"Amsterdam", coordiantes:{x:2865, y:585}, population: 810000, country:'Netherlands', production:[], needs:[]},
+        { name:"Budapest", coordiantes:{x:3138, y:719}, population: 1740000, country:'Hungary', production:[], needs:[]},
+        { name:"Kraków", coordiantes:{x:3151, y:658}, population: 760000, country:'Poland', production:[], needs:[]}
     ];    
     var StreetsOfEurope = [
         { connection:['Frankfurt','Berlin'], length:551, parts:[{x:2958,y:634}, {x:3011,y:631}] },
@@ -367,12 +367,12 @@ var MapData = (function (win) {
         { connection:['Marseille','Milan'], length:521, parts:[] },
         { connection:['Munich','Berlin'], length:584, parts:[] },
         { connection:['Frankfurt','Luxembourg'], length:231, parts:[] },
-        { connection:['Milan','Rom'], length:571, parts:[] },
+        { connection:['Milan','Rome'], length:571, parts:[] },
         { connection:['Milan','Munich'], length:492, parts:[] },
         { connection:['Vienna','Munich'], length:435, parts:[] },
         { connection:['Vienna','Budapest'], length:243, parts:[] },
-        { connection:['Cracow','Budapest'], length:395, parts:[] },
-        { connection:['Cracow','Berlin'], length:597, parts:[] },
+        { connection:['Kraków','Budapest'], length:395, parts:[] },
+        { connection:['Kraków','Berlin'], length:597, parts:[] },
         { connection:['Hamburg','Berlin'], length:288, parts:[] },
         { connection:['Paris','Luxembourg'], length:373, parts:[] }
     ];

@@ -132,6 +132,13 @@ tinyTrucks.goodsModel = (function (win) {
                     i--;
                 }
             }
+        },
+        getIndustryName: function (shortcut){
+           for(var i = 0; i < Industries.length; i++){
+               if(Industries[i].shortcut === shortcut){
+                    return Industries[i].name;
+               }
+           }
         }
     };
 }(window));

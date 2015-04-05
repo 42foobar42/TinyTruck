@@ -33,6 +33,22 @@ div#City div.CityDepotList div.hasNoDepot {
     text-align: center;
 }
 
+div#City div.CityInfoList div.information{
+    width: 80%;
+    margin-left: 10%;
+}
+div#City div.CityInfoList div.infoRow div{
+    display: inline-block;
+}
+
+div#City div.CityInfoList div.infoRow div:nth-child(1){
+    width: 40%;
+}
+
+div#City div.CityInfoList div.infoRow div:nth-child(2){
+    width: 60%;
+}
+
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(1),
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(2),
 div#City div.CityGoodsList div.tbody table#tableCityGoodsList tr td:nth-child(5),
