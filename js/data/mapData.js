@@ -343,19 +343,19 @@ var MapData = (function (win) {
         5126, 1727
     ];
     var CitysOfEurope = [
-        { name:"Munich", coordiantes:{x:2991, y:706}, population: 1400000, country:'Germany', production:['auto', 'agri'], needs:['lux', 'mech']}, 
-        { name:"Frankfurt", coordiantes:{x:2938, y:658}, population:700000, country:'Germany', production:['chem', 'auto', 'elec'], needs:['lux', 'food', 'prim']},
+        { name:"Munich", coordiantes:{x:2991, y:706}, population: 1400000, country:'Germany', production:['auto', 'agri', 'wood'], needs:['lux', 'mech', 'chem']}, 
+        { name:"Frankfurt", coordiantes:{x:2938, y:658}, population:700000, country:'Germany', production:['chem', 'auto', 'elec'], needs:['lux', 'food', 'prim', 'avi']},
         { name:"Berlin", coordiantes:{x:3030, y:600}, population: 3560000, country:'Germany', production:['avi', 'mech'], needs:['lux', 'auto', 'text']},
-        { name:"Hamburg", coordiantes:{x:2934, y:554}, population: 1750000, country:'Germany', production:['food', 'mech', 'text', 'avi'], needs:['agri', 'prim', 'wood','metal']},
-        { name:"Vienna", coordiantes:{x:3088, y:706}, population: 1800000, country:'Austria', production:['agri'], needs:[]},
-        { name:"Paris", coordiantes:{x:2820, y:690}, population: 2270000, country:'France', production:[], needs:[]},
-        { name:"Marseille", coordiantes:{x:2874, y:797}, population: 850000, country:'France', production:[], needs:[]},
-        { name:"Rome", coordiantes:{x:3012, y:815}, population: 2870000, country:'Italy', production:[], needs:[]},
-        { name:"Milan", coordiantes:{x:2954, y:763}, population: 1350000, country:'Italy', production:[], needs:[]},
-        { name:"Luxembourg", coordiantes:{x:2890, y:674}, population: 100000, country:'Luxembourg', production:[], needs:[]},
-        { name:"Amsterdam", coordiantes:{x:2865, y:585}, population: 810000, country:'Netherlands', production:[], needs:[]},
-        { name:"Budapest", coordiantes:{x:3138, y:719}, population: 1740000, country:'Hungary', production:[], needs:[]},
-        { name:"Kraków", coordiantes:{x:3151, y:658}, population: 760000, country:'Poland', production:[], needs:[]}
+        { name:"Hamburg", coordiantes:{x:2934, y:554}, population: 1750000, country:'Germany', production:['food', 'build', 'text', 'avi'], needs:['agri', 'prim', 'wood','metal']},
+        { name:"Vienna", coordiantes:{x:3088, y:706}, population: 1800000, country:'Austria', production:['agri', 'wood', 'food'], needs:['elec', 'text', 'build']},
+        { name:"Paris", coordiantes:{x:2820, y:690}, population: 2270000, country:'France', production:['auto', 'lux', 'agri'], needs:['elec', 'text', 'mech']},
+        { name:"Marseille", coordiantes:{x:2874, y:797}, population: 850000, country:'France', production:['auto', 'mech', 'metal', 'food'], needs:['agri', 'prim', 'chem']},
+        { name:"Rome", coordiantes:{x:3012, y:815}, population: 2870000, country:'Italy', production:['text', 'mech', 'food', 'metal'], needs:['prim', 'agri', 'wood']},
+        { name:"Milan", coordiantes:{x:2954, y:763}, population: 1350000, country:'Italy', production:['chem', 'auto', 'text', 'mech'], needs:['metal', 'food']},
+        { name:"Luxembourg", coordiantes:{x:2890, y:674}, population: 100000, country:'Luxembourg', production:['build', 'prim', 'agri', 'chem'], needs:['lux', 'food', 'wood']},
+        { name:"Amsterdam", coordiantes:{x:2865, y:585}, population: 810000, country:'Netherlands', production:['food', 'elec'], needs:['build', 'metal', 'prim']},
+        { name:"Budapest", coordiantes:{x:3138, y:719}, population: 1740000, country:'Hungary', production:['elec', 'wood', 'prim'], needs:['metal', 'build', 'mech']},
+        { name:"Kraków", coordiantes:{x:3151, y:658}, population: 760000, country:'Poland', production:['elec', 'build', 'mech'], needs:['metal', 'prim', 'chem']}
     ];    
     var StreetsOfEurope = [
         { connection:['Frankfurt','Berlin'], length:551, parts:[{x:2958,y:634}, {x:3011,y:631}] },
@@ -449,6 +449,23 @@ var MapData = (function (win) {
             //console.log(city2);
             //console.log(Math.pow(city1.coordiantes.x - city2.coordiantes.x,2));
             return Math.round(Math.sqrt((Math.pow(city1.coordiantes.x - city2.coordiantes.x,2) + Math.pow(city1.coordiantes.y + city2.coordiantes.y,2))));
+        },
+        getCitysByNeeds: function(industry){
+            var data = [];
+            var citys = this.getAllCitys();
+            for(var i = 0; i < citys.length; i++){
+                if(citys[i].needs.indexOf(industry) >= 0){
+                    data.push(citys[i]);
+                }
+            }
+            return data;
+        },
+        getDestinationForIndustry: function(cityname, industry){
+            // TODO choose destination according to distance
+            var citys = this.getCitysByNeeds(industry);            
+            var RandomIndex = Math.floor(Math.random() * citys.length);
+            var destination = citys[RandomIndex].name;            
+            return destination;
         }
     };
 }(window));

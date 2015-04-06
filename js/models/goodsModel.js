@@ -1,11 +1,15 @@
 tinyTrucks.goodsModel = (function (win) {
     var ListOfGoods = [];
     var lastGoodCreation;
+    var CONST_FACTOR_OF_GOODSAMOUNT = 5,
+        CONST_DIVIDER_OF_GOODSAMOUNT = 500000,
+        CONST_ROW_OF_DESTINATION = 8,
+        CONST_PERCENT_OF_NEEDEDGOODS = 0.8;
     var SortFunction = function(a, b){
-                if(a[7] < b[7]){
+                if(a[CONST_ROW_OF_DESTINATION] < b[CONST_ROW_OF_DESTINATION]){
                     return -1;
                 }
-                if(a[7]> b[7]){
+                if(a[CONST_ROW_OF_DESTINATION]> b[CONST_ROW_OF_DESTINATION]){
                     return 1;
                 }
                 return 0;};
@@ -18,7 +22,17 @@ tinyTrucks.goodsModel = (function (win) {
             }
         }
         return goodsList;
-    }    
+    }
+    function getRandomGoodByIndustry(industry){
+        var goodList = [];
+        for(var i = 0; i < Goods.length; i++){
+            if(Goods[i].industry === industry){
+                goodList.push(Goods[i]);
+            }
+        }
+        var RandomIndex = Math.floor(Math.random() * goodList.length);
+        return goodList.slice(RandomIndex, RandomIndex + 1)[0];
+    }
     return {
         addNewGoodsToCitys: function(){
             var citys = MapData.getAllCitys();
@@ -38,15 +52,22 @@ tinyTrucks.goodsModel = (function (win) {
                 }
                 var citys = MapData.getAllCitys();
                 for(var i = 0; i < citys.length; i++){
-                    var amountOfGoods = 30;
-                    //TODO Amount of goods should depned on population or something
+                    var amountOfGoods = Math.ceil(citys[i].population / CONST_DIVIDER_OF_GOODSAMOUNT) * CONST_FACTOR_OF_GOODSAMOUNT;
+                    //console.log(Math.ceil(citys[i].population / 500000));
+                    //TODO Amount of goods should depned on population or something                    
                     for(var j = 0; j < amountOfGoods; j++){
                         var good = {};
                         good.obsolete = false;
                         good.uid = guid();
-                        var RandomIndex = Math.floor(Math.random() * Goods.length);
                         //TODO type of good should depend on city
-                        var goodData = Goods.slice(RandomIndex, RandomIndex + 1)[0];
+                        var goodData;
+                        if(j <= amountOfGoods * CONST_PERCENT_OF_NEEDEDGOODS){
+                            goodData = getRandomGoodByIndustry(citys[i].production[j % citys[i].production.length]);
+                        } else {
+                            var RandomIndex = Math.floor(Math.random() * Goods.length);                        
+                            goodData = Goods.slice(RandomIndex, RandomIndex + 1)[0];
+                        }
+                        
                         for(var key in goodData){
                             good[key] = goodData[key];
                         }
@@ -54,15 +75,15 @@ tinyTrucks.goodsModel = (function (win) {
                         good.amount = Math.floor((Math.random() * 10) + 1);
                         good.source = citys[i].name;
                         // TODO improve destination setting and destionation not source
-                        do{
+                        var destination = MapData.getDestinationForIndustry(good.source, good.industry);
+                        /*do{
                             var destination = citys[Math.floor((Math.random() * citys.length))].name;
-                        } while(destination === good.source)
+                        } while(destination === good.source)*/
                         good.destination = destination;
                         good.status = '';
                         // TODO value(money) of good must be calculated on groundvalue and distance
                         //var street = MapData.getStreetBetweenCitys(destination, good.source);
                         var distance = MapData.getDistanceBetweenCitys(destination, good.source);
-                        //console.log(distance);
                         good.value = Math.round(good.groundvalue * good.amount * distance); //* street.length;
                         ListOfGoods.push(good);
                     }

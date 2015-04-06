@@ -24,8 +24,20 @@ var Industries = [
 ];
 
 var Goods = [
-    { name:'lemonade', type:'ordinary', groundvalue: 0.05 },
-    { name:'pants', type:'ordinary', groundvalue: 0.08 },
-    { name:'shirts', type:'ordinary', groundvalue: 0.07 },
-    { name:'fish', type:'food', groundvalue: 0.06 }
+    { name:'Lemonade', industry:'food', type:'ordinary', groundvalue: 0.05 },
+    { name:'Pants', industry:'text', type:'ordinary', groundvalue: 0.08 },
+    { name:'Shirts', industry:'text', type:'ordinary', groundvalue: 0.07 },
+    { name:'Fish', industry:'food', type:'food', groundvalue: 0.06 },
+    { name:'Engine', industry:'auto', type:'ordinary', groundvalue: 0.15 },
+    { name:'Cement', industry:'build', type:'ordinary', groundvalue: 0.04 },
+    { name:'Chlorine', industry:'chem', type:'ordinary', groundvalue: 0.065 }, // TODO change type
+    { name:'Radios', industry:'elec', type:'ordinary', groundvalue: 0.09 },
+    { name:'Stone', industry:'prim', type:'ordinary', groundvalue: 0.045 },
+    { name:'Wood', industry:'wood', type:'ordinary', groundvalue: 0.065 }, //TODO
+    { name:'Oats ', industry:'agri', type:'ordinary', groundvalue: 0.045 }, // TODO type
+    { name:'Wings', industry:'avi', type:'ordinary', groundvalue: 0.25 }, // TODO type
+    { name:'Tank', industry:'mech', type:'ordinary', groundvalue: 0.08 }, // TODO all
+    { name:'Iron', industry:'metal', type:'ordinary', groundvalue: 0.065 },
+    { name:'Sweets', industry:'food', type:'ordinary', groundvalue: 0.055 },
+    { name:'Watch', industry:'lux', type:'ordinary', groundvalue: 0.12 },
 ]
