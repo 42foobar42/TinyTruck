@@ -389,6 +389,14 @@ var MapData = (function (win) {
         2754, 622, 2748, 622, 2741, 625, 2732, 628, 2724, 628, 2718, 625, 2711, 626, 2707, 629, 2703, 633, 
         2702, 638, 2697, 638, 2693, 635, 2687, 634, 2681, 636, 2676, 641, 2670, 643
     ];
+    var Ireland = [
+        2648, 540, 2655, 566, 2646, 588, 2644, 588, 2640, 588, 2638, 585, 2634, 584, 2626, 588, 2619, 590,
+        2592, 604, 2582, 605, 2575, 600, 2568, 597, 2564, 592, 2564, 584, 2574, 584, 2574, 580, 2576, 576, 
+        2580, 572, 2586, 558, 2579, 558, 2574, 554, 2568, 551, 2572, 548, 2575, 544, 2577, 542, 2574, 538,
+        2571, 532, 2572, 528, 2578, 528, 2582, 530, 2600, 530, 2609, 519, 2598, 518, 2596, 516, 2599, 514,
+        2604, 510, 2603, 508, 2611, 502, 2616, 502, 2620, 502, 2627, 498, 2634, 502, 2650, 504, 2658, 516,
+        2661, 522, 2662, 528, 2658, 530, 2654, 532
+    ];
     var CitysOfEurope = [
         { name:"Munich", coordiantes:{x:2991, y:706}, population: 1400000, country:'Germany', production:['auto', 'agri', 'wood'], needs:['lux', 'mech', 'chem']}, 
         { name:"Frankfurt", coordiantes:{x:2938, y:658}, population:700000, country:'Germany', production:['chem', 'auto', 'elec'], needs:['lux', 'food', 'prim', 'avi']},
@@ -428,7 +436,7 @@ var MapData = (function (win) {
             return Eurasia;
         },
         getAllContinents: function(){
-            return [Eurasia, America, Africa, Australia, Greenland, SEAsiaIsland1, SEAsiaIsland2, SEAsiaIsland3, Madagasca, Britain];
+            return [Eurasia, America, Africa, Australia, Greenland, SEAsiaIsland1, SEAsiaIsland2, SEAsiaIsland3, Madagasca, Britain, Ireland];
         },
         getCitysOfEurope: function(){
             return CitysOfEurope;
