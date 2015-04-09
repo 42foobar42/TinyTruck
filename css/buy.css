@@ -20,6 +20,7 @@ div#BuyPartList table{
 div#BuyPartList table tbody {
 }
 
+/*
 div#BuyPartList div.tableHead div:nth-child(1), 
 div#BuyPartList table td:nth-child(4n + 1){
     width:0%;
@@ -41,6 +42,7 @@ div#BuyPartList table td:nth-child(4n + 4){
    width:25%;
    border-right-width:0;
 }
+*/
 
 div#Buy input.buyButton {
     float:right;

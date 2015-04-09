@@ -91,6 +91,12 @@ tinyTrucks.partsModel = (function (win) {
                 data[i] = [];
                 for(var key in part){
                     data[i].push(part[key]);
+                    if(key === 'name'){
+                        data[i].push('<input type="button" value="info" onclick="tinyTrucks.showTruckInfo(' + part.id + ')"/>');
+                    }
+                    if(key === 'costs'){
+                        data[i].push('<input type="button" value="buy" onclick="tinyTrucks.buyPartClick(this, ' + part.id + ')"/>');
+                    }
                 }
             }
             return data;
@@ -107,6 +113,14 @@ tinyTrucks.partsModel = (function (win) {
                     return partStorage.splice(i, 1)[0];
                 }
             }
+        },
+        getPartById: function(id){
+            for(var i = 0;i < Parts.length; i++){
+                if(id === Parts[i].id){
+                    return Parts[i];
+                }
+            }
+            return false;
         }
     };
 }(window));

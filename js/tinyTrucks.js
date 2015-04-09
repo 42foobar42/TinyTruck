@@ -232,7 +232,7 @@ var tinyTrucks = (function (win) {
         document.getElementById(CONST_ID_OF_GOODSTRUCK).innerHTML = html;
     }
     function updateTables(){
-        fillTable(CONST_TABLEID_BUYPARTS, tinyTrucks.partsModel.getPartListForBuying(), 'row', 'tinyTrucks.buyPartClick(this)');
+        fillTable(CONST_TABLEID_BUYPARTS, tinyTrucks.partsModel.getPartListForBuying()/*, 'row', 'tinyTrucks.buyPartClick(this)'*/);
         fillTable(CONST_TABLEID_SELLPARTS, tinyTrucks.partsModel.getPartListForSelling(), null, null);
         fillTable(CONST_TABLEID_BUILDTRUCK, tinyTrucks.partsModel.getBuildableTrucksList(), null, null);
         fillTable(CONST_TABLEID_TRUCKSTORAGE, tinyTrucks.truckModel.getTruckStorageList(), null, null);
@@ -533,15 +533,14 @@ var tinyTrucks = (function (win) {
         getResaleFactor: function(){
             return CONST_RESALE_VALUE;
         },
-        buyPartClick: function(row){
-            var cells = row.getElementsByTagName('td');
-            var costs = parseInt(cells[3].innerHTML);
-            var id = parseInt(cells[0].innerHTML);
-            if(costs < money){
+        buyPartClick: function(row, id){
+            //var cells = row.getElementsByTagName('td');                        
+            var costs = tinyTrucks.partsModel.getPartById(id).costs;//parseInt(cells[3].innerHTML);            
+            if(costs <= money){
                 money -= costs;
                 tinyTrucks.partsModel.addPart(id);
                 setValuesOnScreen();
-                fillTable(CONST_TABLEID_BUYPARTS, tinyTrucks.partsModel.getPartListForBuying(), 'row', 'tinyTrucks.buyPartClick(this)');
+                fillTable(CONST_TABLEID_BUYPARTS, tinyTrucks.partsModel.getPartListForBuying()/*, 'row', 'tinyTrucks.buyPartClick(this)'*/);
             } else {
                 alert("not enought money!");
             }
@@ -558,7 +557,7 @@ var tinyTrucks = (function (win) {
         },
         buildTruck: function(TruckId){            
             var oTruck = tinyTrucks.truckModel.getOriginalTruckData(TruckId);            
-            if(oTruck.costs  < money){
+            if(oTruck.costs  <= money){
                 for(var i = 0; i < oTruck.parts.length; i++){
                     tinyTrucks.partsModel.removeFromPartStorage(oTruck.parts[i]);  
                 }
@@ -583,6 +582,7 @@ var tinyTrucks = (function (win) {
                 if(tinyTrucks.depotsModel.isGodInDepot(cityname,cells[1].innerHTML)){
                     tinyTrucks.depotsModel.removeGoodFromDepot(cityname,cells[1].innerHTML);
                 } else {
+                    // TODO there is an error
                     if(tinyTrucks.depotsModel.spaceOfDepot(cityname) >= parseInt(cells[5].innerHTML)){
                         tinyTrucks.depotsModel.putGoodToDepot(cityname,cells[1].innerHTML);
                     }

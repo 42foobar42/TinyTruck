@@ -76,13 +76,9 @@ tinyTrucks.goodsModel = (function (win) {
                         good.source = citys[i].name;
                         // TODO improve destination setting and destionation not source
                         var destination = MapData.getDestinationForIndustry(good.source, good.industry);
-                        /*do{
-                            var destination = citys[Math.floor((Math.random() * citys.length))].name;
-                        } while(destination === good.source)*/
                         good.destination = destination;
                         good.status = '';
                         // TODO value(money) of good must be calculated on groundvalue and distance
-                        //var street = MapData.getStreetBetweenCitys(destination, good.source);
                         var distance = MapData.getDistanceBetweenCitys(destination, good.source);
                         good.value = Math.round(good.groundvalue * good.amount * distance); //* street.length;
                         ListOfGoods.push(good);
