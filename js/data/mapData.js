@@ -53,12 +53,26 @@ var MapData = (function (win) {
     3807,  223, 3814, 219, 3820, 214, 3823, 210, 3825, 207, 3826, 203, 3822, 202,
     3817,  197, 3813, 190, 3808, 184, 3800, 173, 3794, 169, 3788, 164, 3786, 160,
     3785,  157, 3784, 148, 3785, 136, 3786, 129, 3788, 125, //corrected
-    3820, 123, 3866, 141,
-    3869,  161, 3887, 172, 3887, 211, 3903, 233, 3926, 224, 3925, 208, 3912, 196,
-    3895,  155, 3902, 134, 3921, 151, 3932, 181, 3951, 196, 3965, 182, 3960, 160,
-    3950,  138, 3950, 111, 4018,  99, 4024,  93, 4098,  83, 4124,  70, 4140,  49, 4223,  41,
-    4288,   38,  4319,  40, 4350,  35, 4396,  52, 4395,  71, 4372,  88, 4370, 101, 4420,  98,
-    4480,   96,  4488, 111, 4531, 112, 4575, 105, 4580,  97, 4616,  90, 4663,  88, 4672, 101,
+    3810,  124, 3819, 123, 3820, 123, 3823, 122, 3829, 123, 3836, 126, 3865, 143,
+    3866,  148, 3867, 153, 3869, 158, 3870, 161, 3874, 163, 3878, 166, 3882, 169, 
+    3887,  173, 3888, 202, 3887, 211, 3893, 218, 3897, 224, 3901, 230, 3903, 231, 
+    3925,  223, 3925, 211, 3924, 208, 3921, 205, 3917, 202, 3912, 199, 3909, 194,
+    3907,  186, 3896, 157, 3895, 153, 3896, 147, 3898, 142, 3902, 134, 3905, 136,
+    3913,  143, 3918, 148, 3921, 156, 3925, 162, 3926, 170, 3929, 177, 3933, 182,
+    3939,  188, 3944, 193, 3949, 193, 3954, 194, 3957, 194, 3960, 191, 3963, 188,
+    3965,  183, 3966, 176, 3965, 170, 3962, 162, 3958, 152, 3955, 146, 3952, 142, 
+    3950,  138, 3950, 129, 3951, 123, 3951, 117, 3972, 109, 3984, 108, 3996, 106,
+    4003,  104, 4008, 103, 4013, 102, 4016,  99, 
+    4018,   98, 4020,  96, 4021,  94, 4023,  93, 4028,  92, 4036,  91, 4054,  91,
+    4077,   88, 4087,  87, 4098,  84, 4102,  82, 4108,  78, 4113,  75, 4116,  74, 
+    4119,   72, 4124,  70, 4128,  67, 4313,  63, 4133,  59, 4135,  56, 4136,  51, 
+    4140,   49, 4142,  47, 4145,  45, 4151,  44, 4223,  40,
+    4288,   36, 4296,  37, 4319,  42, 4323,  41, 4329,  40, 4337,  37, 4344,  36,
+    4350,   36, 4359,  37, 4367,  38, 4376,  41, 4382,  45, 4388,  48, 4396,  53, 
+    4395,   67, 4395,  70, 4393,  73, 4390,  75, 4386,  78, 4382,  80, 4375,  83,
+    4372,   88, 4371,  91, 4371,  95, 4373,  99, 4376, 100, 4382, 102, 4420,  98,
+    4432,   96, 4443,  95, 4456,  95, 4467,  95, 4473,  95, 4482,  // corrected
+    97,  4488, 111, 4531, 112, 4575, 105, 4580,  97, 4616,  90, 4663,  88, 4672, 101,
     4719,  113, 4753, 116, 4806, 113, 4816, 127, 4863, 126, 4907,  76, 4936,  92, 4966,  94,
     4987,  103, 5060, 101, 5155,  98, 5163, 110, 5191, 113, 5229, 120, 5335, 118, 5345, 133,
     5417,  132, 5438, 111, 5472, 111, 5503, 115, 5515, 126, 5562, 125, 5639, 136,
@@ -467,28 +481,68 @@ var MapData = (function (win) {
         5564, 704, 5569, 707, 5577, 718, 5567, 716
     ];
     var CitysOfEurope = [
+        { name:"Vienna", coordiantes:{x:3088, y:706}, population: 1800000, country:'Austria', production:['agri', 'wood', 'food'], needs:['elec', 'text', 'build']},
+        { name:"Minsk", coordiantes:{x:3216, y:533}, population: 1920000, country:'Belarus', production:['auto', 'elec', 'mech'], needs:['metal', 'text', 'food']},
+        { name:"Brussels", coordiantes:{x:2853, y:634}, population: 1140000, country:'Belgium', production:['agri', 'build', 'food'], needs:['elec', 'text', 'mech']},
+        { name:"Zagreb", coordiantes:{x:3086, y:768}, population: 800000, country:'Croatia', production:['elec', 'chem', 'food', 'text', 'mech'], needs:['metal', 'prim', 'wood']},
+        { name:"Copenhagen", coordiantes:{x:3006, y:507}, population: 580000, country:'Denmark', production:['elec', 'chem', 'metal', 'food'], needs:['wood', 'text', 'prim']},
+        { name:"London", coordiantes:{x:2780, y:605}, population: 8420000, country:'England', production:['elec', 'text', 'chem'], needs:['lux', 'wood', 'build']},
+        { name:"Manchester", coordiantes:{x:2721, y:558}, population: 500000, country:'England', production:['metal', 'prim', 'chem'], needs:['text', 'prim', 'food']},
+        { name:"Helsinki", coordiantes:{x:3177, y:402}, population: 620000, country:'Finland', production:['prim', 'metal', 'food'], needs:['agri', 'text', 'elec']},
+        { name:"Bordeaux", coordiantes:{x:2748, y:774}, population: 850000, country:'France', production:['food', 'avi', 'elec', 'mech', 'agri'], needs:['wood', 'text', 'metal']},
+        { name:"Marseille", coordiantes:{x:2874, y:797}, population: 850000, country:'France', production:['auto', 'mech', 'metal', 'food'], needs:['agri', 'prim', 'chem']},
+        { name:"Paris", coordiantes:{x:2820, y:690}, population: 2270000, country:'France', production:['auto', 'lux', 'agri'], needs:['elec', 'text', 'mech']},
         { name:"Munich", coordiantes:{x:2991, y:706}, population: 1400000, country:'Germany', production:['auto', 'agri', 'wood'], needs:['lux', 'mech', 'chem']}, 
         { name:"Frankfurt", coordiantes:{x:2938, y:658}, population:700000, country:'Germany', production:['chem', 'auto', 'elec'], needs:['lux', 'food', 'prim', 'avi']},
         { name:"Berlin", coordiantes:{x:3030, y:600}, population: 3560000, country:'Germany', production:['avi', 'mech'], needs:['lux', 'auto', 'text']},
         { name:"Hamburg", coordiantes:{x:2934, y:554}, population: 1750000, country:'Germany', production:['food', 'build', 'text', 'avi'], needs:['agri', 'prim', 'wood','metal']},
-        { name:"Vienna", coordiantes:{x:3088, y:706}, population: 1800000, country:'Austria', production:['agri', 'wood', 'food'], needs:['elec', 'text', 'build']},
-        { name:"Paris", coordiantes:{x:2820, y:690}, population: 2270000, country:'France', production:['auto', 'lux', 'agri'], needs:['elec', 'text', 'mech']},
-        { name:"Marseille", coordiantes:{x:2874, y:797}, population: 850000, country:'France', production:['auto', 'mech', 'metal', 'food'], needs:['agri', 'prim', 'chem']},
+        { name:"Athens", coordiantes:{x:3237, y:892}, population: 3090000, country:'Greece', production:['chem', 'prim', 'food'], needs:['avi', 'metal', 'text']},
+        { name:"Budapest", coordiantes:{x:3138, y:719}, population: 1740000, country:'Hungary', production:['elec', 'wood', 'prim'], needs:['metal', 'build', 'mech']},
+        { name:"Dublin", coordiantes:{x:2644, y:554}, population: 530000, country:'Ireland', production:['elec', 'chem', 'food', 'text'], needs:['lux', 'avi', 'mech']},
         { name:"Rome", coordiantes:{x:3012, y:815}, population: 2870000, country:'Italy', production:['text', 'mech', 'food', 'metal'], needs:['prim', 'agri', 'wood']},
         { name:"Milan", coordiantes:{x:2954, y:763}, population: 1350000, country:'Italy', production:['chem', 'auto', 'text', 'mech'], needs:['metal', 'food']},
+        { name:"Riga", coordiantes:{x:3172, y:473}, population: 700000, country:'Latvia', production:['wood', 'elec', 'metal', 'chem', 'food'], needs:['prim', 'agri', 'mech']},
         { name:"Luxembourg", coordiantes:{x:2890, y:674}, population: 100000, country:'Luxembourg', production:['build', 'prim', 'agri', 'chem'], needs:['lux', 'food', 'wood']},
+        { name:"Skopje", coordiantes:{x:3180, y:823}, population: 500000, country:'Republic of Macedonia', production:['food', 'text', 'agri', 'metal'], needs:['mech', 'chem', 'wood']},
         { name:"Amsterdam", coordiantes:{x:2865, y:585}, population: 810000, country:'Netherlands', production:['food', 'elec'], needs:['build', 'metal', 'prim']},
-        { name:"Budapest", coordiantes:{x:3138, y:719}, population: 1740000, country:'Hungary', production:['elec', 'wood', 'prim'], needs:['metal', 'build', 'mech']},
-        { name:"Kraków", coordiantes:{x:3151, y:658}, population: 760000, country:'Poland', production:['elec', 'build', 'mech'], needs:['metal', 'prim', 'chem']}
-    ];    
+        { name:"Oslo", coordiantes:{x:2946, y:450}, population: 640000, country:'Norway', production:['metal', 'build', 'food', 'prim'], needs:['agri', 'text', 'chem']},
+        { name:"Kraków", coordiantes:{x:3151, y:658}, population: 760000, country:'Poland', production:['elec', 'build', 'mech'], needs:['metal', 'prim', 'chem']},
+        { name:"Poznań", coordiantes:{x:3094, y:590}, population: 550000, country:'Poland', production:['metal', 'food', 'wood', 'auto'], needs:['mech', 'build', 'text', 'prim']},
+        { name:"Warsaw", coordiantes:{x:3165, y:593}, population: 1740000, country:'Poland', production:['metal', 'auto', 'food'], needs:['agri', 'mech', 'build']},
+        { name:"Lisbon", coordiantes:{x:2605, y:900}, population: 550000, country:'Portugal', production:['food', 'text', 'wood'], needs:['avi', 'agri']},
+        { name:"Bucharest", coordiantes:{x:3269, y:775}, population: 1880000, country:'Romania', production:['build', 'lux', 'wood', 'elec'], needs:['avi', 'metal', 'agri', 'food']},
+        { name:"Glasgow", coordiantes:{x:2698, y:487}, population: 600000, country:'Scotland', production:['mech', 'elec', 'build', 'chem'], needs:['food', 'agri', 'text']},
+        { name:"Belgrade", coordiantes:{x:3162, y:775}, population: 1170000, country:'Serbia', production:['elec', 'build', 'wood', 'prim'], needs:['agri', 'mech', 'metal']},
+        { name:"Barcelona", coordiantes:{x:2809, y:844}, population: 1620000, country:'Spain', production:['prim', 'chem', 'auto'], needs:['food', 'wood', 'build']},
+        { name:"Madrid", coordiantes:{x:2678, y:870}, population: 3170000, country:'Spain', production:['avi', 'auto', 'chem', 'text', 'food'], needs:['wood', 'prim', 'mech']},
+        { name:"Seville", coordiantes:{x:2644, y:954}, population: 700000, country:'Spain', production:['avi', 'auto', 'metal'], needs:['text', 'agri']},
+        { name:"Gothenburg", coordiantes:{x:2983, y:476}, population: 540000, country:'Sweden', production:['auto', 'elec', 'prim'], needs:['text', 'food', 'metal', 'chem']},
+        { name:"Stockholm", coordiantes:{x:3086, y:405}, population: 910000, country:'Sweden', production:['food', 'elec'], needs:['agri', 'metal', 'mech', 'chem']},
+        { name:"Zurich", coordiantes:{x:2925, y:720}, population: 380000, country:'Switzerland', production:['food', 'elec', 'agri', 'wood'], needs:['lux', 'text', 'build']},
+        { name:"Istanbul", coordiantes:{x:3302, y:843}, population: 14380000, country:'Turkey', production:['food', 'text', 'auto'], needs:['mech', 'metal', 'agri']},
+        { name:"Moscow", coordiantes:{x:3488, y:510}, population: 11500000, country:'Russia', production:['chem', 'metal', 'food', 'text', 'wood', 'mech'], needs:['agri', 'build', 'lux']},
+        { name:"Krasnodar ", coordiantes:{x:3522, y:772}, population: 740000, country:'Russia', production:['agri', 'food', 'wood', 'mech', 'prim'], needs:['text', 'build', 'chem']},
+        { name:"Saint Petersburg", coordiantes:{x:3240, y:410}, population: 4880000, country:'Russia', production:['avi', 'elec', 'mech', 'metal', 'chem'], needs:['agri', 'food', 'prim']},        
+        { name:"Volgograd", coordiantes:{x:3621, y:684}, population: 1020000, country:'Russia', production:['chem', 'auto', 'metal', 'prim'], needs:['mech', 'build', 'food']},
+        { name:"Kharkiv", coordiantes:{x:3466, y:661}, population: 1430000, country:'Ukraine', production:['mech', 'agri', 'elec'], needs:['food', 'text', 'wood']},
+        { name:"Kiev", coordiantes:{x:3353, y:649}, population: 2850000, country:'Ukraine', production:['mech', 'food', 'chem', 'prim'], needs:['avi', 'text', 'agri']},
+        { name:"Odessa", coordiantes:{x:3355, y:737}, population: 1000000, country:'Ukraine', production:['mech', 'metal', 'agri', 'food', 'chem', 'wood'], needs:['prim', 'text', 'build']},                
+    ];
+    var CitiesOfAsia = [
+        { name:"Jerusalem", coordiantes:{x:3478, y:1048}, population: 890000, country:'Israel', production:['chem', 'elec', 'prim', 'metal'], needs:['food', 'text', 'agri', 'mech']},
+        { name:"Riyadh", coordiantes:{x:3723, y:1193}, population: 5700000, country:'Saudi Arabia', production:['build', 'food', 'prim'], needs:['elec', 'text', 'lux', 'agri']},
+        { name:"Abu Dhabi", coordiantes:{x:3899, y:1179}, population: 920000, country:'United Arab Emirates', production:['prim', 'lux'], needs:['elec', 'text', 'food', 'mech']},
+    ];
     var StreetsOfEurope = [
         { connection:['Frankfurt','Berlin'], length:551, parts:[{x:2958,y:634}, {x:3011,y:631}] },
         { connection:['Frankfurt','Munich'], length:392, parts:[] },
         { connection:['Frankfurt','Hamburg'], length:492, parts:[] },
         { connection:['Amsterdam','Hamburg'], length:465, parts:[] },
-        { connection:['Amsterdam','Paris'], length:508, parts:[] },
+        { connection:['Amsterdam','Brussels'], length:258, parts:[] },
+        { connection:['Paris','Brussels'], length:311, parts:[] },
         { connection:['Marseille','Paris'], length:775, parts:[] },
         { connection:['Marseille','Milan'], length:521, parts:[] },
+        { connection:['Marseille','Barcelona'], length:504, parts:[] },
         { connection:['Munich','Berlin'], length:584, parts:[] },
         { connection:['Frankfurt','Luxembourg'], length:231, parts:[] },
         { connection:['Milan','Rome'], length:571, parts:[] },
@@ -500,6 +554,28 @@ var MapData = (function (win) {
         { connection:['Hamburg','Berlin'], length:288, parts:[] },
         { connection:['Paris','Luxembourg'], length:373, parts:[] }
     ];
+    var SaudiGolf = [
+        3849, 1190, 3836, 1185, 3826, 1181, 3819, 1173, 3815, 1165, 3812, 1158, 3807, 1151, 3800, 1143, 3797, 1136,
+        3796, 1121, 3796, 1118, 3783, 1092, 3782, 1088, 3782, 1084, 3779, 1081, 3774, 1075, 3772, 1072, 3772, 1067,
+        3775, 1065, 3781, 1065, 3788, 1069, 3793, 1076, 3799, 1081, 3807, 1086, 3817, 1090, 3824, 1096, 3830, 1101,
+        3840, 1106, 3849, 1112, 3861, 1116, 3874, 1117, 3890, 1119, 3919, 1120, 3926, 1121, 3931, 1123, 3933, 1124,
+        3933, 1127, 3933, 1130, 3933, 1133, 3936, 1137, 3936, 1140, 3933, 1142, 3924, 1144, 3920, 1146, 3916, 1148,
+        3913, 1153, 3910, 1159, 3909, 1165, 3908, 1168, 3904, 1172, 3896, 1176
+    ];
+    var BlackSea = [
+        3318, 850, 3311, 844, 3306, 838, 3303, 831, 3299, 828, 3305, 821, 3307, 816, 3309, 811, 3313, 807,
+        3317, 805, 3318, 798, 3321, 789, 3323, 785, 3326, 779, 3331, 777, 3336, 776, 3338, 776, 3341, 771,
+        3340, 758, 3350, 754, 3354, 750, 3359, 745, 3370, 739, 3378, 737, 3389, 739, 3384, 744, 3389, 747,
+        3401, 748, 3410, 748, 3417, 750, 3414, 756, 3398, 763, 3406, 768, 3416, 772, 3414, 782, 3420, 787,
+        3434, 777, 3444, 776, 3452, 771, 3469, 773, 3471, 765, 3457, 764, 3448, 766, 3444, 760, 3437, 758, 
+        3434, 754, 3434, 749, 3445, 742, 3452, 742, 3460, 737, 3468, 738, 3476, 733, 3488, 730, 3497, 728,
+        3509, 726, 3517, 724, 3520, 730, 3514, 734, 3500, 736, 3496, 741, 3509, 747, 3499, 752, 3493, 759,
+        3491, 766, 3479, 765, 3478, 771, 3490, 777, 3499, 781, 3508, 787, 3522, 793, 3536, 804, 3548, 814,
+        3558, 817, 3565, 822, 3568, 829, 3571, 834, 3571, 840, 3567, 846, 3559, 852, 3550, 855, 3541, 858,
+        3529, 855, 3519, 856, 3507, 858, 3495, 857, 3484, 853, 3475, 851, 3470, 851, 3460, 844, 3453, 845,
+        3445, 837, 3435, 838, 3405, 839, 3396, 840, 3389, 845, 3381, 849, 3376, 852, 3369, 854, 3361, 855, 
+        3351, 853, 3341, 853, 3334, 852, 3324, 850
+    ];
     return {
         getEurasia: function(){
             return Eurasia;
@@ -507,12 +583,16 @@ var MapData = (function (win) {
         getAllContinents: function(){
             return [Eurasia, America, Africa, Australia, Greenland, SEAsiaIsland1, SEAsiaIsland2, SEAsiaIsland3, Madagasca, Britain, Ireland, Kyushu, Honshu, Shikcku, Hokkaido];
         },
+        getAllLakes: function (){
+            return [SaudiGolf, BlackSea];
+        },
         getCitysOfEurope: function(){
             return CitysOfEurope;
         },
         getAllCitys: function (){
             // TODO change if citys of other conitents are added
-            return CitysOfEurope;
+            var cities = CitysOfEurope.concat(CitiesOfAsia);
+            return cities.slice();            
         },
         getAllStreets: function(){
             // TODO change to get all Streets
@@ -535,7 +615,7 @@ var MapData = (function (win) {
             return ConnectedCitys;
         },
         setAttributeOfCity: function (name, attributes){
-            var citys = MapData.getAllCitys();
+            var citys = MapData.getAllCitys();            
             for(var i=0; i < citys.length; i++){
                 if(citys[i].name === name){
                     for(var key in attributes){
@@ -548,10 +628,14 @@ var MapData = (function (win) {
         getCityByName: function(name){
             //console.log(name);
             var citys = MapData.getAllCitys();
+            //console.log(citys);
+            //console.log(name);
             for(var i=0; i < citys.length; i++){
                 //console.log(citys[i].name);
                 //console.log(citys[i].name === name);
-                if(citys[i].name === name){                        
+                if(citys[i].name === name){
+                    //console.log(citys.slice(i,i+1)[0]);
+                    //return citys.slice(i,i+1)[0];
                     return citys[i];
                 }
             }
@@ -576,7 +660,7 @@ var MapData = (function (win) {
         },
         getCitysByNeeds: function(industry){
             var data = [];
-            var citys = this.getAllCitys();
+            var citys = this.getAllCitys();            
             for(var i = 0; i < citys.length; i++){
                 if(citys[i].needs.indexOf(industry) >= 0){
                     data.push(citys[i]);
@@ -586,10 +670,13 @@ var MapData = (function (win) {
         },
         getDestinationForIndustry: function(cityname, industry){
             // TODO choose destination according to distance
-            var citys = this.getCitysByNeeds(industry);            
-            var RandomIndex = Math.floor(Math.random() * citys.length);
-            var destination = citys[RandomIndex].name;            
-            return destination;
+            var citys = this.getCitysByNeeds(industry);
+            //console.log(citys);
+            if(citys.length > 0){
+                var RandomIndex = Math.floor(Math.random() * citys.length);
+                var destination = citys[RandomIndex].name;
+                return destination;
+            } return "";
         }
     };
 }(window));

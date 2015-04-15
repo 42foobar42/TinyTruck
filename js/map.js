@@ -24,6 +24,18 @@ var Map = (function (win) {
             g.ctx.closePath();        
             g.ctx.fill();                
         }
+        var lakes = MapData.getAllLakes();
+        for (var i = 0; i < lakes.length; i++){
+            var lake = lakes[i];
+            g.ctx.fillStyle = '#1C6BA0';
+            g.ctx.beginPath();
+            g.ctx.moveTo((lake[0] + MapPos.x)*ZoomFactor, (lake[1] + MapPos.y)*ZoomFactor);
+            for (var item = 2; item < lake.length - 1; item += 2) {
+                g.ctx.lineTo((lake[item] + MapPos.x)*ZoomFactor, (lake[item + 1] + MapPos.y)*ZoomFactor);
+            }
+            g.ctx.closePath();
+            g.ctx.fill();
+        }
     }
     function drawCitys(){
         // TODO
@@ -93,7 +105,7 @@ var Map = (function (win) {
             //console.log(g.canvas);
             Eurasia = MapData.getEurasia();
             Continents = MapData.getAllContinents();
-            CitysOfEurope = MapData.getCitysOfEurope();
+            CitysOfEurope = MapData.getAllCitys();
             Streets = MapData.getAllStreets();
             draw();            
             return Map;
