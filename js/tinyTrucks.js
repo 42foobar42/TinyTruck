@@ -94,6 +94,11 @@ var tinyTrucks = (function (win) {
                     Map.scroll(x, y);
                     //console.log(depots);
                 }
+                // debug
+                var x  = event.clientX;// - startPoint.x + lastPoint.x;
+                var y  = event.clientY;// - startPoint.y + lastPoint.y;
+                var deb = Map.getMousePos(x,y);
+                document.getElementById('debug-co').innerHTML = Math.round(deb.x) + "," + Math.round(deb.y);
             };
             document.getElementById(CONST_ID_OF_MAPS).onmouseup = function (event) {
                 MapClick = false;

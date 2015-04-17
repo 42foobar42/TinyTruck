@@ -161,6 +161,11 @@ var Map = (function (win) {
             //g.canvas.height = g.canvas.height;             
             draw();            
             return Map;
+        },
+        getMousePos: function (x,y){
+            var object = { x: ((x*CONST_MAP_WIDTH/g.canvas.width) ) / ZoomFactor - MapPos.x,
+                           y: ((y*CONST_MAP_HEIGHT/g.canvas.height) ) / ZoomFactor - MapPos.y}
+            return object;
         }
     };
 }(window));
