@@ -249,12 +249,22 @@ var MapData = (function (win) {
     3124,  855, 3124,  859, 3123,  861, 3122,  863, 3119,  865, 3116,  866, 3112,  866,
     3109,  865, 3105,  865, 3104,  868, 3103,  872, 3100,  879, 3099,  885, 3096,  891, 
     3094,  895, 3091,  899, 3088,  902, 3084,  906, 3080,  909, 3077,  912, 3071,  916,
-    3065,  920, 3056,  926, 3030,  910, // corrected
-    3042,  902, 3056,  897, 3066,  889, 3069,  878, 3067,  866, 
-    3062,  858, 3048,  850, 3036,  836, 3022,  828, 2996,  820, 2978,  807, 2956,  794,
-    2943,  776, 2933,  775, 2922,  777, 2909,  802, 2856,  802, 2837,  815, 2830,  834,
-    2815,  842, 2808,  853, 2796,  861, 2779,  870, 2775,  904, 2772,  916, 2765,  924, 
-    2753,  930, 2746,  934, 2740,  943, 2732,  948, 2712,  954, 2673,  960, 2622,  960
+    3065,  920, 3056,  926, 3030,  910, 3033,  907, 3038,  903, 3042,  902, 3046,  901,
+    3051,  899, 3056,  898, 3060,  895, 3063,  892, 3066,  890, 3069,  885, 3070,  880,
+    3070,  876, 3070,  871, 3069,  865, 3067,  862, 3064,  859, 3062,  857, 3057,  854,
+    3051,  851, 3048,  850, 3046,  848, 3042,  844, 3039,  841, 3036,  837, 3033,  835,
+    3029,  833, 3025,  831, 3022,  829, 3015,  827, 3007,  824, 3001,  823, 2998,  821,
+    2996,  820, 2990,  817, 2985,  813, 2977,  807, 2969,  802, 2963,  798, 2955,  792,
+    2951,  785, 2948,  781, 2945,  779, 2943,  778, 2940,  777, 2937,  776, 2932,  776, 
+    2919,  778, 2910,  802, 2857,  804, 2851,  807, 2846,  809, 2842,  813, 2838,  815, 
+    2837,  818, 2835,  821, 2832,  829, 2832,  832, 2831,  833, 2830,  835, 2828,  836,
+    2825,  838, 2822,  840, 2818,  841, 2817,  834, 2815,  845, 2812,  849, 2809,  852, 
+    2802,  857, 2796,  861, 2792,  865, 2788,  867, 2785,  869, 2783,  871, 2778,  872, 
+    2779,  880, 2779,  888, 2779,  894, 2777,  902, 2775,  909, 2773,  915, 2771,  918, 
+    2769,  922, 2767,  924, 2765,  926, 2761,  927, 2757,  930, 2753,  931, 2749,  933,
+    2747,  935, 2745,  937, 2744,  940, 2742,  942, 2740,  944, 2738,  946, 2732,  948, 
+    2725,  951, 2718,  953, 2714,  953, 2711,  955, 2706,  956, 2697,  958, 2690,  958,
+    2684,  959, 2675,  960, 2673,  959, 2656,  961, 2642,  960, 2633,  961, 2621,  960
     ];
     var America = [
         0, 505, 12, 502, 23, 492, 32, 487, 77, 477, 83, 473, 88, 466, 99, 469, 108, 468,
@@ -519,7 +529,7 @@ var MapData = (function (win) {
         4887, 1675, 4882, 1669, 4876, 1662, 4867, 1653, 4861, 1645, 4855, 1633, 4848, 1623, 4843, 1617,
         4839, 1613, 4834
     ];
-    var SEAsiaIsland2 = [
+    var Borneo = [
         5127, 1667, 5159, 1662, 5162, 1653, 5162, 1649, 5164, 1646, 5168, 1643, 5174, 1640, 5176, 1637,
         5178, 1632, 5183, 1606, 5185, 1604, 5192, 1599, 5202, 1596, 5209, 1594, 5217, 1592, 5230, 1590,
         5256, 1561, 5258, 1560, 5260, 1555, 5262, 1550, 5264, 1547, 5269, 1546, 5281, 1545, 5285, 1546,
@@ -530,7 +540,7 @@ var MapData = (function (win) {
         5158, 1771, 5154, 1766, 5148, 1761, 5142, 1756, 5136, 1750, 5132, 1744, 5129, 1737, 5126, 1730,
         5126, 1727
     ];
-    var SEAsiaIsland3 = [
+    var NewGuinea = [
         5614, 1753, 5624, 1737, 5594, 1709, 5596, 1704, 5598, 1701, 5602, 1698, 5608, 1694, 5613, 1691,
         5619, 1689, 5627, 1688, 5639, 1688, 5660, 1738, 5664, 1745, 5670, 1750, 5676, 1754, 5682, 1755,
         5690, 1756, 5695, 1754, 5700, 1750, 5701, 1741, 5708, 1740, 5712, 1739, 5714, 1736, 5718, 1725,
@@ -613,36 +623,10 @@ var MapData = (function (win) {
         5631, 685, 5623, 689, 5617, 697, 5612, 709, 5589, 693, 5584, 693, 5575, 699, 5569, 696, 5563, 699, 
         5564, 704, 5569, 707, 5577, 718, 5567, 716
     ];
-    var Philippines = [
-        5319, 1402, 5317, 1393, 5317, 1385, 5318, 1384, 5319, 1384, 5324, 1383, 5325, 1381, 5325, 1377, 
-        5324, 1371, 5327, 1365, 5324, 1355, 5326, 1351, 5326, 1346, 5329, 1342, 5331, 1336, 5335, 1334, 
-        5339, 1336, 5347, 1339, 5352, 1342, 5355, 1341, 5359, 1337, 5362, 1339, 5363, 1339, 5360, 1345, 
-        5360, 1349, 5361, 1353, 5362, 1357, 5365, 1361, 5366, 1367, 5364, 1371, 5362, 1374, 5359, 1379, 
-        5355, 1380, 5352, 1382, 5348, 1385, 5346, 1388, 5346, 1395, 5346, 1401, 5349, 1408, 5351, 1416,
-        5359, 1420, 5361, 1421, 5367, 1414, 5369, 1413, 5374, 1414, 5375, 1418, 5377, 1421, 5380, 1423, 
-        5384, 1424, 5387, 1423, 5392, 1423, 5391, 1426, 5388, 1428, 5388, 1431, 5393, 1433, 5399, 1435,
-        5397, 1438, 5395, 1442, 5392, 1441, 5383, 1437, 5381, 1434, 5375, 1429, 5372, 1427, 5371, 1423,
-        5369, 1421, 5368, 1427, 5367, 1430, 5361, 1426, 5354, 1424, 5348, 1425, 5345, 1426, 5340, 1426,
-        5335, 1423, 5331, 1421, 5329, 1418, 5329, 1414, 5330, 1411, 5332, 1405, 5329, 1404, 5323, 1403,
-        5318, 1402
-    ];
-    var Taiwan = [// TODO - 70 y
-        5330, 1251, 5325, 1245, 5326, 1240, 5322, 1237, 5319, 1229, 5319, 1222, 5320, 1219, 5320, 1215, 
-        5321, 1212, 5324, 1210, 5324, 1206, 5326, 1203, 5327, 1198, 5336, 1189, 5339, 1188, 5342, 1185,
-        5347, 1184, 5351, 1183, 5354, 1186, 5356, 1192, 5355, 1197, 5353, 1202, 5351, 1207, 5346, 1209,
-        5346, 1214, 5347, 1223, 5344, 1228, 5339, 1232, 5337, 1237, 5335, 1242, 5334, 1247, 5331, 1250
-    ];
-    var Java = [ // Todo move right und down
-        5025, 1797, 5028, 1788, 5029, 1780, 5033, 1779, 5036, 1784, 5042, 1782, 5048, 1782, 5053, 1783,
-        5059, 1784, 5064, 1786, 5070, 1789, 5076, 1789, 5079, 1789, 5085, 1795, 5091, 1796, 5098, 1798, 
-        5104, 1800, 5110, 1799, 5155, 1803, 5119, 1800, 5124, 1799, 5128, 1796, 5130, 1791, 5134, 1793, 
-        5138, 1796, 5142, 1798, 5151, 1801, 5157, 1800, 5161, 1800, 5164, 1804, 5168, 1807, 5170, 1814,
-        5176, 1815, 5182, 1817, 5189, 1817, 5192, 1816, 5196, 1815, 5200, 1820, 5201, 1826, 5198, 1830,
-        5192, 1832, 5187, 1830, 5182, 1828, 5178, 1826, 6174, 1826, 5172, 1827, 5168, 1830, 5165, 1830,
-        5155, 1826, 5150, 1827, 5143, 1826, 5120, 1820, 5114, 1821, 5110, 1817, 5106, 1815, 5102, 1816,
-        5096, 1814, 5093, 1813, 5088, 1811, 5084, 1815, 5082, 1819, 5077, 1818, 5073, 1815, 5066, 1813,
-        5059, 1812, 5054, 1810, 5050, 1808, 5045, 1808, 5042, 1807, 5042, 1802, 5036, 1800, 5029, 1799
-    ];
+    var Philippines = [5259, 1402, 5257, 1393, 5257, 1385, 5258, 1384, 5259, 1384, 5264, 1383, 5265, 1381, 5265, 1377, 5264, 1371, 5267, 1365, 5264, 1355, 5266, 1351, 5266, 1346, 5269, 1342, 5271, 1336, 5275, 1334, 5279, 1336, 5287, 1339, 5292, 1342, 5295, 1341, 5299, 1337, 5302, 1339, 5303, 1339, 5300, 1345, 5300, 1349, 5301, 1353, 5302, 1357, 5305, 1361, 5306, 1367, 5304, 1371, 5302, 1374, 5299, 1379, 5295, 1380, 5292, 1382, 5288, 1385, 5286, 1388, 5286, 1395, 5286, 1401, 5289, 1408, 5291, 1416, 5299, 1420, 5301, 1421, 5307, 1414, 5309, 1413, 5314, 1414, 5315, 1418, 5317, 1421, 5320, 1423, 5324, 1424, 5327, 1423, 5332, 1423, 5331, 1426, 5328, 1428, 5328, 1431, 5333, 1433, 5339, 1435, 5337, 1438, 5335, 1442, 5332, 1441, 5323, 1437, 5321, 1434, 5315, 1429, 5312, 1427, 5311, 1423, 5309, 1421, 5308, 1427, 5307, 1430, 5301, 1426, 5294, 1424, 5288, 1425, 5285, 1426, 5280, 1426, 5275, 1423, 5271, 1421, 5269, 1418, 5269, 1414, 5270, 1411, 5272, 1405, 5269, 1404, 5263, 1403, 5258, 1402],
+        Taiwan = [5285, 1181, 5280, 1175, 5281, 1170, 5277, 1167, 5274, 1159, 5274, 1152, 5275, 1149, 5275, 1145, 5276, 1142, 5279, 1140, 5279, 1136, 5281, 1133, 5282, 1128, 5291, 1119, 5294, 1118, 5297, 1115, 5302, 1114, 5306, 1113, 5309, 1116, 5311, 1122, 5310, 1127, 5308, 1132, 5306, 1137, 5301, 1139, 5301, 1144, 5302, 1153, 5299, 1158, 5294, 1162, 5292, 1167, 5290, 1172, 5289, 1177, 5286, 1180],
+        Java = [5060, 1877, 5063, 1868, 5064, 1860, 5068, 1859, 5071, 1864, 5077, 1862, 5083, 1862, 5088, 1863, 5094, 1864, 5099, 1866, 5105, 1869, 5111, 1869, 5114, 1869, 5120, 1875, 5126, 1876, 5133, 1878, 5139, 1880, 5145, 1879, 5190, 1883, 5154, 1880, 5159, 1879, 5163, 1876, 5165, 1871, 5169, 1873, 5173, 1876, 5177, 1878, 5186, 1881, 5192, 1880, 5196, 1880, 5199, 1884, 5203, 1887, 5205, 1894, 5211, 1895, 5217, 1897, 5224, 1897, 5227, 1896, 5231, 1895, 5235, 1900, 5236, 1906, 5233, 1910, 5227, 1912, 5222, 1910, 5217, 1908, 5213, 1906, 5209, 1906, 5207, 1907, 5203, 1910, 5200, 1910, 5190, 1906, 5185, 1907, 5178, 1906, 5155, 1900, 5149, 1901, 5145, 1897, 5141, 1895, 5137, 1896, 5131, 1894, 5128, 1893, 5123, 1891, 5119, 1895, 5117, 1899, 5112, 1898, 5108, 1895, 5101, 1893, 5094, 1892, 5089, 1890, 5085, 1888, 5080, 1888, 5077, 1887, 5077, 1882, 5071, 1880, 5064, 1879],
+        Island = [2454, 411, 2462, 403, 2466, 401, 2468, 398, 2473, 398, 2481, 396, 2492, 384, 2494, 382, 2500, 385, 2499, 384, 2505, 380, 2508, 377, 2508, 372, 2512, 371, 2514, 367, 2518, 363, 2522, 358, 2518, 351, 2514, 343, 2507, 338, 2504, 333, 2498, 331, 2495, 325, 2488, 324, 2484, 316, 2477, 316, 2478, 326, 2471, 329, 2466, 328, 2462, 331, 2452, 327, 2454, 335, 2451, 338, 2444, 328, 2436, 332, 2437, 338, 2437, 343, 2435, 343, 2433, 343, 2432, 336, 2427, 330, 2425, 329, 2422, 331, 2423, 334, 2425, 341, 2423, 347, 2419, 344, 2416, 347, 2412, 353, 2407, 346, 2409, 338, 2408, 333, 2402, 326, 2395, 323, 2387, 325, 2392, 332, 2392, 336, 2385, 339, 2378, 342, 2374, 342, 2371, 347, 2375, 351, 2382, 349, 2386, 346, 2393, 346, 2400, 351, 2392, 356, 2391, 362, 2386, 365, 2387, 367, 2374, 371, 2386, 370, 2391, 369, 2393, 375, 2395, 378, 2399, 381, 2403, 387, 2398, 392, 2388, 393, 2388, 399, 2405, 399, 2410, 396, 2415, 401, 2427, 407, 2438, 409, 2445, 410, 2450, 411];
     var CitysOfEurope = [
         { name:"Vienna", coordiantes:{x:3088, y:706}, population: 1800000, country:'Austria', production:['agri', 'wood', 'food'], needs:['elec', 'text', 'build']},
         { name:"Minsk", coordiantes:{x:3216, y:533}, population: 1920000, country:'Belarus', production:['auto', 'elec', 'mech'], needs:['metal', 'text', 'food']},
@@ -735,6 +719,115 @@ var MapData = (function (win) {
         { name:"Ho Chi Minh City", coordiantes:{x:5054, y:1467}, population:7005000, country:"Vietnam", production:['prim', 'agri', 'wood', 'build'], needs:['metal', 'mech', 'auto']},
         { name:"Sana'a", coordiantes:{x:3739, y:1393}, population: 2170000, country:'Yemen', production:['prim', 'food', 'metal'], needs:['elec', 'chem', 'mech']},
     ];
+    var CitiesOfAmerica = [
+        { name:"São Paulo", coordiantes:{x:0, y:0}, population:11895893, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Mexico City", coordiantes:{x:0, y:0}, population:8851080, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Lima", coordiantes:{x:0, y:0}, population:8617314, country:'Peru', production:['food'],needs:['agri']},
+        { name:"New York City", coordiantes:{x:0, y:0}, population:8405837, country:'United States', production:['food'],needs:['agri']},
+        { name:"Bogotá", coordiantes:{x:0, y:0}, population:7613303, country:'Colombia', production:['food'],needs:['agri']},
+        { name:"Rio de Janeiro", coordiantes:{x:0, y:0}, population:6453682, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Santiago", coordiantes:{x:0, y:0}, population:5084038, country:'Chile', production:['food'],needs:['agri']},
+        { name:"Los Angeles", coordiantes:{x:0, y:0}, population:3884307, country:'United States', production:['food'],needs:['agri']},
+        { name:"Santo Domingo", coordiantes:{x:0, y:0}, population:3525000, country:'Dominican Republic', production:['food'],needs:['agri']},
+        { name:"Salvador", coordiantes:{x:0, y:0}, population:2902927, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Buenos Aires", coordiantes:{x:0, y:0}, population:2891082, country:'Argentina', production:['food'],needs:['agri']},
+        { name:"Brasília", coordiantes:{x:0, y:0}, population:2852372, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Toronto", coordiantes:{x:0, y:0}, population:2791140, country:'Canada', production:['food'],needs:['agri']},
+        { name:"Chicago", coordiantes:{x:0, y:0}, population:2718782, country:'United States', production:['food'],needs:['agri']},
+        { name:"Fortaleza", coordiantes:{x:0, y:0}, population:2571896, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Belo Horizonte", coordiantes:{x:0, y:0}, population:2491109, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Guayaquil", coordiantes:{x:0, y:0}, population:2366902, country:'Ecuador', production:['food'],needs:['agri']},
+        { name:"Medellín", coordiantes:{x:0, y:0}, population:2343049, country:'Colombia', production:['food'],needs:['agri']},
+        { name:"Quito", coordiantes:{x:0, y:0}, population:2239191, country:'Ecuador', production:['food'],needs:['agri']},
+        { name:"Santiago de Cali", coordiantes:{x:0, y:0}, population:2219714, country:'Colombia', production:['food'],needs:['agri']},
+        { name:"Houston", coordiantes:{x:0, y:0}, population:2195914, country:'United States', production:['food'],needs:['agri']},
+        { name:"Havana", coordiantes:{x:0, y:0}, population:2135498, country:'Cuba', production:['food'],needs:['agri']},
+        { name:"Manaus", coordiantes:{x:0, y:0}, population:2020301, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Caracas", coordiantes:{x:0, y:0}, population:2013366, country:'Venezuela', production:['food'],needs:['agri']},
+        { name:"Curitiba", coordiantes:{x:0, y:0}, population:1864416, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Ecatepec City", coordiantes:{x:0, y:0}, population:1656107, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Santa Cruz", coordiantes:{x:0, y:0}, population:1651436, country:'Bolivia', production:['food'],needs:['agri']},
+        { name:"Montréal", coordiantes:{x:0, y:0}, population:1649519, country:'Canada', production:['food'],needs:['agri']},
+        { name:"Recife", coordiantes:{x:0, y:0}, population:1608488, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Tijuana", coordiantes:{x:0, y:0}, population:1559683, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Philadelphia", coordiantes:{x:0, y:0}, population:1553165, country:'United States', production:['food'],needs:['agri']},
+        { name:"Puebla", coordiantes:{x:0, y:0}, population:1539819, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Phoenix", coordiantes:{x:0, y:0}, population:1513367, country:'United States', production:['food'],needs:['agri']},
+        { name:"Guadalajara", coordiantes:{x:0, y:0}, population:1495189, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Maracaibo", coordiantes:{x:0, y:0}, population:1473007, country:'Venezuela', production:['food'],needs:['agri']},
+        { name:"Porto Alegre", coordiantes:{x:0, y:0}, population:1472482, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"León", coordiantes:{x:0, y:0}, population:1436480, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Belém", coordiantes:{x:0, y:0}, population:1432844, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Goiânia", coordiantes:{x:0, y:0}, population:1412364, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"San Antonio", coordiantes:{x:0, y:0}, population:1409019, country:'United States', production:['food'],needs:['agri']},
+        { name:"San Diego", coordiantes:{x:0, y:0}, population:1355896, country:'United States', production:['food'],needs:['agri']},
+        { name:"Montevideo", coordiantes:{x:0, y:0}, population:1336878, country:'Uruguay', production:['food'],needs:['agri']},
+        { name:"Ciudad Juárez", coordiantes:{x:0, y:0}, population:1332131, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Córdoba", coordiantes:{x:0, y:0}, population:1330023, country:'Argentina', production:['food'],needs:['agri']},
+        { name:"Guarulhos", coordiantes:{x:0, y:0}, population:1312197, country:'Brazil', production:['food'],needs:['agri']},
+        { name:"Dallas", coordiantes:{x:0, y:0}, population:1257676, country:'United States', production:['food'],needs:['agri']},
+        { name:"Zapopan", coordiantes:{x:0, y:0}, population:1243756, country:'Mexico', production:['food'],needs:['agri']},
+        { name:"Rosario", coordiantes:{x:0, y:0}, population:1198528, country:'Argentina', production:['food'],needs:['agri']},
+        { name:"Barranquilla", coordiantes:{x:0, y:0}, population:1186640, country:'Colombia', production:['food'],needs:['agri']},
+        { name:"Campinas", coordiantes:{x:0, y:0}, population:1154617, country:'Brazil', production:['food'],needs:['agri']}
+    ];
+    var CitiesOfAfrica = [
+        { name:"Lagos", coordiantes:{x:0, y:0}, population:17578000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Cairo", coordiantes:{x:0, y:0}, population:11001000, country:'Egypt', production:['food'],needs:['agri'] },
+        { name:"Kinshasa-Brazzaville", coordiantes:{x:0, y:0}, population:8754000, country:'Democratic Republic of the Congo', production:['food'],needs:['agri'] },
+        { name:"Greater Johannesburg", coordiantes:{x:0, y:0}, population:3670000, country:'South Africa', production:['food'],needs:['agri'] },
+        { name:"Mogadishu", coordiantes:{x:0, y:0}, population:6346000, country:'Somalia', production:['food'],needs:['agri'] },
+        { name:"Khartoum-Omdurman", coordiantes:{x:0, y:0}, population:5172000, country:'Sudan', production:['food'],needs:['agri'] },
+        { name:"Dar es Salaam", coordiantes:{x:0, y:0}, population:4364541, country:'Tanzania', production:['food'],needs:['agri'] },
+        { name:"Alexandria", coordiantes:{x:0, y:0}, population:4387000, country:'Egypt', production:['food'],needs:['agri'] },
+        { name:"Abidjan", coordiantes:{x:0, y:0}, population:4125000, country:'Ivory Coast', production:['food'],needs:['agri'] },
+        { name:"Casablanca", coordiantes:{x:0, y:0}, population:3284000, country:'Morocco', production:['food'],needs:['agri'] },
+        { name:"Cape Town", coordiantes:{x:0, y:0}, population:3405000, country:'South Africa', production:['food'],needs:['agri'] },
+        { name:"Durban", coordiantes:{x:0, y:0}, population:2879000, country:'South Africa', production:['food'],needs:['agri'] },
+        { name:"Accra", coordiantes:{x:0, y:0}, population:2342000, country:'Ghana', production:['food'],needs:['agri'] },
+        { name:"Nairobi", coordiantes:{x:0, y:0}, population:3523000, country:'Kenya', production:['food'],needs:['agri'] },
+        { name:"Kano", coordiantes:{x:0, y:0}, population:3395000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Ibadan", coordiantes:{x:0, y:0}, population:2837000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Algiers", coordiantes:{x:0, y:0}, population:2800000, country:'Algeria', production:['food'],needs:['agri'] },
+        { name:"Addis Ababa", coordiantes:{x:0, y:0}, population:2930000, country:'Ethiopia', production:['food'],needs:['agri'] },
+        { name:"Luanda", coordiantes:{x:0, y:0}, population:4772000, country:'Angola', production:['food'],needs:['agri'] },
+        { name:"Dakar", coordiantes:{x:0, y:0}, population:2863000, country:'Senegal', production:['food'],needs:['agri'] },
+        { name:"Pretoria", coordiantes:{x:0, y:0}, population:1429000, country:'South Africa', production:['food'],needs:['agri'] },
+        { name:"Tripoli", coordiantes:{x:0, y:0}, population:2267000, country:'Libya', production:['food'],needs:['agri'] },
+        { name:"Harare", coordiantes:{x:0, y:0}, population:1632000, country:'Zimbabwe', production:['food'],needs:['agri'] },
+        { name:"Douala", coordiantes:{x:0, y:0}, population:2125000, country:'Cameroon', production:['food'],needs:['agri'] },
+        { name:"Niamey", coordiantes:{x:0, y:0}, population:2110000,country:'Niger', production:['food'],needs:['agri'] },
+        { name:"Hargeisa", coordiantes:{x:0, y:0}, population:1340000, country:'Somaliland', production:['food'],needs:['agri'] },
+        { name:"Abuja", coordiantes:{x:0, y:0}, population:1995000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Lusaka", coordiantes:{x:0, y:0}, population:1799682, country:'Zambia', production:['food'],needs:['agri'] },
+        { name:"Kampala", coordiantes:{x:0, y:0}, population:1598000, country:'Uganda', production:['food'],needs:['agri'] },
+        { name:"Bamako", coordiantes:{x:0, y:0}, population:1699000, country:'Mali', production:['food'],needs:['agri'] },
+        { name:"Maputo", coordiantes:{x:0, y:0}, population:1655000, country:'Mozambique', production:['food'],needs:['agri'] },
+        { name:"Rabat", coordiantes:{x:0, y:0}, population:1802000, country:'Morocco', production:['food'],needs:['agri'] },
+        { name:"Antananarivo", coordiantes:{x:0, y:0}, population:1879000, country:'Madagascar', production:['food'],needs:['agri'] },
+        { name:"Yaoundé", coordiantes:{x:0, y:0}, population:1801000, country:'Cameroon', production:['food'],needs:['agri'] },
+        { name:"Ouagadougou", coordiantes:{x:0, y:0}, population:1908000, country:'Burkina Faso', production:['food'],needs:['agri'] },
+        { name:"Conakry", coordiantes:{x:0, y:0}, population:1653000, country:'Guinea', production:['food'],needs:['agri'] },
+        { name:"Kaduna", coordiantes:{x:0, y:0}, population:1561000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Kumasi", coordiantes:{x:0, y:0}, population:1834000, country:'Ghana', production:['food'],needs:['agri'] },
+        { name:"Lubumbashi", coordiantes:{x:0, y:0}, population:1543000, country:'Democratic Republic of the Congo', production:['food'],needs:['agri'] },
+        { name:"Mbuji-Mayi", coordiantes:{x:0, y:0}, population:1488000, country:'Democratic Republic of the Congo', production:['food'],needs:['agri'] },
+        { name:"Oran", coordiantes:{x:0, y:0}, population:770000, country:'Algeria', production:['food'],needs:['agri'] },
+        { name:"Benin", coordiantes:{x:0, y:0}, population:1302000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Port Harcourt", coordiantes:{x:0, y:0}, population:1104000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Tunis", coordiantes:{x:0, y:0}, population:1108000, country:'Tunisia', production:['food'],needs:['agri'] },
+        { name:"Freetown", coordiantes:{x:0, y:0}, population:901000, country:'Sierra Leone', production:['food'],needs:['agri'] },
+        { name:"Cotonou", coordiantes:{x:0, y:0}, population:844000, country:'Benin', production:['food'],needs:['agri'] },
+        { name:"Vereeniging", coordiantes:{x:0, y:0}, population:1143000, country:'South Africa', production:['food'],needs:['agri'] },
+        { name:"Fès", coordiantes:{x:0, y:0}, population:1065000, country:'Morocco', production:['food'],needs:['agri'] },
+        { name:"Maiduguri", coordiantes:{x:0, y:0}, population:970000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Monrovia", coordiantes:{x:0, y:0}, population:827000, country:'Liberia', production:['food'],needs:['agri'] },
+        { name:"Port Elizabeth", coordiantes:{x:0, y:0}, population:1068000, country:'South Africa', production:['food'],needs:['agri'] },
+        { name:"Huambo", coordiantes:{x:0, y:0}, population:1034000, country:'Angola', production:['food'],needs:['agri'] },
+        { name:"Ogbomosho", coordiantes:{x:0, y:0}, population:1032000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Zaria", coordiantes:{x:0, y:0}, population:963000, country:'Nigeria', production:['food'],needs:['agri'] },
+        { name:"Ndjamena", coordiantes:{x:0, y:0}, population:829000, country:'Chad', production:['food'],needs:['agri'] }
+    ];
     var StreetsOfEurope = [
         { connection:['Frankfurt','Berlin'], length:551, parts:[{x:2958,y:634}, {x:3011,y:631}] },
         { connection:['Frankfurt','Munich'], length:392, parts:[] },
@@ -790,22 +883,37 @@ var MapData = (function (win) {
         3764, 886, 3771, 884, 3771, 880, 3759, 874, 3749, 860, 3746, 858, 3712, 826, 3707, 818, 3709, 809, 
         3709, 803, 3697, 795
     ];
+    var LakeSuperior = [
+        1106, 798, 1113, 795, 1119, 794, 1122, 796, 1123, 798, 1125, 801, 1130, 801, 1134, 801, 1139, 799,
+        1144, 793, 1152, 792, 1157, 791, 1161, 790, 1165, 789, 1169, 791, 1176, 793, 1180, 792, 1182, 784,
+        1184, 781, 1181, 779, 1185, 773, 1184, 770, 1182, 769, 1187, 760, 1175, 762, 1171, 763, 1169, 762, 
+        1165, 761, 1165, 747, 1151, 750, 1140, 753, 1126, 759, 1118, 763, 1111, 763, 1105, 767, 1100, 774, 
+        1088, 780, 1080, 783, 1071, 786, 1065, 791, 1058, 797, 1048, 804, 1043, 807, 1042, 810, 1046, 810, 
+        1051, 809, 1060, 806, 1062, 807, 1062, 810, 1067, 810, 1074, 807, 1080, 803, 1086, 803, 1092, 799,
+        1100, 794, 1107, 789, 1114, 784, 1131, 782, 1118, 786, 1113, 790
+    ];
+    var LakeMichigan = [
+        
+    ];
+    var LakeHuron = [
+        
+    ];
     return {
         getEurasia: function(){
             return Eurasia;
         },
         getAllContinents: function(){
-            return [Eurasia, America, Africa, Australia, Greenland, Sumatra, SEAsiaIsland2, SEAsiaIsland3, Madagasca, Britain, Ireland, Kyushu, Honshu, Shikcku, Hokkaido, Philippines, Taiwan, Java];
+            return [Eurasia, America, Africa, Australia, Greenland, Sumatra, Borneo, NewGuinea, Madagasca, Britain, Ireland, Kyushu, Honshu, Shikcku, Hokkaido, Philippines, Taiwan, Java, Island];
         },
         getAllLakes: function (){
-            return [SaudiGolf, BlackSea, CaspianSea];
+            return [SaudiGolf, BlackSea, CaspianSea, LakeSuperior, LakeMichigan, LakeHuron];
         },
         getCitysOfEurope: function(){
             return CitysOfEurope;
         },
         getAllCitys: function (){
             // TODO change if citys of other conitents are added
-            var cities = CitysOfEurope.concat(CitiesOfAsia);
+            var cities = CitysOfEurope.concat(CitiesOfAsia, CitiesOfAmerica, CitiesOfAfrica);
             return cities.slice();            
         },
         getAllStreets: function(){
